@@ -148,6 +148,7 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
       <button class="tile" data-go="estudos"><span class="ico">▤</span><b>Estudos para líderes</b><small>Biblioteca bíblica reservada</small></button>
       <button class="tile" data-go="oracao"><span class="ico">♡</span><b>Pedidos de oração</b><small>Conte com nossa oração</small></button>
       <button class="tile" data-go="devocional"><span class="ico">✧</span><b>Palavra e devocional</b><small>Um momento com Deus</small></button>
+      <button class="tile" data-go="cadastro"><span class="ico">✚</span><b>Faça seu cadastro</b><small>Conecte-se à nossa família</small></button>
       <button class="tile" data-go="membros"><span class="ico">♙</span><b>Área de membros</b><small>Acesso reservado</small></button>
       <button class="tile" data-go="aniversariantes"><span class="ico">✧</span><b>Aniversariantes</b><small>Celebrando vidas da nossa família</small></button>
       <button class="tile" data-go="galeria"><span class="ico">▧</span><b>Mídia</b><small>Galeria exclusiva para membros</small></button>
@@ -322,6 +323,30 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
     <div class="panel"><div class="eyebrow">Versículo do ano</div><h3 style="font-family:Georgia,serif;font-size:20px;line-height:1.4">“O meu Deus, segundo as suas riquezas, suprirá todas as vossas necessidades em glória, por Cristo Jesus.”</h3><p>Filipenses 4:19</p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><h3>Uma palavra para este ano</h3><p>Seguimos confiando que Deus é a nossa fonte e que, segundo as riquezas da sua glória em Cristo Jesus, Ele suprirá cada necessidade.</p><div class="notice" style="margin-top:12px">Os devocionais serão preparados pela equipe de conteúdo e publicados somente após aprovação dos Apóstolos. A biblioteca e as notificações serão ativadas na implantação do sistema.</div></div>
   </section>
 
+  <section id="cadastro" class="view">
+    <div class="section-head"><div><div class="eyebrow">Seja bem-vindo</div><h2>Faça seu cadastro</h2></div></div>
+    <div class="panel"><h3>Conecte-se à nossa família</h3><p>Queremos conhecer você e ajudar a encontrar seu lugar na Igreja Comunidade Evangélica da Aliança. Preencha seus dados para que nossa equipe possa entrar em contato.</p></div>
+    <div class="panel">
+      <form id="publicRegistrationForm">
+        <div><label for="regName">Nome completo</label><input id="regName" name="name" autocomplete="name" required placeholder="Seu nome completo"></div>
+        <div><label for="regBirth">Data de nascimento</label><input id="regBirth" name="birth" type="date" required></div>
+        <div><label for="regPhone">Telefone / WhatsApp</label><input id="regPhone" name="phone" type="tel" autocomplete="tel" required placeholder="(00) 00000-0000"></div>
+        <div><label for="regEmail">E-mail</label><input id="regEmail" name="email" type="email" autocomplete="email" placeholder="voce@exemplo.com"></div>
+        <div><label for="regAddress">Endereço</label><input id="regAddress" name="address" autocomplete="street-address" placeholder="Rua, número, bairro e cidade"></div>
+        <div><label for="regRelation">Como você se identifica em relação à igreja?</label><select id="regRelation" name="relation" required><option value="">Selecione</option><option>Novo convertido</option><option>Membro</option><option>Visitante</option><option>Interessado</option></select></div>
+        <div><label for="regCongregation">Qual congregação deseja frequentar?</label><select id="regCongregation" name="congregation" required><option value="">Selecione</option><option>Sede — Brazlândia/DF</option><option>Jardim Botânico/DF</option><option>Vendinha — Padre Bernardo/GO</option></select></div>
+        <div><label for="regBaptism">Batismo nas águas</label><select id="regBaptism" name="baptism"><option value="">Selecione</option><option>Já sou batizado(a)</option><option>Desejo me batizar</option><option>Ainda não</option></select></div>
+        <div><label for="regCell">Participação em célula</label><select id="regCell" name="cell"><option value="">Selecione</option><option>Já participo</option><option>Quero participar</option><option>Ainda não</option></select></div>
+        <div><label for="regMinistry">Tem interesse em algum ministério?</label><input id="regMinistry" name="ministry" placeholder="Se desejar, informe qual"></div>
+        <div><label for="regMessage">Pedido de oração ou mensagem (opcional)</label><textarea id="regMessage" name="message" placeholder="Escreva aqui, se desejar"></textarea></div>
+        <label style="display:flex;gap:9px;align-items:flex-start;font-weight:500"><input id="regConsent" type="checkbox" required style="width:auto;margin-top:2px">Autorizo o uso dos dados informados para que a equipe da igreja entre em contato comigo sobre este cadastro. Li e concordo com o aviso de privacidade.</label>
+        <button class="primary" type="submit">Enviar cadastro</button>
+      </form>
+    </div>
+    <div id="registrationConfirmation" class="notice" hidden role="status" aria-live="polite"><strong>Cadastro enviado com sucesso!</strong><br>Obrigado por se conectar à nossa família! Em breve, nossa equipe entrará em contato.</div>
+    <p class="notice">Prévia do formulário: o envio e o armazenamento ainda não estão conectados a uma base segura. Não informe dados pessoais reais até a ativação do sistema.</p>
+  </section>
+
   <section id="membros" class="view">
     <div class="section-head"><div><div class="eyebrow">Comunidade</div><h2>Área de membros</h2></div></div>
     <div class="notice">A área exclusiva terá login individual. Cada membro poderá consultar e atualizar apenas o próprio perfil. Não haverá diretório de membros. O login ainda não está ativo nesta versão.</div>
@@ -421,6 +446,7 @@ function shiftMonth(prefix,delta){
 paintMonth('home',homeMonth);paintMonth('agenda',agendaMonth);
 
 document.getElementById('prayerForm').addEventListener('submit',e=>{e.preventDefault();document.getElementById('prayerMsg').textContent='Formulário demonstrativo: o pedido ainda não foi enviado. A conexão segura será feita na próxima etapa.';});
+document.getElementById('publicRegistrationForm').addEventListener('submit',e=>{e.preventDefault();alert('Este formulário é uma prévia. O cadastro ainda não foi enviado nem armazenado. A confirmação automática será exibida quando a conexão segura estiver ativa.');});
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
 </body></html>
