@@ -1,13 +1,9 @@
-IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA — VERSÃO 27
+IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA — VERSÃO 31
 
-Esta versão incorpora à interface as definições validadas para congregações, pastores responsáveis, células, biblioteca de estudos para líderes, Espaço Kids, ministérios, pedidos de oração, devocionais, membros, Mídia, aniversariantes e notificações planejadas.
+Esta atualização corrige a exibição do formulário de cadastro público em três etapas. Agora somente a etapa ativa fica visível; as etapas seguintes permanecem ocultas até a pessoa avançar pelo botão Continuar. Também reforça a navegação acessível entre as etapas.
 
-IMPORTANTE: esta é uma atualização de interface e conteúdo. Login, banco de dados, controle real de permissões, formulários de cadastro/oração, envio de WhatsApp, notificações automáticas, upload de mídia e publicação administrativa ainda NÃO estão conectados. Não coletar dados pessoais reais nem publicar informações privadas até a implantação do backend seguro.
+Etapas: 1) Dados pessoais; 2) Sua caminhada com a igreja; 3) Participação. A própria pessoa poderá atualizar seus dados pessoais quando o perfil individual estiver ativo. A classificação de vínculo (visitante, novo convertido, membro ou interessado) ficará reservada à equipe administrativa autorizada.
 
-Para atualizar o GitHub Pages, extraia o ZIP e envie/substitua na raiz do repositório os arquivos: index.html, sw.js, manifest.webmanifest, logo-alianca.png e logo-alianca.jpg. Faça Commit changes. Depois aguarde o GitHub Pages publicar e atualize o site no navegador.
+IMPORTANTE: o formulário ainda é demonstrativo. Não envia nem armazena cadastros. Banco de dados, login individual, permissões reais e histórico de alterações precisam ser implantados com autenticação e segurança antes de receber dados pessoais reais.
 
-
-Versão 30: opção independente “Faça seu cadastro” na página inicial e prévia do formulário público. O formulário ainda não envia nem armazena dados; requer integração segura com banco de dados e autenticação.
-
-
-Versão 30: cadastro público organizado em três etapas (dados pessoais, vínculo com a igreja e participação); orientação de edição do próprio perfil pela pessoa; classificação de vínculo reservada à equipe administrativa autorizada; indicação de histórico de alterações. O formulário permanece demonstrativo e não armazena dados. Login, banco de dados, permissões reais e auditoria precisam ser integrados antes do uso com dados pessoais.
+Para atualizar: extraia o ZIP e substitua os arquivos na raiz do repositório GitHub: index.html, sw.js, manifest.webmanifest, logo-alianca.png e logo-alianca.jpg. Faça Commit changes e aguarde a publicação do GitHub Pages.
