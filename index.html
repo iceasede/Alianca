@@ -72,6 +72,7 @@ header h1, header p { text-align:center; margin-left:auto; margin-right:auto; }
 .calendar-month{margin-top:8px;color:var(--navy);font-family:Georgia,serif;font-size:17px;font-weight:600}
 @media(min-width:650px){.calendar{gap:10px}.calendar .day{max-width:48px;justify-self:center}.calendar .weekday{font-size:13px}}
 
+.calendar-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 4px}.calendar-nav .calendar-month{flex:1;text-align:center;margin:0;text-transform:capitalize}.month-arrow{width:42px;height:40px;padding:0!important;font-size:26px;line-height:1;display:flex;align-items:center;justify-content:center;border-radius:12px!important;color:var(--navy2)!important}.calendar table{width:100%}
 </style>
 </head>
 <body>
@@ -103,7 +104,7 @@ header h1, header p { text-align:center; margin-left:auto; margin-right:auto; }
     <div class="section-head"><div><div class="eyebrow">Fique por dentro</div><h2>Próximos encontros</h2></div><button class="ghost" data-go="agenda">Ver agenda</button></div>
     <div class="panel">
       <div class="eyebrow">Calendário dos próximos encontros</div>
-      <div id="homeCalendarMonth" class="calendar-month">Dezembro de 2026</div>
+      <div class="calendar-nav"><button type="button" class="ghost month-arrow" id="homePrevMonth" aria-label="Mês anterior">‹</button><div id="homeCalendarMonth" class="calendar-month">Dezembro de 2026</div><button type="button" class="ghost month-arrow" id="homeNextMonth" aria-label="Próximo mês">›</button></div>
       <div id="homeCalendar" class="calendar"></div>
       <div id="homeEventDetail" class="calendar-detail" aria-live="polite">Toque em uma data destacada para ver os detalhes do encontro.</div>
     </div>
@@ -122,16 +123,12 @@ header h1, header p { text-align:center; margin-left:auto; margin-right:auto; }
       <div class="event"><div class="date"><b>DOM</b><small>19h</small></div><div><strong>Culto para toda a família</strong><small>Todos os domingos</small></div></div>
       <div class="event"><div class="date"><b>1ª SEM.</b><small>20h–21h</small></div><div><strong>Semana de Primícias</strong><small>Na igreja, durante a primeira semana de cada mês</small></div></div>
     </div>
-    <div class="section-head"><div><div class="eyebrow">Programação especial</div><h2>Agenda de novembro</h2></div></div>
+    <div class="section-head"><div><div class="eyebrow">Calendário anual</div><h2>Todos os encontros</h2></div></div>
     <div class="panel">
-      <div class="event"><div class="date"><b>01</b><small>DOM</small></div><div><strong>Santa Ceia do Senhor</strong><small>19h</small></div></div>
-      <div class="event"><div class="date"><b>02–06</b><small>SEG–SEX</small></div><div><strong>Semana de Primícias</strong><small>20h às 21h · Na igreja</small></div></div>
-      <div class="event"><div class="date"><b>07</b><small>SÁB</small></div><div><strong>Culto de Liderança</strong><small>20h</small></div></div>
+      <div class="calendar-nav"><button type="button" class="ghost month-arrow" id="agendaPrevMonth" aria-label="Mês anterior">‹</button><div id="agendaCalendarMonth" class="calendar-month">Dezembro de 2026</div><button type="button" class="ghost month-arrow" id="agendaNextMonth" aria-label="Próximo mês">›</button></div>
+      <div id="agendaCalendar" class="calendar"></div>
+      <div id="agendaEventDetail" class="calendar-detail" aria-live="polite">Toque em uma data destacada para ver o evento, horário e local.</div>
     </div>
-    <div class="section-head"><div><div class="eyebrow">Calendário mensal</div><h2>Novembro de 2026</h2></div></div>
-    <div class="panel"><div id="novCalendar" class="calendar"></div><div id="novEventDetail" class="calendar-detail" aria-live="polite">Toque em uma data destacada para ver o evento, horário e local.</div></div>
-    <div class="section-head"><div><div class="eyebrow">Próximos encontros</div><h2>Dezembro de 2026</h2></div></div>
-    <div class="panel"><div id="decCalendar" class="calendar"></div><div id="decEventDetail" class="calendar-detail" aria-live="polite">Toque em uma data destacada para ver o evento, horário e local.</div></div>
     <div class="section-head"><div><div class="eyebrow">Encontre uma célula</div><h2>Células de quarta-feira</h2></div></div>
     <div class="notice">Os endereços dos encontros e os nomes dos líderes serão incluídos aqui assim que forem enviados, para que os membros encontrem a célula mais próxima.</div>
     <div class="panel"><h3>Semana de Primícias</h3><p>Toda primeira semana do mês, das 20h às 21h, na igreja.</p></div>
@@ -370,9 +367,24 @@ function renderCalendar(calendarId,detailId,year,month){
  while(day<=total){const tr=document.createElement('tr');tr.style.cssText='display:table-row!important;';for(let col=0;col<7;col++){const td=document.createElement('td');td.style.cssText='display:table-cell!important;width:14.2857%!important;padding:1px!important;text-align:center!important;vertical-align:middle!important;border:0!important;background:transparent!important;';if((day===1&&col<offset)||day>total){td.innerHTML='&nbsp;'}else{const n=day,key=year+'-'+String(month).padStart(2,'0')+'-'+String(n).padStart(2,'0'),event=churchEvents[key],btn=document.createElement('button');btn.type='button';btn.textContent=n;btn.className='day'+(event?' has-event':'');btn.style.cssText='appearance:none!important;-webkit-appearance:none!important;display:block!important;box-sizing:border-box!important;width:100%!important;max-width:42px!important;height:auto!important;aspect-ratio:1/1!important;margin:0 auto!important;padding:0!important;border-radius:50%!important;border:1px solid '+(event?'#9fc5df':'transparent')+'!important;background:'+(event?'#dcecf8':'#f0f1f3')+'!important;color:'+(event?'#174d73':'#253246')+'!important;font:600 clamp(11px,3.2vw,14px)/1 system-ui,sans-serif!important;';if(event){btn.setAttribute('aria-label',n+' - '+event.title);btn.addEventListener('click',()=>{el.querySelectorAll('button.day').forEach(b=>{b.style.background=b.classList.contains('has-event')?'#dcecf8':'#f0f1f3';b.style.color=b.classList.contains('has-event')?'#174d73':'#253246'});btn.style.background='#245b86';btn.style.color='#fff';detail.innerHTML='<strong>'+event.title+'</strong><br>'+String(n).padStart(2,'0')+'/'+String(month).padStart(2,'0')+'/'+year+' · '+event.time+'<br>'+event.place;});}td.appendChild(btn);day++;}tr.appendChild(td)}tbody.appendChild(tr)}
  table.appendChild(tbody);el.appendChild(table);
 }
-renderCalendar('homeCalendar','homeEventDetail',2026,12);
-renderCalendar('novCalendar','novEventDetail',2026,11);
-renderCalendar('decCalendar','decEventDetail',2026,12);
+let homeMonth=new Date(2026,11,1), agendaMonth=new Date(2026,11,1);
+function paintMonth(prefix,month){
+ const year=month.getFullYear(),num=month.getMonth()+1;
+ const calId=prefix==='home'?'homeCalendar':'agendaCalendar';
+ const detailId=prefix==='home'?'homeEventDetail':'agendaEventDetail';
+ const label=document.getElementById(prefix==='home'?'homeCalendarMonth':'agendaCalendarMonth');
+ if(label) label.textContent=month.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+ renderCalendar(calId,detailId,year,num);
+}
+function shiftMonth(prefix,delta){
+ if(prefix==='home'){homeMonth=new Date(homeMonth.getFullYear(),homeMonth.getMonth()+delta,1);paintMonth('home',homeMonth);}
+ else{agendaMonth=new Date(agendaMonth.getFullYear(),agendaMonth.getMonth()+delta,1);paintMonth('agenda',agendaMonth);}
+}
+['home','agenda'].forEach(prefix=>{
+ document.getElementById(prefix+'PrevMonth').addEventListener('click',()=>shiftMonth(prefix,-1));
+ document.getElementById(prefix+'NextMonth').addEventListener('click',()=>shiftMonth(prefix,1));
+});
+paintMonth('home',homeMonth);paintMonth('agenda',agendaMonth);
 
 document.getElementById('prayerForm').addEventListener('submit',e=>{e.preventDefault();document.getElementById('prayerMsg').textContent='Formulário demonstrativo: o pedido ainda não foi enviado. A conexão segura será feita na próxima etapa.';});
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});

@@ -1,5 +1,5 @@
-COMUNIDADE EVANGÉLICA DA ALIANÇA — VERSÃO 17
+COMUNIDADE EVANGÉLICA DA ALIANÇA — VERSÃO 18
 
-Correção definitiva do calendário: renderização em tabela HTML com sete colunas fixas (domingo a sábado), em vez de CSS Grid. Os arquivos estão na raiz deste ZIP.
+Calendário anual navegável: use as setas para voltar e avançar mês a mês, inclusive entre dezembro e janeiro e entre janeiro e dezembro. O calendário está disponível na página inicial e na seção Agenda.
 
-No GitHub, substitua index.html, sw.js, manifest.webmanifest e logo-alianca.png na raiz do repositório e faça Commit changes.
+Para publicar: envie os arquivos desta pasta diretamente para a raiz do repositório GitHub, substituindo index.html, sw.js, manifest.webmanifest e logo-alianca.png. Faça Commit changes.
