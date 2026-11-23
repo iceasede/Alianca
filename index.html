@@ -407,7 +407,7 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
     </div>
     <div class="notice" style="margin-top:12px">A equipe de Mídia enviará fotos e vídeos para aprovação da administração antes da publicação. A galeria será restrita a membros autenticados. Imagens de crianças e pessoas identificáveis dependerão das autorizações necessárias. O envio, a aprovação e o controle de acesso ainda serão conectados ao sistema seguro.</div>
   </section>
-  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 28</footer>
+  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 29</footer>
 </main>
 <nav>
   <button class="active" data-go="home"><span>⌂</span>Início</button>
@@ -521,7 +521,7 @@ registrationForm.addEventListener('submit',async e=>{
 });
 const memberForm=document.getElementById('memberForm');
 memberForm.addEventListener('submit',async e=>{e.preventDefault();const box=document.getElementById('memberAuthMessage');box.hidden=false;if(!supabaseClient){box.textContent='Serviço de autenticação indisponível. Tente novamente mais tarde.';return;}const button=memberForm.querySelector('button[type="submit"]');button.disabled=true;button.textContent='Entrando...';try{const {data,error}=await supabaseClient.auth.signInWithPassword({email:document.getElementById('memberEmail').value.trim(),password:document.getElementById('memberPass').value});if(error)throw error;box.textContent='Acesso realizado com sucesso. Olá, '+(data.user.user_metadata?.full_name||data.user.email)+'!';}catch(error){box.textContent=error.message||'Não foi possível entrar. Confira o e-mail, a senha e a confirmação do e-mail.';}finally{button.disabled=false;button.textContent='Entrar';}});
-document.getElementById('memberSignupBtn').addEventListener('click',()=>{go('cadastro');showRegistrationStep(1);document.getElementById('regName').focus();});
+document.getElementById('memberSignupBtn').addEventListener('click',event=>{event.preventDefault();go('cadastro');showRegistrationStep(1);history.replaceState(null,'','#cadastro');document.getElementById('regName').focus({preventScroll:true});window.scrollTo({top:0,behavior:'smooth'});});
 document.getElementById('memberForgotBtn').addEventListener('click',async()=>{const email=document.getElementById('memberEmail').value.trim();const box=document.getElementById('memberAuthMessage');box.hidden=false;if(!email){box.textContent='Informe seu e-mail acima para receber o link de redefinição de senha.';document.getElementById('memberEmail').focus();return;}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;box.textContent='Se houver uma conta para esse e-mail, enviaremos as instruções para redefinir a senha.';}catch(error){box.textContent=error.message||'Não foi possível solicitar a redefinição agora.';}});
 
 showRegistrationStep(1);

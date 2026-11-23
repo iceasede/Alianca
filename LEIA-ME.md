@@ -17,3 +17,9 @@ Para atualizar: extraia o ZIP e substitua os arquivos na raiz do repositório Gi
 - A criação da conta NÃO concede função administrativa.
 - A sincronização dos dados para a tabela `profiles`, permissões por congregação, aprovação administrativa e auditoria ainda precisam ser configuradas e testadas no banco antes de usar com dados reais.
 - A chave Publishable fica no código do navegador; nunca inserir Secret key ou service_role no site.
+
+
+## Versão 33 – ajuste da Área de Membros
+- O botão “Quero me cadastrar” direciona diretamente para a primeira etapa do cadastro.
+- A versão mantém a integração de autenticação Supabase já configurada na versão anterior.
+- O cache do aplicativo foi atualizado para forçar a recarga dos arquivos após a publicação.
