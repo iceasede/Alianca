@@ -76,7 +76,7 @@ header h1, header p { text-align:center; margin-left:auto; margin-right:auto; }
     <div class="grid">
       <button class="tile" data-go="agenda"><span class="ico">▦</span><b>Agenda</b><small>Cultos e eventos</small></button>
       <button class="tile" data-go="galeria"><span class="ico">▧</span><b>Mídia</b><small>Fotos dos cultos, eventos e encontros</small></button>
-      <button class="tile" data-go="aniversariantes"><span class="ico">🎂</span><b>Aniversariantes</b><small>Celebrando vidas da nossa família</small></button>
+      <button class="tile" data-go="aniversariantes"><span class="ico">✧</span><b>Aniversariantes</b><small>Celebrando vidas da nossa família</small></button>
       <button class="tile" data-go="sobre"><span class="ico">✧</span><b>Sobre nós</b><small>Nossa história e propósito</small></button>
       <button class="tile" data-go="presbiterio"><span class="ico">♙</span><b>Conheça nosso presbitério</b><small>Liderança espiritual</small></button>
       <button class="tile" data-go="filiais"><span class="ico">⌖</span><b>Nossas filiais</b><small>Jardim Botânico e Vendinha/GO</small></button>
@@ -89,11 +89,9 @@ header h1, header p { text-align:center; margin-left:auto; margin-right:auto; }
     </div>
     <div class="section-head"><div><div class="eyebrow">Fique por dentro</div><h2>Próximos encontros</h2></div><button class="ghost" data-go="agenda">Ver agenda</button></div>
     <div class="panel">
-      <div class="event"><div class="date"><b>SEG–SEX</b><small>08h–10h</small></div><div><strong>Oração de mulheres</strong><small>De segunda a sexta-feira</small></div></div>
-      <div class="event"><div class="date"><b>QUA</b><small>20h</small></div><div><strong>Células</strong><small>Encontros nos lares; endereços e líderes serão divulgados</small></div></div>
-      <div class="event"><div class="date"><b>QUI</b><small>20h</small></div><div><strong>Culto de cura e libertação</strong><small>Todas as quintas-feiras</small></div></div>
-      <div class="event"><div class="date"><b>DOM</b><small>19h</small></div><div><strong>Culto para toda a família</strong><small>Todos os domingos</small></div></div>
-      <div class="event"><div class="date"><b>1ª SEM.</b><small>20h–21h</small></div><div><strong>Semana de Primícias</strong><small>Na igreja, durante a primeira semana de cada mês</small></div></div>
+      <div class="eyebrow">Calendário dos próximos encontros</div>
+      <div id="homeCalendar" class="calendar"></div>
+      <div id="homeEventDetail" class="calendar-detail" aria-live="polite">Toque em uma data destacada para ver os detalhes do encontro.</div>
     </div>
     <div class="panel"><div class="eyebrow">Versículo do ano</div><h3 style="font-family:Georgia,serif;font-size:20px;line-height:1.4">“O meu Deus, segundo as suas riquezas, suprirá todas as vossas necessidades em glória, por Cristo Jesus.”</h3><p>Filipenses 4:19</p></div>
     <div class="panel"><h3>Visite nossa igreja</h3><p>Comunidade Evangélica da Aliança</p><p style="margin-top:7px">Quadra 06, Área Especial 01, Setor Veredas, Brazlândia/DF</p></div>
@@ -116,14 +114,10 @@ header h1, header p { text-align:center; margin-left:auto; margin-right:auto; }
       <div class="event"><div class="date"><b>02–06</b><small>SEG–SEX</small></div><div><strong>Semana de Primícias</strong><small>20h às 21h · Na igreja</small></div></div>
       <div class="event"><div class="date"><b>07</b><small>SÁB</small></div><div><strong>Culto de Liderança</strong><small>20h</small></div></div>
     </div>
-    <div class="section-head"><div><div class="eyebrow">Próximos encontros</div><h2>Dezembro</h2></div></div>
-    <div class="panel">
-      <div class="event"><div class="date"><b>30/11<br>–04/12</b><small>SEG–SEX</small></div><div><strong>Semana de Primícias</strong><small>20h às 21h · Na igreja</small></div></div>
-      <div class="event"><div class="date"><b>06</b><small>DOM</small></div><div><strong>Santa Ceia do Senhor</strong><small>19h</small></div></div>
-      <div class="event"><div class="date"><b>12</b><small>SÁB</small></div><div><strong>Culto de Gratidão das Crianças</strong><small>19h30</small></div></div>
-      <div class="event"><div class="date"><b>19</b><small>SÁB</small></div><div><strong>Confraternização das Células</strong><small>19h30</small></div></div>
-      <div class="event"><div class="date"><b>31</b><small>QUI</small></div><div><strong>Culto da Virada</strong><small>20h</small></div></div>
-    </div>
+    <div class="section-head"><div><div class="eyebrow">Calendário mensal</div><h2>Novembro de 2026</h2></div></div>
+    <div class="panel"><div id="novCalendar" class="calendar"></div><div id="novEventDetail" class="calendar-detail" aria-live="polite">Toque em uma data destacada para ver o evento, horário e local.</div></div>
+    <div class="section-head"><div><div class="eyebrow">Próximos encontros</div><h2>Dezembro de 2026</h2></div></div>
+    <div class="panel"><div id="decCalendar" class="calendar"></div><div id="decEventDetail" class="calendar-detail" aria-live="polite">Toque em uma data destacada para ver o evento, horário e local.</div></div>
     <div class="section-head"><div><div class="eyebrow">Encontre uma célula</div><h2>Células de quarta-feira</h2></div></div>
     <div class="notice">Os endereços dos encontros e os nomes dos líderes serão incluídos aqui assim que forem enviados, para que os membros encontrem a célula mais próxima.</div>
     <div class="panel"><h3>Semana de Primícias</h3><p>Toda primeira semana do mês, das 20h às 21h, na igreja.</p></div>
@@ -132,7 +126,7 @@ header h1, header p { text-align:center; margin-left:auto; margin-right:auto; }
   <section id="aniversariantes" class="view">
     <div class="section-head"><div><div class="eyebrow">Nossa família</div><h2>Aniversariantes</h2></div></div>
     <div class="panel">
-      <div style="font-size:30px;margin-bottom:8px">🎂🎉</div>
+      <div class="ico" style="font-size:25px;color:var(--gold);margin-bottom:8px">✧</div>
       <h3>Celebramos a sua vida!</h3>
       <p>Este é o espaço para homenagear os aniversariantes da Comunidade Evangélica da Aliança e agradecer a Deus por mais um ano de vida.</p>
     </div>
@@ -322,6 +316,41 @@ header h1, header p { text-align:center; margin-left:auto; margin-right:auto; }
 const views=[...document.querySelectorAll('.view')], nav=[...document.querySelectorAll('nav button')];
 function go(id){views.forEach(v=>v.classList.toggle('active',v.id===id));nav.forEach(b=>b.classList.toggle('active',b.dataset.go===id));window.scrollTo({top:0,behavior:'smooth'});}
 document.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click',()=>go(el.dataset.go)));
+
+const churchEvents={
+'2026-11-01':{title:'Santa Ceia do Senhor',time:'19h',place:'Na igreja'},
+'2026-11-02':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · de 02 a 06/11'},
+'2026-11-03':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · de 02 a 06/11'},
+'2026-11-04':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · de 02 a 06/11'},
+'2026-11-05':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · de 02 a 06/11'},
+'2026-11-06':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · encerramento da semana'},
+'2026-11-07':{title:'Culto de Liderança',time:'20h',place:'Na igreja'},
+'2026-11-30':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · de 30/11 a 04/12'},
+'2026-12-01':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · de 30/11 a 04/12'},
+'2026-12-02':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · de 30/11 a 04/12'},
+'2026-12-03':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · de 30/11 a 04/12'},
+'2026-12-04':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · encerramento da semana'},
+'2026-12-06':{title:'Santa Ceia do Senhor',time:'19h',place:'Na igreja'},
+'2026-12-12':{title:'Culto de Gratidão das Crianças',time:'19h30',place:'Na igreja'},
+'2026-12-19':{title:'Confraternização das Células',time:'19h30',place:'Local a confirmar'},
+'2026-12-31':{title:'Culto da Virada',time:'20h',place:'Na igreja'}
+};
+function renderCalendar(calendarId,detailId,year,month){
+ const el=document.getElementById(calendarId), detail=document.getElementById(detailId); if(!el||!detail)return;
+ const first=new Date(year,month-1,1), total=new Date(year,month,0).getDate();
+ ['D','S','T','Q','Q','S','S'].forEach(label=>{const h=document.createElement('div');h.className='weekday';h.textContent=label;el.appendChild(h)});
+ for(let i=0;i<first.getDay();i++){const blank=document.createElement('div');blank.className='day empty';el.appendChild(blank)}
+ for(let day=1;day<=total;day++){
+  const key=year+'-'+String(month).padStart(2,'0')+'-'+String(day).padStart(2,'0'), event=churchEvents[key];
+  const btn=document.createElement('button');btn.type='button';btn.className='day'+(event?' has-event':'');btn.textContent=day;
+  if(event){btn.setAttribute('aria-label',day+' - '+event.title);btn.addEventListener('click',()=>{el.querySelectorAll('.selected').forEach(x=>x.classList.remove('selected'));btn.classList.add('selected');detail.innerHTML='<strong>'+event.title+'</strong>'+String(day).padStart(2,'0')+'/'+String(month).padStart(2,'0')+'/'+year+' · '+event.time+'<br>'+event.place;});}
+  el.appendChild(btn);
+ }
+}
+renderCalendar('homeCalendar','homeEventDetail',2026,12);
+renderCalendar('novCalendar','novEventDetail',2026,11);
+renderCalendar('decCalendar','decEventDetail',2026,12);
+
 document.getElementById('prayerForm').addEventListener('submit',e=>{e.preventDefault();document.getElementById('prayerMsg').textContent='Formulário demonstrativo: o pedido ainda não foi enviado. A conexão segura será feita na próxima etapa.';});
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
