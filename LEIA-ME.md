@@ -94,3 +94,6 @@ A publicação dinâmica ainda depende de um painel/sistema de gestão. Não ins
 
 
 Atualização mais recente: cabeçalho em caixa alta com “COMUNIDADE EVANGÉLICA DA ALIANÇA” e “31 ANOS DE HISTÓRIA”; versículo do ano atualizado para Filipenses 4:19; removidas as opções e a seção de cultos ao vivo.
+
+
+Atualização v5: o destaque da página inicial agora apresenta o versículo do ano de Filipenses 4:19 no lugar de Josué 24:15. Não há seção, botão ou menu de culto on-line/ao vivo no aplicativo.
