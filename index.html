@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#172B46">
+<meta name="theme-color" content="#681D28">
 <meta name="description" content="Aplicativo oficial da Comunidade Evangélica da Aliança">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Comunidade Evangélica da Aliança</title>
@@ -139,17 +139,18 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
   <section id="home" class="view active">
     <div class="section-head"><div><div class="eyebrow">Conectados em fé</div><h2>Bem-vindo à Aliança</h2></div></div>
     <div class="grid">
-      <button class="tile" data-go="galeria"><span class="ico">▧</span><b>Mídia</b><small>Fotos dos cultos, eventos e encontros</small></button>
-      <button class="tile" data-go="aniversariantes"><span class="ico">✧</span><b>Aniversariantes</b><small>Celebrando vidas da nossa família</small></button>
       <button class="tile" data-go="sobre"><span class="ico">✧</span><b>Sobre nós</b><small>Nossa história e propósito</small></button>
       <button class="tile" data-go="presbiterio"><span class="ico">♙</span><b>Conheça nosso presbitério</b><small>Liderança espiritual</small></button>
       <button class="tile" data-go="filiais"><span class="ico">⌖</span><b>Nossas filiais</b><small>Jardim Botânico e Vendinha/GO</small></button>
       <button class="tile" data-go="ministerios"><span class="ico">♧</span><b>Ministérios</b><small>Servir e participar</small></button>
       <button class="tile" data-go="kids"><span class="ico">♡</span><b>Espaço Kids</b><small>Atividades e novidades das crianças</small></button>
-      <button class="tile" data-go="celulas"><span class="ico">⌂</span><b>Estudo da célula</b><small>Estudos bíblicos e roteiros</small></button>
+      <button class="tile" data-go="celulas"><span class="ico">⌂</span><b>Nossas células</b><small>Encontre uma célula e fale com o líder</small></button>
+      <button class="tile" data-go="estudos"><span class="ico">▤</span><b>Estudos para líderes</b><small>Biblioteca bíblica reservada</small></button>
       <button class="tile" data-go="oracao"><span class="ico">♡</span><b>Pedidos de oração</b><small>Conte com nossa oração</small></button>
       <button class="tile" data-go="devocional"><span class="ico">✧</span><b>Palavra e devocional</b><small>Um momento com Deus</small></button>
       <button class="tile" data-go="membros"><span class="ico">♙</span><b>Área de membros</b><small>Acesso reservado</small></button>
+      <button class="tile" data-go="aniversariantes"><span class="ico">✧</span><b>Aniversariantes</b><small>Celebrando vidas da nossa família</small></button>
+      <button class="tile" data-go="galeria"><span class="ico">▧</span><b>Mídia</b><small>Galeria exclusiva para membros</small></button>
     </div>
     <div class="section-head"><div><div class="eyebrow">Fique por dentro</div><h2>Próximos encontros</h2></div><button class="ghost" data-go="agenda">Ver agenda</button></div>
     <div class="panel">
@@ -158,6 +159,7 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
       <div id="homeCalendar" class="calendar"></div>
       <div id="homeEventDetail" class="calendar-detail" aria-live="polite">Toque em uma data destacada para ver os detalhes do encontro.</div>
     </div>
+    <div class="panel"><div class="eyebrow">Comunicação e acolhimento</div><h3>Lembretes da família Aliança</h3><p>O sistema será preparado para enviar lembretes personalizados de cultos, células, eventos e aniversários a todos os cadastrados que autorizarem as notificações. As mensagens poderão incluir: “Você é importante para nós. Estamos te aguardando!”</p><div class="notice" style="margin-top:10px">As notificações automáticas dependem da integração com um serviço de envio e do consentimento de cada usuário.</div></div>
     <div class="panel home-center"><div class="eyebrow">Versículo do ano</div><h3 class="year-verse">“O meu Deus, segundo as suas riquezas, suprirá todas as vossas necessidades em glória, por Cristo Jesus.”</h3><p><strong>Filipenses 4:19</strong></p></div>
 
   </section>
@@ -203,7 +205,7 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
       <p>Este é o espaço para homenagear os aniversariantes da Comunidade Evangélica da Aliança e agradecer a Deus por mais um ano de vida.</p>
     </div>
     <div class="section-head"><div><div class="eyebrow">Mês atual</div><h2>Aniversariantes do mês</h2></div></div>
-    <div class="notice">A lista de nomes e datas será publicada aqui. Envie os aniversariantes e seus respectivos dias para incluirmos nesta área.</div>
+    <div class="notice">A área será exclusiva para membros. Os aniversários serão identificados pela data de nascimento cadastrada e haverá mensagem individual automática no dia, mediante autorização de notificações. A lista e o envio automático dependem da implantação do login e do serviço de notificações.</div>
   </section>
 
   <section id="sobre" class="view">
@@ -225,66 +227,55 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
   </section>
 
   <section id="filiais" class="view">
-    <div class="section-head"><div><div class="eyebrow">Uma só família em diferentes lugares</div><h2>Nossas filiais</h2></div></div>
+    <div class="section-head"><div><div class="eyebrow">Uma só família em diferentes lugares</div><h2>Nossas congregações</h2></div></div>
+    <div class="panel">
+      <h3>Sede — Brazlândia/DF</h3>
+      <p><strong>Responsáveis:</strong> Apóstolos Omar e Cícera.</p>
+      <p style="margin-top:7px"><strong>Endereço:</strong> Quadra 06, Área Especial 01, Setor Veredas, Brazlândia/DF.</p>
+      <div class="notice" style="margin-top:12px">Agenda específica e contatos da congregação serão incluídos após confirmação.</div>
+    </div>
     <div class="panel">
       <h3>Igreja Comunidade Evangélica da Aliança no Jardim Botânico</h3>
-      <p><strong>Endereço:</strong> Itaipú 27, lote 01, Jardim Botânico – DF.</p>
-      <div class="panel" style="margin-top:12px;background:var(--surface, #f7f7f7)">
-        <h4>Pastores responsáveis</h4>
-        <p>Os nomes dos pastores responsáveis serão divulgados aqui após confirmação.</p>
-      </div>
-      <div class="panel" style="margin-top:10px;background:var(--surface, #f7f7f7)">
-        <h4>Agenda</h4>
-        <p>A programação e os horários desta filial serão publicados aqui.</p>
-      </div>
+      <p><strong>Responsáveis:</strong> Pastores Rogério e Juliana.</p>
+      <p style="margin-top:7px"><strong>Endereço:</strong> Itaipú 27, lote 01, Jardim Botânico – DF.</p>
+      <div class="notice" style="margin-top:12px">Agenda específica e contatos da congregação serão incluídos após confirmação.</div>
     </div>
     <div class="panel">
       <h3>Igreja Comunidade Evangélica da Aliança em Vendinha</h3>
-      <p><strong>Endereço:</strong> Qd. 08, lote 19/21, Vendinha – Padre Bernardo/GO.</p>
-      <div class="panel" style="margin-top:12px;background:var(--surface, #f7f7f7)">
-        <h4>Pastores responsáveis</h4>
-        <p>Os nomes dos pastores responsáveis serão divulgados aqui após confirmação.</p>
-      </div>
-      <div class="panel" style="margin-top:10px;background:var(--surface, #f7f7f7)">
-        <h4>Agenda</h4>
-        <p>A programação e os horários desta filial serão publicados aqui.</p>
-      </div>
+      <p><strong>Responsáveis:</strong> Pastores Carlos e Miriam.</p>
+      <p style="margin-top:7px"><strong>Endereço:</strong> Quadra 08, lotes 19/21, Vendinha – Padre Bernardo/GO.</p>
+      <div class="notice" style="margin-top:12px">Agenda específica e contatos da congregação serão incluídos após confirmação.</div>
     </div>
   </section>
 
   <section id="kids" class="view">
     <div class="section-head"><div><div class="eyebrow">Cuidado, fé e aprendizado</div><h2>Espaço Kids</h2></div></div>
-    <div class="notice">Durante as programações da igreja, as crianças contam com um espaço preparado para acolhimento, cuidado e atividades adequadas à sua faixa etária.</div>
+    <div class="notice"><strong>Área reservada a pais e responsáveis cadastrados.</strong> O acesso individual ainda será ativado após a implantação do sistema seguro de login.</div>
     <div class="panel">
-      <h3>Acompanhe as atividades das crianças</h3>
-      <p>Este será o canal para os pais e responsáveis acompanharem os temas, histórias bíblicas, atividades, projetos e avisos do Departamento Infantil.</p>
+      <h3>Departamento Infantil</h3>
+      <p>Um espaço para acompanhar as atividades, histórias bíblicas, lições, versículo da semana, ensaios, apresentações e comunicados do Departamento Infantil.</p>
     </div>
-    <div class="section-head"><div><div class="eyebrow">Informações para as famílias</div><h2>Novidades do Departamento Infantil</h2></div></div>
-    <div class="panel">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
-        <div style="font-size:26px">🎨</div>
-        <div><strong style="font-size:13px;color:var(--navy)">Atividades e registros</strong><small style="display:block;color:var(--muted);font-size:11px">Conteúdos publicados pela equipe infantil</small></div>
-      </div>
-      <p>Em breve, os pais poderão consultar aqui os resumos das aulas, versículos trabalhados, atividades realizadas e comunicados importantes.</p>
-      <div style="margin-top:14px;padding:15px;border:1px dashed var(--line);border-radius:12px;text-align:center">
-        <strong style="font-size:13px">A programação infantil será publicada aqui</strong>
-        <p style="margin-top:6px">Acompanhe as novidades do Departamento Infantil da Comunidade Aliança.</p>
-      </div>
+    <div class="panel"><h3>Conteúdos do Espaço Kids</h3>
+      <div class="event"><div class="date"><b>01</b><small>Ensino</small></div><div><strong>Lições e histórias bíblicas</strong><small>Conteúdos para acompanhar o aprendizado das crianças.</small></div></div>
+      <div class="event"><div class="date"><b>02</b><small>Palavra</small></div><div><strong>Versículo da semana</strong><small>Uma passagem bíblica para aprender em família.</small></div></div>
+      <div class="event"><div class="date"><b>03</b><small>Agenda</small></div><div><strong>Ensaios e apresentações</strong><small>Programações e atividades do Departamento Infantil.</small></div></div>
+      <div class="event"><div class="date"><b>04</b><small>Avisos</small></div><div><strong>Comunicados aos pais</strong><small>Informações e orientações importantes.</small></div></div>
+      <div class="event"><div class="date"><b>05</b><small>Galeria</small></div><div><strong>Fotos e registros autorizados</strong><small>Publicações após aprovação e autorização adequada.</small></div></div>
     </div>
-    <div class="notice" style="margin-top:12px">Para preservar a segurança das crianças, fotos, nomes e informações individuais somente deverão ser publicados com autorização dos pais ou responsáveis. Este espaço ainda será conectado a um sistema de publicação da equipe responsável.</div>
+    <div class="notice" style="margin-top:12px">A equipe Infantil enviará conteúdos para aprovação da administração antes da publicação. Fotos e informações que identifiquem crianças somente serão divulgadas com autorização dos responsáveis. Dados individuais de cada criança ficarão restritos aos respectivos responsáveis e à equipe autorizada.</div>
   </section>
 
   <section id="ministerios" class="view">
     <div class="section-head"><div><div class="eyebrow">Faça parte</div><h2>Ministérios e departamentos</h2></div></div>
-    <div class="notice">As informações e atualizações dos ministérios serão encaminhadas à liderança e publicadas somente após avaliação e aprovação dos Apóstolos.</div>
+    <div class="notice">Todos os usuários poderão conhecer os ministérios. Os líderes encaminharão conteúdos e alterações, que serão publicados somente após aprovação dos Apóstolos.</div>
     <div class="grid">
       <div class="tile"><span class="ico">♫</span><b>Louvor</b><small>Adoração e música</small></div>
-      <div class="tile"><span class="ico">♧</span><b>Departamento Infantil</b><small>Cuidado e ensino das crianças</small></div>
+      <div class="tile"><span class="ico">♧</span><b>Espaço Kids</b><small>Área própria do Departamento Infantil</small></div>
       <div class="tile"><span class="ico">♡</span><b>Mulheres</b><small>Comunhão e crescimento</small></div>
       <div class="tile"><span class="ico">♙</span><b>Homens</b><small>Comunhão, fé e crescimento</small></div>
       <div class="tile"><span class="ico">✧</span><b>Liderança</b><small>Formação, cuidado e serviço</small></div>
       <div class="tile"><span class="ico">✚</span><b>Diaconato</b><small>Serviço e cuidado com a igreja</small></div>
-      <div class="tile"><span class="ico">✧</span><b>Mídia da Aliança</b><small>Comunicação e criatividade</small></div>
+      <div class="tile"><span class="ico">✧</span><b>Mídia da Aliança</b><small>Galeria própria, restrita a membros</small></div>
       <div class="tile"><span class="ico">⌂</span><b>Famílias</b><small>Relacionamentos e comunhão</small></div>
       <div class="tile"><span class="ico">＋</span><b>Outros departamentos</b><small>Em atualização</small></div>
     </div>
@@ -298,59 +289,42 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
 
 
   <section id="celulas" class="view">
-    <div class="section-head"><div><div class="eyebrow">Material oficial para líderes</div><h2>Estudo da célula</h2></div></div>
-    <div class="notice">Os Apóstolos disponibilizam os estudos oficiais diretamente aos líderes de células. Os líderes poderão ler o material no aplicativo e baixar o PDF para preparar os encontros.</div>
-
-    <div class="panel">
-      <div class="eyebrow">Estudo mais recente</div>
-      <h3>Próximo estudo em preparação</h3>
-      <p>Quando os Apóstolos publicarem o estudo, os líderes poderão abrir o conteúdo completo nesta área ou baixar sua versão em PDF.</p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:13px">
-        <button class="primary" type="button" disabled style="opacity:.55;cursor:not-allowed">Leitura no aplicativo</button>
-        <button class="ghost" type="button" disabled style="opacity:.55;cursor:not-allowed">PDF em breve</button>
-      </div>
-      <small style="display:block;color:var(--muted);margin-top:9px">Ainda não há um estudo oficial publicado.</small>
-    </div>
-
-    <div class="section-head"><div><div class="eyebrow">Biblioteca</div><h2>Estudos anteriores</h2></div></div>
-    <div class="panel">
-      <h3>Histórico de estudos</h3>
-      <p>A biblioteca reunirá todos os estudos disponibilizados pelos Apóstolos, para que os líderes de células consultem materiais anteriores. Cada registro terá tema, data, referência bíblica, leitura no aplicativo e arquivo PDF.</p>
-      <div style="margin-top:14px;padding:16px;border:1px dashed var(--line);border-radius:12px;text-align:center">
-        <div style="font-size:26px;margin-bottom:7px">📚</div>
-        <strong style="font-size:13px">Sua biblioteca está sendo preparada</strong>
-        <p style="margin-top:6px">Os estudos aparecerão aqui conforme forem aprovados e publicados.</p>
-      </div>
-    </div>
-
-    <div class="panel">
-      <h3>O que cada estudo terá</h3>
-      <div class="event"><div class="date"><b>01</b><small>Parte</small></div><div><strong>Tema e texto bíblico</strong><small>Assunto central e passagem das Escrituras</small></div></div>
-      <div class="event"><div class="date"><b>02</b><small>Parte</small></div><div><strong>Introdução e desenvolvimento</strong><small>Conteúdo completo para acompanhar a ministração</small></div></div>
-      <div class="event"><div class="date"><b>03</b><small>Parte</small></div><div><strong>Perguntas para reflexão</strong><small>Questões para compartilhar durante a célula</small></div></div>
-      <div class="event"><div class="date"><b>04</b><small>Parte</small></div><div><strong>Aplicação e oração</strong><small>Prática da Palavra e encerramento do encontro</small></div></div>
-    </div>
-    <div class="notice" style="margin-top:12px">Os Apóstolos são responsáveis por disponibilizar os estudos aos líderes de células. Os líderes terão acesso ao material publicado para preparar e conduzir seus encontros.</div>
+    <div class="section-head"><div><div class="eyebrow">Comunhão e cuidado</div><h2>Nossas células</h2></div></div>
+    <div class="panel"><h3>Há um lugar para você!</h3><p>As células são momentos de comunhão, oração e crescimento na Palavra. Consulte as informações e escolha como deseja se aproximar.</p></div>
+    <div class="section-head"><div><div class="eyebrow">Encontre uma célula</div><h2>Por congregação</h2></div></div>
+    <div class="panel"><h3>Sede — Brazlândia/DF</h3><p>As células e seus endereços completos serão exibidos aqui após o cadastro oficial pela administração.</p><div class="notice" style="margin-top:10px">Ainda não há células cadastradas para exibição.</div></div>
+    <div class="panel"><h3>Jardim Botânico/DF</h3><p>As células e seus endereços completos serão exibidos aqui após o cadastro oficial pela administração.</p><div class="notice" style="margin-top:10px">Ainda não há células cadastradas para exibição.</div></div>
+    <div class="panel"><h3>Vendinha/GO</h3><p>As células e seus endereços completos serão exibidos aqui após o cadastro oficial pela administração.</p><div class="notice" style="margin-top:10px">Ainda não há células cadastradas para exibição.</div></div>
+    <div class="panel"><h3>Como participar</h3><p>Quando as células forem cadastradas, você poderá solicitar participação pelo aplicativo ou falar diretamente com o líder pelo WhatsApp. O contato e o endereço serão inseridos pela administração, com autorização do responsável.</p><div class="notice" style="margin-top:10px">Os botões de solicitação e WhatsApp serão ativados quando o cadastro das células e a integração segura estiverem prontos.</div></div>
   </section>
+
+  <section id="estudos" class="view">
+    <div class="section-head"><div><div class="eyebrow">Material oficial para líderes</div><h2>Biblioteca de estudos</h2></div></div>
+    <div class="notice"><strong>Área restrita a líderes de células autorizados.</strong> O login e a verificação de permissões ainda serão implantados. Não publique estudos confidenciais nesta versão estática.</div>
+    <div class="panel"><h3>Estudos oficiais</h3><p>Os Apóstolos serão responsáveis pela publicação dos estudos. Os líderes autorizados poderão consultar os materiais, ler no aplicativo e baixar os PDFs.</p></div>
+    <div class="panel"><h3>Biblioteca de estudos anteriores</h3><p>O histórico será organizado por tema, data e referência bíblica. Os líderes poderão consultar materiais anteriores quando a biblioteca estiver conectada ao sistema seguro.</p></div>
+    <div class="notice" style="margin-top:12px">A publicação será exclusiva dos Apóstolos. Líderes poderão consultar os materiais, mas não publicar nem alterar estudos.</div>
+  </section>
+
   <section id="oracao" class="view">
     <div class="section-head"><div><div class="eyebrow">Estamos com você</div><h2>Pedido de oração</h2></div></div>
-    <div class="panel"><p>Compartilhe seu pedido com a equipe de oração. Evite incluir dados pessoais sensíveis de terceiros.</p><form id="prayerForm">
+    <div class="panel"><p>Compartilhe seu pedido com os pastores. O conteúdo será reservado à liderança pastoral autorizada. Evite incluir dados pessoais sensíveis de terceiros.</p><form id="prayerForm">
       <div><label for="prayerName">Seu nome (opcional)</label><input id="prayerName" placeholder="Como podemos chamar você?"></div>
       <div><label for="prayerText">Como podemos orar?</label><textarea id="prayerText" required placeholder="Escreva seu pedido de oração..."></textarea></div>
       <button class="primary">Preparar pedido</button>
       <small id="prayerMsg" style="color:var(--muted)"></small>
     </form></div>
-    <p class="notice">Protótipo: o formulário ainda não envia nem armazena pedidos. Será conectado a um canal privado e seguro antes da divulgação.</p>
+    <p class="notice">Área demonstrativa: este formulário ainda não envia nem armazena pedidos. A conexão com o sistema pastoral privado e seguro será implantada antes de receber pedidos reais.</p>
   </section>
 
   <section id="devocional" class="view">
     <div class="section-head"><div><div class="eyebrow">Alimento para a fé</div><h2>Palavra e devocional</h2></div></div>
-    <div class="panel"><div class="eyebrow">Versículo do ano</div><h3 style="font-family:Georgia,serif;font-size:20px;line-height:1.4">“O meu Deus, segundo as suas riquezas, suprirá todas as vossas necessidades em glória, por Cristo Jesus.”</h3><p>Filipenses 4:19</p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><h3>Uma palavra para este ano</h3><p>Seguimos confiando que Deus é a nossa fonte e que, segundo as riquezas da sua glória em Cristo Jesus, Ele suprirá cada necessidade.</p></div>
+    <div class="panel"><div class="eyebrow">Versículo do ano</div><h3 style="font-family:Georgia,serif;font-size:20px;line-height:1.4">“O meu Deus, segundo as suas riquezas, suprirá todas as vossas necessidades em glória, por Cristo Jesus.”</h3><p>Filipenses 4:19</p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><h3>Uma palavra para este ano</h3><p>Seguimos confiando que Deus é a nossa fonte e que, segundo as riquezas da sua glória em Cristo Jesus, Ele suprirá cada necessidade.</p><div class="notice" style="margin-top:12px">Os devocionais serão preparados pela equipe de conteúdo e publicados somente após aprovação dos Apóstolos. A biblioteca e as notificações serão ativadas na implantação do sistema.</div></div>
   </section>
 
   <section id="membros" class="view">
     <div class="section-head"><div><div class="eyebrow">Comunidade</div><h2>Área de membros</h2></div></div>
-    <div class="notice">A área exclusiva terá acesso individual, com senha e proteção dos dados. O login ainda não está ativo neste protótipo.</div>
+    <div class="notice">A área exclusiva terá login individual. Cada membro poderá consultar e atualizar apenas o próprio perfil. Não haverá diretório de membros. O login ainda não está ativo nesta versão.</div>
     <div class="panel"><form id="memberForm">
       <div><label for="memberEmail">E-mail</label><input id="memberEmail" type="email" placeholder="seuemail@exemplo.com"></div>
       <div><label for="memberPass">Senha</label><input id="memberPass" type="password" placeholder="••••••••"></div>
@@ -367,16 +341,16 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
 
   <section id="galeria" class="view">
     <div class="section-head"><div><div class="eyebrow">Registros da nossa caminhada</div><h2>Mídia</h2></div></div>
-    <div class="panel"><h3>Encontre suas fotos</h3><p>Reviva os momentos especiais da família Aliança. Aqui serão organizados os álbuns de fotos dos cultos, eventos e atividades da igreja.</p></div>
+    <div class="panel"><h3>Encontre suas fotos</h3><p>Reviva os momentos especiais da família Aliança. A galeria será exclusiva para membros cadastrados e autenticados.</p></div>
     <div class="grid">
       <div class="tile" style="text-align:left"><span class="ico">✧</span><b>Fotos dos cultos</b><small>Registros das celebrações e reuniões</small></div>
       <div class="tile" style="text-align:left"><span class="ico">♡</span><b>Eventos Aliança</b><small>Encontros, congressos e comemorações</small></div>
       <div class="tile" style="text-align:left"><span class="ico">♧</span><b>Ministérios e departamentos</b><small>Momentos das equipes e atividades</small></div>
       <div class="tile" style="text-align:left"><span class="ico">▣</span><b>Eventos especiais</b><small>Datas comemorativas e programações</small></div>
     </div>
-    <div class="notice" style="margin-top:12px">Os álbuns serão disponibilizados aqui à medida que a equipe de mídia publicar as fotos. Para proteger a comunidade, imagens de crianças e pessoas identificáveis devem ser publicadas somente com as autorizações necessárias. Esta área ainda precisa ser conectada a um sistema de envio e organização de fotos.</div>
+    <div class="notice" style="margin-top:12px">A equipe de Mídia enviará fotos e vídeos para aprovação da administração antes da publicação. A galeria será restrita a membros autenticados. Imagens de crianças e pessoas identificáveis dependerão das autorizações necessárias. O envio, a aprovação e o controle de acesso ainda serão conectados ao sistema seguro.</div>
   </section>
-  <footer>COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento</footer>
+  <footer>COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 26</footer>
 </main>
 <nav>
   <button class="active" data-go="home"><span>⌂</span>Início</button>
@@ -396,13 +370,6 @@ window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(id 
 if(location.hash==='#cultos') go('cultos');
 
 const churchEvents={
-'2026-11-01':{title:'Santa Ceia do Senhor',time:'19h',place:'Na igreja'},
-'2026-11-02':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · de 02 a 06/11'},
-'2026-11-03':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · de 02 a 06/11'},
-'2026-11-04':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · de 02 a 06/11'},
-'2026-11-05':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · de 02 a 06/11'},
-'2026-11-06':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · encerramento da semana'},
-'2026-11-07':{title:'Culto de Liderança',time:'20h',place:'Na igreja'},
 '2026-11-30':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · de 30/11 a 04/12'},
 '2026-12-01':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · de 30/11 a 04/12'},
 '2026-12-02':{title:'Semana de Primícias',time:'20h às 21h',place:'Na igreja · de 30/11 a 04/12'},
