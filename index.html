@@ -125,6 +125,9 @@ header h1{margin:24px auto 8px;color:#681d28;font-family:Georgia,'Times New Roma
 header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:center}
 @media(min-width:650px){header{padding-top:30px;padding-bottom:30px}header .brand .mark{width:128px;height:84px}header .brand strong{font-size:25px}header h1{margin-top:28px}}
 
+
+.registration-panel{padding:18px}.step-progress{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:2px 0 22px}.step{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:72px;color:#9a8e87;text-align:center}.step span{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:1px solid #d9cbb9;background:#fff;font-size:12px;font-weight:700}.step small{font-size:10px;line-height:1.2}.step.active{color:var(--navy);font-weight:700}.step.active span,.step.done span{background:var(--navy);border-color:var(--navy);color:#fff}.step.done{color:var(--navy)}.step-line{height:1px;background:var(--line);flex:1;margin-top:-18px}.registration-step{display:grid;gap:13px}.registration-step[hidden]{display:none}.step-heading{margin-bottom:2px}.step-heading h3{font-family:Georgia,serif;font-size:19px;color:var(--navy);margin:5px 0}.step-heading p,.permissions-panel p{font-size:12px;color:var(--muted);line-height:1.55;margin:4px 0 8px}.field-help{display:block;color:var(--muted);font-size:10px;margin-top:5px}.step-actions{display:flex;justify-content:space-between;gap:10px;margin-top:5px}.step-actions button{min-width:105px}.consent-label{display:flex;gap:9px;align-items:flex-start;font-weight:500!important;line-height:1.45}.consent-label input{width:auto;flex:0 0 auto;margin:2px 0 0}.confirmation{margin-top:12px}.confirmation p{margin:6px 0}.confirmation small{display:block;margin-top:8px}.permissions-panel{margin-top:14px}.permissions-panel h3{margin:5px 0}.permissions-panel .notice{margin-top:10px}@media(max-width:360px){.step{min-width:62px}.step small{font-size:9px}.step-actions button{min-width:90px}}
+
 </style>
 </head>
 <body>
@@ -325,31 +328,51 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
 
   <section id="cadastro" class="view">
     <div class="section-head"><div><div class="eyebrow">Seja bem-vindo</div><h2>Faça seu cadastro</h2></div></div>
-    <div class="panel"><h3>Conecte-se à nossa família</h3><p>Queremos conhecer você e ajudar a encontrar seu lugar na Igreja Comunidade Evangélica da Aliança. Preencha seus dados para que nossa equipe possa entrar em contato.</p></div>
-    <div class="panel">
+    <div class="panel"><h3>Seja bem-vindo à nossa família!</h3><p>Queremos conhecer você e caminhar juntos na fé. Preencha seus dados para que nossa equipe possa entrar em contato.</p></div>
+    <div class="panel registration-panel">
+      <div class="step-progress" aria-label="Etapas do cadastro">
+        <div class="step active" data-step-indicator="1"><span>1</span><small>Dados pessoais</small></div>
+        <div class="step-line"></div>
+        <div class="step" data-step-indicator="2"><span>2</span><small>Vida com a igreja</small></div>
+        <div class="step-line"></div>
+        <div class="step" data-step-indicator="3"><span>3</span><small>Participação</small></div>
+      </div>
       <form id="publicRegistrationForm">
-        <div><label for="regName">Nome completo</label><input id="regName" name="name" autocomplete="name" required placeholder="Seu nome completo"></div>
-        <div><label for="regBirth">Data de nascimento</label><input id="regBirth" name="birth" type="date" required></div>
-        <div><label for="regPhone">Telefone / WhatsApp</label><input id="regPhone" name="phone" type="tel" autocomplete="tel" required placeholder="(00) 00000-0000"></div>
-        <div><label for="regEmail">E-mail</label><input id="regEmail" name="email" type="email" autocomplete="email" placeholder="voce@exemplo.com"></div>
-        <div><label for="regAddress">Endereço</label><input id="regAddress" name="address" autocomplete="street-address" placeholder="Rua, número, bairro e cidade"></div>
-        <div><label for="regRelation">Como você se identifica em relação à igreja?</label><select id="regRelation" name="relation" required><option value="">Selecione</option><option>Novo convertido</option><option>Membro</option><option>Visitante</option><option>Interessado</option></select></div>
-        <div><label for="regCongregation">Qual congregação deseja frequentar?</label><select id="regCongregation" name="congregation" required><option value="">Selecione</option><option>Sede — Brazlândia/DF</option><option>Jardim Botânico/DF</option><option>Vendinha — Padre Bernardo/GO</option></select></div>
-        <div><label for="regBaptism">Batismo nas águas</label><select id="regBaptism" name="baptism"><option value="">Selecione</option><option>Já sou batizado(a)</option><option>Desejo me batizar</option><option>Ainda não</option></select></div>
-        <div><label for="regCell">Participação em célula</label><select id="regCell" name="cell"><option value="">Selecione</option><option>Já participo</option><option>Quero participar</option><option>Ainda não</option></select></div>
-        <div><label for="regMinistry">Tem interesse em algum ministério?</label><input id="regMinistry" name="ministry" placeholder="Se desejar, informe qual"></div>
-        <div><label for="regMessage">Pedido de oração ou mensagem (opcional)</label><textarea id="regMessage" name="message" placeholder="Escreva aqui, se desejar"></textarea></div>
-        <label style="display:flex;gap:9px;align-items:flex-start;font-weight:500"><input id="regConsent" type="checkbox" required style="width:auto;margin-top:2px">Autorizo o uso dos dados informados para que a equipe da igreja entre em contato comigo sobre este cadastro. Li e concordo com o aviso de privacidade.</label>
-        <button class="primary" type="submit">Enviar cadastro</button>
+        <div class="registration-step active" data-step="1">
+          <div class="step-heading"><div class="eyebrow">Etapa 1 de 3</div><h3>Seus dados pessoais</h3><p>Conte-nos como podemos encontrar você.</p></div>
+          <div><label for="regName">Nome completo</label><input id="regName" name="name" autocomplete="name" required placeholder="Seu nome completo"></div>
+          <div><label for="regBirth">Data de nascimento</label><input id="regBirth" name="birth" type="date" required></div>
+          <div><label for="regPhone">Telefone / WhatsApp</label><input id="regPhone" name="phone" type="tel" autocomplete="tel" required placeholder="(00) 00000-0000"></div>
+          <div><label for="regEmail">E-mail</label><input id="regEmail" name="email" type="email" autocomplete="email" placeholder="voce@exemplo.com"></div>
+          <div><label for="regAddress">Endereço</label><input id="regAddress" name="address" autocomplete="street-address" placeholder="Rua, número, bairro e cidade"></div>
+          <div class="step-actions"><span></span><button class="primary" type="button" data-next-step="2">Continuar</button></div>
+        </div>
+        <div class="registration-step" data-step="2" hidden>
+          <div class="step-heading"><div class="eyebrow">Etapa 2 de 3</div><h3>Sua caminhada com a igreja</h3><p>Essas informações ajudam nossa equipe a acolher você.</p></div>
+          <div><label for="regRelation">Como você se identifica em relação à igreja?</label><select id="regRelation" name="relation" required><option value="">Selecione</option><option>Novo convertido</option><option>Membro</option><option>Visitante</option><option>Interessado</option></select><small class="field-help">A equipe administrativa autorizada poderá ajustar essa classificação, se necessário.</small></div>
+          <div><label for="regCongregation">Qual congregação deseja frequentar?</label><select id="regCongregation" name="congregation" required><option value="">Selecione</option><option>Sede — Brazlândia/DF</option><option>Jardim Botânico/DF</option><option>Vendinha — Padre Bernardo/GO</option></select></div>
+          <div><label for="regBaptism">Batismo nas águas</label><select id="regBaptism" name="baptism"><option value="">Selecione</option><option>Já sou batizado(a)</option><option>Desejo me batizar</option><option>Ainda não</option></select></div>
+          <div class="step-actions"><button class="ghost" type="button" data-prev-step="1">Voltar</button><button class="primary" type="button" data-next-step="3">Continuar</button></div>
+        </div>
+        <div class="registration-step" data-step="3" hidden>
+          <div class="step-heading"><div class="eyebrow">Etapa 3 de 3</div><h3>Como deseja participar?</h3><p>Você pode atualizar essas informações depois, no seu perfil.</p></div>
+          <div><label for="regCell">Participação em célula</label><select id="regCell" name="cell"><option value="">Selecione</option><option>Já participo</option><option>Quero participar</option><option>Ainda não</option></select></div>
+          <div><label for="regMinistry">Tem interesse em algum ministério?</label><input id="regMinistry" name="ministry" placeholder="Se desejar, informe qual"></div>
+          <div><label for="regMessage">Pedido de oração ou mensagem (opcional)</label><textarea id="regMessage" name="message" placeholder="Escreva aqui, se desejar"></textarea></div>
+          <label class="consent-label"><input id="regConsent" type="checkbox" required>Autorizo o uso dos dados informados para que a equipe da igreja entre em contato comigo sobre este cadastro. Li e concordo com o aviso de privacidade.</label>
+          <div class="step-actions"><button class="ghost" type="button" data-prev-step="2">Voltar</button><button class="primary" type="submit">Enviar cadastro</button></div>
+        </div>
       </form>
     </div>
-    <div id="registrationConfirmation" class="notice" hidden role="status" aria-live="polite"><strong>Cadastro enviado com sucesso!</strong><br>Obrigado por se conectar à nossa família! Em breve, nossa equipe entrará em contato.</div>
+    <div id="registrationConfirmation" class="notice confirmation" hidden role="status" aria-live="polite"><strong>Cadastro enviado com sucesso!</strong><p>Obrigado por se conectar à nossa família! Em breve, nossa equipe entrará em contato.</p><small>Esta é uma prévia da confirmação. O cadastro ainda não foi enviado nem armazenado.</small></div>
+    <div class="panel permissions-panel"><div class="eyebrow">Organização e segurança</div><h3>Atualização dos seus dados</h3><p>Depois que o acesso individual estiver ativo, cada pessoa poderá corrigir e atualizar seus próprios dados pessoais, contatos, endereço, congregação e informações de participação.</p><p>A classificação de vínculo com a igreja — visitante, novo convertido, membro ou interessado — ficará disponível somente para alteração pela equipe administrativa autorizada.</p><div class="notice">As alterações administrativas terão histórico com responsável, informação modificada, data e horário. O login, o banco de dados e o histórico real ainda precisam ser implantados com acesso seguro.</div></div>
     <p class="notice">Prévia do formulário: o envio e o armazenamento ainda não estão conectados a uma base segura. Não informe dados pessoais reais até a ativação do sistema.</p>
   </section>
 
   <section id="membros" class="view">
     <div class="section-head"><div><div class="eyebrow">Comunidade</div><h2>Área de membros</h2></div></div>
     <div class="notice">A área exclusiva terá login individual. Cada membro poderá consultar e atualizar apenas o próprio perfil. Não haverá diretório de membros. O login ainda não está ativo nesta versão.</div>
+    <div class="panel"><div class="eyebrow">Meu perfil</div><h3>Seus dados, sob seu controle</h3><p>Quando o acesso individual estiver ativo, você poderá corrigir seus dados pessoais e atualizar telefone, e-mail, endereço, congregação e informações de participação. A categoria de vínculo com a igreja será ajustada somente pela equipe administrativa autorizada.</p></div>
     <div class="panel"><form id="memberForm">
       <div><label for="memberEmail">E-mail</label><input id="memberEmail" type="email" placeholder="seuemail@exemplo.com"></div>
       <div><label for="memberPass">Senha</label><input id="memberPass" type="password" placeholder="••••••••"></div>
@@ -446,7 +469,23 @@ function shiftMonth(prefix,delta){
 paintMonth('home',homeMonth);paintMonth('agenda',agendaMonth);
 
 document.getElementById('prayerForm').addEventListener('submit',e=>{e.preventDefault();document.getElementById('prayerMsg').textContent='Formulário demonstrativo: o pedido ainda não foi enviado. A conexão segura será feita na próxima etapa.';});
-document.getElementById('publicRegistrationForm').addEventListener('submit',e=>{e.preventDefault();alert('Este formulário é uma prévia. O cadastro ainda não foi enviado nem armazenado. A confirmação automática será exibida quando a conexão segura estiver ativa.');});
+const registrationForm=document.getElementById('publicRegistrationForm');
+let registrationStep=1;
+function showRegistrationStep(step){
+ registrationStep=step;
+ document.querySelectorAll('.registration-step').forEach(el=>{const active=Number(el.dataset.step)===step;el.hidden=!active;el.classList.toggle('active',active);});
+ document.querySelectorAll('[data-step-indicator]').forEach(el=>{const n=Number(el.dataset.stepIndicator);el.classList.toggle('active',n===step);el.classList.toggle('done',n<step);});
+}
+document.querySelectorAll('[data-next-step]').forEach(btn=>btn.addEventListener('click',()=>{
+ const current=document.querySelector('.registration-step[data-step="'+registrationStep+'"]');
+ const required=[...current.querySelectorAll('input[required],select[required]')];
+ const invalid=required.find(field=>!field.checkValidity());
+ if(invalid){invalid.reportValidity();return;}
+ showRegistrationStep(Number(btn.dataset.nextStep));
+}));
+document.querySelectorAll('[data-prev-step]').forEach(btn=>btn.addEventListener('click',()=>showRegistrationStep(Number(btn.dataset.prevStep))));
+registrationForm.addEventListener('submit',e=>{e.preventDefault();if(!registrationForm.reportValidity())return;document.getElementById('registrationConfirmation').hidden=false;document.getElementById('registrationConfirmation').scrollIntoView({behavior:'smooth',block:'center'});});
+showRegistrationStep(1);
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
 </body></html>
