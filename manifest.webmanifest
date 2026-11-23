@@ -1,10 +1,10 @@
 {
-  "name": "Comunidade Evangélica da Aliança",
-  "short_name": "Aliança",
+  "name": "Igreja Comunidade Evangélica da Aliança",
+  "short_name": "Igreja Aliança",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f7f1e7",
   "theme_color": "#681d28",
-  "description": "Aplicativo da Comunidade Evangélica da Aliança — versão em desenvolvimento",
+  "description": "Aplicativo da Igreja Comunidade Evangélica da Aliança — versão em desenvolvimento",
   "icons": []
 }

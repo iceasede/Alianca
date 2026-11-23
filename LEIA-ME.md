@@ -1,4 +1,4 @@
-COMUNIDADE EVANGÉLICA DA ALIANÇA — VERSÃO 26
+IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA — VERSÃO 27
 
 Esta versão incorpora à interface as definições validadas para congregações, pastores responsáveis, células, biblioteca de estudos para líderes, Espaço Kids, ministérios, pedidos de oração, devocionais, membros, Mídia, aniversariantes e notificações planejadas.
 
