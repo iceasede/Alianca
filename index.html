@@ -32,7 +32,7 @@ button.primary{border:0;border-radius:12px;background:var(--navy);color:#fff;pad
 button.ghost{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:11px;padding:10px 13px;cursor:pointer}
 nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:center;gap:0;padding:8px max(8px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom));z-index:5}
 nav button{background:none;border:0;color:var(--muted);font-size:10px;flex:1;max-width:150px;padding:5px;cursor:pointer}nav button span{display:block;font-size:19px;margin-bottom:3px}nav button.active{color:var(--navy);font-weight:700}
-.view{display:none}.view.active{display:block}
+.brand strong{display:block;max-width:270px;font-size:clamp(13px,3.3vw,18px);line-height:1.25;letter-spacing:.035em;text-transform:uppercase}.view{display:none}.view.active{display:block}
 form{display:grid;gap:10px}label{font-size:12px;font-weight:650;color:var(--navy)}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit;background:#fff}textarea{min-height:100px;resize:vertical}
 .notice{background:#f8f3e8;border:1px solid #eadfc9;border-radius:13px;padding:13px;color:#665638;font-size:12px;line-height:1.5}
 footer{text-align:center;color:#8a8a87;font-size:10px;padding:22px 0}
@@ -42,7 +42,7 @@ footer{text-align:center;color:#8a8a87;font-size:10px;padding:22px 0}
 <body>
 <header>
   <div class="top">
-    <div class="brand"><div class="mark"><img src="logo-alianca.png" alt="Logo oficial da Comunidade Evangélica da Aliança"></div><div><strong>COMUNIDADE EVANGÉLICA<br>DA ALIANÇA</strong><small class="anniversary">31 ANOS DE HISTÓRIA • DESDE MAIO DE 1995</small></div></div>
+    <div class="brand"><div class="mark"><img src="logo-alianca.png" alt="Logo oficial da Comunidade Evangélica da Aliança"></div><div><strong>COMUNIDADE EVANGÉLICA DA ALIANÇA</strong><small class="anniversary">31 ANOS DE HISTÓRIA</small></div></div>
     <div aria-label="Menu" style="font-size:22px;color:#e4d3ad">✧</div>
   </div>
   <h1>Uma família, uma aliança,<br>um propósito.</h1>
@@ -60,7 +60,6 @@ footer{text-align:center;color:#8a8a87;font-size:10px;padding:22px 0}
       <button class="tile" data-go="kids"><span class="ico">♡</span><b>Espaço Kids</b><small>Atividades e novidades das crianças</small></button>
       <button class="tile" data-go="celulas"><span class="ico">⌂</span><b>Estudo da célula</b><small>Estudos bíblicos e roteiros</small></button>
       <button class="tile" data-go="oracao"><span class="ico">♡</span><b>Pedidos de oração</b><small>Conte com nossa oração</small></button>
-      <button class="tile" data-go="ao-vivo"><span class="ico">▷</span><b>Cultos ao vivo</b><small>Assista e acompanhe</small></button>
       <button class="tile" data-go="devocional"><span class="ico">✧</span><b>Palavra e devocional</b><small>Um momento com Deus</small></button>
       <button class="tile" data-go="membros"><span class="ico">♙</span><b>Área de membros</b><small>Acesso reservado</small></button>
     </div>
@@ -209,14 +208,9 @@ footer{text-align:center;color:#8a8a87;font-size:10px;padding:22px 0}
     <p class="notice">Protótipo: o formulário ainda não envia nem armazena pedidos. Será conectado a um canal privado e seguro antes da divulgação.</p>
   </section>
 
-  <section id="ao-vivo" class="view">
-    <div class="section-head"><div><div class="eyebrow">Adore conosco</div><h2>Cultos ao vivo</h2></div></div>
-    <div class="panel"><h3>Transmissões da Aliança</h3><p>O espaço para assistir aos cultos e rever mensagens ficará disponível aqui.</p><p style="margin-top:12px">Precisaremos inserir o link oficial do YouTube ou da plataforma de transmissão da igreja.</p></div>
-  </section>
-
   <section id="devocional" class="view">
     <div class="section-head"><div><div class="eyebrow">Alimento para a fé</div><h2>Palavra e devocional</h2></div></div>
-    <div class="panel"><div class="eyebrow">Versículo</div><h3 style="font-family:Georgia,serif;font-size:20px;line-height:1.4">“O Senhor é o meu pastor; nada me faltará.”</h3><p>Salmos 23:1</p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><h3>Para refletir</h3><p>Hoje, reserve um momento para confiar no cuidado de Deus. Mesmo nos dias de incerteza, Ele continua sendo nosso pastor e guia nossos passos.</p></div>
+    <div class="panel"><div class="eyebrow">Versículo do ano</div><h3 style="font-family:Georgia,serif;font-size:20px;line-height:1.4">“O meu Deus, segundo as suas riquezas, suprirá todas as vossas necessidades em glória, por Cristo Jesus.”</h3><p>Filipenses 4:19</p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><h3>Uma palavra para este ano</h3><p>Seguimos confiando que Deus é a nossa fonte e que, segundo as riquezas da sua glória em Cristo Jesus, Ele suprirá cada necessidade.</p></div>
   </section>
 
   <section id="membros" class="view">
@@ -246,7 +240,6 @@ footer{text-align:center;color:#8a8a87;font-size:10px;padding:22px 0}
   <button class="active" data-go="home"><span>⌂</span>Início</button>
   <button data-go="agenda"><span>▦</span>Agenda</button>
   <button data-go="oracao"><span>♡</span>Oração</button>
-  <button data-go="ao-vivo"><span>▷</span>Ao vivo</button>
   <button data-go="membros"><span>♙</span>Membros</button>
 </nav>
 <script>

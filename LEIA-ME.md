@@ -91,3 +91,6 @@ A publicação dinâmica ainda depende de um painel/sistema de gestão. Não ins
 - Criadas páginas para Sobre Nós, Conheça Nosso Presbitério e Nossas Filiais (Jardim Botânico e Vendinha/GO).
 - O cabeçalho agora apresenta o nome na ordem “COMUNIDADE EVANGÉLICA DA ALIANÇA”.
 - Os endereços das filiais e os nomes/fotos do presbitério ainda dependem de confirmação da igreja.
+
+
+Atualização mais recente: cabeçalho em caixa alta com “COMUNIDADE EVANGÉLICA DA ALIANÇA” e “31 ANOS DE HISTÓRIA”; versículo do ano atualizado para Filipenses 4:19; removidas as opções e a seção de cultos ao vivo.
