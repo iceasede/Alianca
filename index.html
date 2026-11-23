@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#172B46">
+<meta name="description" content="Aplicativo oficial da Comunidade Evangélica da Aliança">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Aliança | Comunidade Evangélica</title>
+<style>
+:root{--navy:#172b46;--navy2:#223d5d;--gold:#c6a66a;--cream:#f6f4ef;--ink:#1e2937;--muted:#6b7280;--white:#fff;--line:#e7e4dd}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
+header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:26px 20px 24px;border-radius:0 0 26px 26px}
+.top{display:flex;align-items:center;justify-content:space-between;max-width:900px;margin:auto}
+.brand{display:flex;gap:12px;align-items:center}.mark{width:116px;height:58px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:3px}.mark img{width:100%;height:100%;object-fit:contain}
+.brand strong{display:block;letter-spacing:1.6px;font-size:16px}.brand small{color:#d7deea;font-size:9px;letter-spacing:1.5px}
+header h1{font-family:Georgia,serif;font-weight:500;font-size:29px;line-height:1.15;max-width:650px;margin:32px auto 8px}
+header p{max-width:650px;margin:0 auto;color:#dbe3ed;font-size:14px}
+main{max-width:900px;margin:0 auto;padding:20px 16px 100px}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:24px 2px 12px}
+h2{font-family:Georgia,serif;font-size:22px;font-weight:500;margin:0;color:var(--navy)}
+.eyebrow{font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--gold);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.tile,.panel{background:#fff;border:1px solid var(--line);border-radius:17px;padding:16px;box-shadow:0 3px 12px #1b2c4010}
+.tile{min-height:112px;text-align:left;cursor:pointer;color:var(--ink);font:inherit}
+.tile .ico{font-size:22px;display:block;margin-bottom:10px}.tile b{font-size:13px;display:block}.tile small{font-size:11px;color:var(--muted)}
+.panel{margin-top:12px}.panel h3{font-size:15px;margin:0 0 8px;color:var(--navy)}.panel p{font-size:13px;color:var(--muted);line-height:1.55;margin:0}
+.event{display:flex;gap:13px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.event:last-child{border:0;padding-bottom:0}
+.date{background:#f1eee7;color:var(--navy);border-radius:12px;padding:9px 10px;text-align:center;min-width:52px}.date b{font-size:18px;display:block}.date small{font-size:9px;text-transform:uppercase}
+.event strong{font-size:13px;display:block}.event small{color:var(--muted);font-size:11px}
+button.primary{border:0;border-radius:12px;background:var(--navy);color:#fff;padding:12px 16px;font-weight:650;cursor:pointer}
+button.ghost{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:11px;padding:10px 13px;cursor:pointer}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:center;gap:0;padding:8px max(8px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom));z-index:5}
+nav button{background:none;border:0;color:var(--muted);font-size:10px;flex:1;max-width:150px;padding:5px;cursor:pointer}nav button span{display:block;font-size:19px;margin-bottom:3px}nav button.active{color:var(--navy);font-weight:700}
+.view{display:none}.view.active{display:block}
+form{display:grid;gap:10px}label{font-size:12px;font-weight:650;color:var(--navy)}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit;background:#fff}textarea{min-height:100px;resize:vertical}
+.notice{background:#f8f3e8;border:1px solid #eadfc9;border-radius:13px;padding:13px;color:#665638;font-size:12px;line-height:1.5}
+footer{text-align:center;color:#8a8a87;font-size:10px;padding:22px 0}
+@media(min-width:650px){.grid{grid-template-columns:repeat(3,1fr)}header{padding-left:30px;padding-right:30px}header h1,header p{margin-left:max(calc((100% - 840px)/2),0px)}}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div class="brand"><div class="mark"><img src="logo-alianca.jpg" alt="Logo oficial da Comunidade Evangélica da Aliança"></div><div><strong>ALIANÇA</strong><small>COMUNIDADE EVANGÉLICA</small></div></div>
+    <div aria-label="Menu" style="font-size:22px;color:#e4d3ad">✧</div>
+  </div>
+  <h1>Uma família, uma aliança,<br>um propósito.</h1>
+  <p>Seja bem-vindo à nossa casa. Este é o espaço de conexão da família Aliança.</p>
+</header>
+<main>
+  <section id="home" class="view active">
+    <div class="section-head"><div><div class="eyebrow">Conectados em fé</div><h2>Bem-vindo à Aliança</h2></div></div>
+    <div class="grid">
+      <button class="tile" data-go="agenda"><span class="ico">▦</span><b>Agenda</b><small>Cultos e eventos</small></button>
+      <button class="tile" data-go="ministerios"><span class="ico">♧</span><b>Ministérios</b><small>Servir e participar</small></button>
+      <button class="tile" data-go="oracao"><span class="ico">♡</span><b>Pedidos de oração</b><small>Conte com nossa oração</small></button>
+      <button class="tile" data-go="ao-vivo"><span class="ico">▷</span><b>Cultos ao vivo</b><small>Assista e acompanhe</small></button>
+      <button class="tile" data-go="devocional"><span class="ico">✧</span><b>Palavra e devocional</b><small>Um momento com Deus</small></button>
+      <button class="tile" data-go="membros"><span class="ico">♙</span><b>Área de membros</b><small>Acesso reservado</small></button>
+    </div>
+    <div class="section-head"><div><div class="eyebrow">Fique por dentro</div><h2>Próximos encontros</h2></div><button class="ghost" data-go="agenda">Ver agenda</button></div>
+    <div class="panel">
+      <div class="event"><div class="date"><b>—</b><small>Data</small></div><div><strong>Programação em atualização</strong><small>Em breve você encontrará aqui os próximos cultos e eventos.</small></div></div>
+    </div>
+    <div class="panel"><h3>“Eu e a minha casa serviremos ao Senhor.”</h3><p>Josué 24:15</p></div>
+    <div class="panel"><h3>Visite nossa igreja</h3><p>Comunidade Evangélica da Aliança</p><p style="margin-top:7px">Quadra 06, Área Especial 01, Setor Veredas, Brazlândia/DF</p></div>
+    <div class="panel"><h3>Acompanhe nossas novidades</h3><p>Instagram oficial da igreja</p><p style="margin-top:8px"><a href="https://www.instagram.com/iceasedeof/" target="_blank" rel="noopener" style="color:#223d5d;font-weight:700;text-decoration:none">@iceasedeof ↗</a></p></div>
+  </section>
+
+  <section id="agenda" class="view">
+    <div class="section-head"><div><div class="eyebrow">Participe</div><h2>Agenda da igreja</h2></div></div>
+    <div class="notice">A agenda oficial será atualizada pela equipe responsável. Os horários abaixo são campos de demonstração até recebermos a programação atual.</div>
+    <div class="panel">
+      <div class="event"><div class="date"><b>TER</b><small>20h</small></div><div><strong>Monte de oração</strong><small>Encontro semanal</small></div></div>
+      <div class="event"><div class="date"><b>QUA</b><small>20h</small></div><div><strong>Células</strong><small>Encontros nos lares</small></div></div>
+      <div class="event"><div class="date"><b>QUI</b><small>20h</small></div><div><strong>Culto de cura e libertação</strong><small>Culto presencial</small></div></div>
+      <div class="event"><div class="date"><b>DOM</b><small>19h</small></div><div><strong>Culto da Família</strong><small>Um tempo para toda a família</small></div></div>
+    </div>
+  </section>
+
+  <section id="ministerios" class="view">
+    <div class="section-head"><div><div class="eyebrow">Faça parte</div><h2>Ministérios e departamentos</h2></div></div>
+    <div class="notice">As informações e atualizações dos ministérios serão encaminhadas à liderança e publicadas somente após avaliação e aprovação dos Apóstolos.</div>
+    <div class="grid">
+      <div class="tile"><span class="ico">♫</span><b>Louvor</b><small>Adoração e música</small></div>
+      <div class="tile"><span class="ico">♧</span><b>Departamento Infantil</b><small>Cuidado e ensino das crianças</small></div>
+      <div class="tile"><span class="ico">♡</span><b>Mulheres</b><small>Comunhão e crescimento</small></div>
+      <div class="tile"><span class="ico">✧</span><b>Mídia da Aliança</b><small>Comunicação e criatividade</small></div>
+      <div class="tile"><span class="ico">⌂</span><b>Famílias</b><small>Relacionamentos e comunhão</small></div>
+      <div class="tile"><span class="ico">＋</span><b>Outros departamentos</b><small>Em atualização</small></div>
+    </div>
+  </section>
+
+  <section id="oracao" class="view">
+    <div class="section-head"><div><div class="eyebrow">Estamos com você</div><h2>Pedido de oração</h2></div></div>
+    <div class="panel"><p>Compartilhe seu pedido com a equipe de oração. Evite incluir dados pessoais sensíveis de terceiros.</p><form id="prayerForm">
+      <div><label for="prayerName">Seu nome (opcional)</label><input id="prayerName" placeholder="Como podemos chamar você?"></div>
+      <div><label for="prayerText">Como podemos orar?</label><textarea id="prayerText" required placeholder="Escreva seu pedido de oração..."></textarea></div>
+      <button class="primary">Preparar pedido</button>
+      <small id="prayerMsg" style="color:var(--muted)"></small>
+    </form></div>
+    <p class="notice">Protótipo: o formulário ainda não envia nem armazena pedidos. Será conectado a um canal privado e seguro antes da divulgação.</p>
+  </section>
+
+  <section id="ao-vivo" class="view">
+    <div class="section-head"><div><div class="eyebrow">Adore conosco</div><h2>Cultos ao vivo</h2></div></div>
+    <div class="panel"><h3>Transmissões da Aliança</h3><p>O espaço para assistir aos cultos e rever mensagens ficará disponível aqui.</p><p style="margin-top:12px">Precisaremos inserir o link oficial do YouTube ou da plataforma de transmissão da igreja.</p></div>
+  </section>
+
+  <section id="devocional" class="view">
+    <div class="section-head"><div><div class="eyebrow">Alimento para a fé</div><h2>Palavra e devocional</h2></div></div>
+    <div class="panel"><div class="eyebrow">Versículo</div><h3 style="font-family:Georgia,serif;font-size:20px;line-height:1.4">“O Senhor é o meu pastor; nada me faltará.”</h3><p>Salmos 23:1</p><hr style="border:0;border-top:1px solid var(--line);margin:15px 0"><h3>Para refletir</h3><p>Hoje, reserve um momento para confiar no cuidado de Deus. Mesmo nos dias de incerteza, Ele continua sendo nosso pastor e guia nossos passos.</p></div>
+  </section>
+
+  <section id="membros" class="view">
+    <div class="section-head"><div><div class="eyebrow">Comunidade</div><h2>Área de membros</h2></div></div>
+    <div class="notice">A área exclusiva terá acesso individual, com senha e proteção dos dados. O login ainda não está ativo neste protótipo.</div>
+    <div class="panel"><form id="memberForm">
+      <div><label for="memberEmail">E-mail</label><input id="memberEmail" type="email" placeholder="seuemail@exemplo.com"></div>
+      <div><label for="memberPass">Senha</label><input id="memberPass" type="password" placeholder="••••••••"></div>
+      <button type="button" class="primary" onclick="alert('O acesso será habilitado após a configuração segura de cadastro e autenticação.')">Entrar</button>
+      <button type="button" class="ghost" onclick="alert('O cadastro será disponibilizado após a configuração da base segura de membros.')">Quero me cadastrar</button>
+    </form></div>
+  </section>
+
+  <section id="contribuicoes" class="view">
+    <div class="section-head"><div><div class="eyebrow">Generosidade</div><h2>Dízimos e ofertas</h2></div></div>
+    <div class="panel"><h3>Contribua com a obra</h3><p>Em breve, esta área terá as orientações oficiais para dízimos e ofertas, com meios de contribuição confirmados pela igreja.</p></div>
+    <div class="notice">Nenhuma chave Pix ou dado bancário foi incluído para evitar informações incorretas. Usaremos somente os dados oficiais fornecidos pela liderança.</div>
+  </section>
+
+  <section id="galeria" class="view">
+    <div class="section-head"><div><div class="eyebrow">Nossa história</div><h2>Galeria</h2></div></div>
+    <div class="panel"><h3>Momentos da família Aliança</h3><p>Fotos e vídeos dos cultos, eventos e ministérios serão publicados aqui após a organização dos álbuns e das autorizações de imagem necessárias.</p></div>
+  </section>
+  <footer>COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento</footer>
+</main>
+<nav>
+  <button class="active" data-go="home"><span>⌂</span>Início</button>
+  <button data-go="agenda"><span>▦</span>Agenda</button>
+  <button data-go="oracao"><span>♡</span>Oração</button>
+  <button data-go="ao-vivo"><span>▷</span>Ao vivo</button>
+  <button data-go="membros"><span>♙</span>Membros</button>
+</nav>
+<script>
+const views=[...document.querySelectorAll('.view')], nav=[...document.querySelectorAll('nav button')];
+function go(id){views.forEach(v=>v.classList.toggle('active',v.id===id));nav.forEach(b=>b.classList.toggle('active',b.dataset.go===id));window.scrollTo({top:0,behavior:'smooth'});}
+document.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click',()=>go(el.dataset.go)));
+document.getElementById('prayerForm').addEventListener('submit',e=>{e.preventDefault();document.getElementById('prayerMsg').textContent='Formulário demonstrativo: o pedido ainda não foi enviado. A conexão segura será feita na próxima etapa.';});
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
