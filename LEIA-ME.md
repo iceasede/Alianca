@@ -31,3 +31,8 @@ Para atualizar: extraia o ZIP e substitua os arquivos na raiz do repositório Gi
 - O mesmo redirecionamento é aplicado quando o Supabase informa uma sessão autenticada, inclusive após confirmação de e-mail.
 - A sessão continua sendo mantida pelo Supabase Auth no navegador.
 - O cache do service worker foi atualizado para a versão 34.
+
+
+## Versão 35 — áreas restritas
+
+As áreas Ministérios, Espaço Kids, Estudos para Líderes, Aniversariantes e Mídia ficam ocultas para visitantes e são exibidas somente após autenticação. Tentativas de abrir essas páginas sem login retornam à Área de Membros. O acesso visual do aplicativo não substitui políticas de segurança (RLS) no banco de dados para proteger dados privados.

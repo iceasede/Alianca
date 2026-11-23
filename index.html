@@ -132,6 +132,8 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
 #publicRegistrationForm .registration-step:not(.active){display:none!important}
 #publicRegistrationForm .registration-step.active{display:grid}.step-heading{margin-bottom:2px}.step-heading h3{font-family:Georgia,serif;font-size:19px;color:var(--navy);margin:5px 0}.step-heading p,.permissions-panel p{font-size:12px;color:var(--muted);line-height:1.55;margin:4px 0 8px}.field-help{display:block;color:var(--muted);font-size:10px;margin-top:5px}.step-actions{display:flex;justify-content:space-between;gap:10px;margin-top:5px}.step-actions button{min-width:105px}.consent-label{display:flex;gap:9px;align-items:flex-start;font-weight:500!important;line-height:1.45}.consent-label input{width:auto;flex:0 0 auto;margin:2px 0 0}.confirmation{margin-top:12px}.confirmation p{margin:6px 0}.confirmation small{display:block;margin-top:8px}.permissions-panel{margin-top:14px}.permissions-panel h3{margin:5px 0}.permissions-panel .notice{margin-top:10px}@media(max-width:360px){.step{min-width:62px}.step small{font-size:9px}.step-actions button{min-width:90px}}
 
+
+[data-auth-only][hidden]{display:none!important}
 </style>
 </head>
 <body>
@@ -150,16 +152,16 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
       <button class="tile" data-go="sobre"><span class="ico">✧</span><b>Sobre nós</b><small>Nossa história e propósito</small></button>
       <button class="tile" data-go="presbiterio"><span class="ico">♙</span><b>Conheça nosso presbitério</b><small>Liderança espiritual</small></button>
       <button class="tile" data-go="filiais"><span class="ico">⌖</span><b>Nossas filiais</b><small>Jardim Botânico e Vendinha/GO</small></button>
-      <button class="tile" data-go="ministerios"><span class="ico">♧</span><b>Ministérios</b><small>Servir e participar</small></button>
-      <button class="tile" data-go="kids"><span class="ico">♡</span><b>Espaço Kids</b><small>Atividades e novidades das crianças</small></button>
+      <button class="tile" data-go="ministerios" data-auth-only hidden><span class="ico">♧</span><b>Ministérios</b><small>Servir e participar</small></button>
+      <button class="tile" data-go="kids" data-auth-only hidden><span class="ico">♡</span><b>Espaço Kids</b><small>Atividades e novidades das crianças</small></button>
       <button class="tile" data-go="celulas"><span class="ico">⌂</span><b>Nossas células</b><small>Encontre uma célula e fale com o líder</small></button>
-      <button class="tile" data-go="estudos"><span class="ico">▤</span><b>Estudos para líderes</b><small>Biblioteca bíblica reservada</small></button>
+      <button class="tile" data-go="estudos" data-auth-only hidden><span class="ico">▤</span><b>Estudos para líderes</b><small>Biblioteca bíblica reservada</small></button>
       <button class="tile" data-go="oracao"><span class="ico">♡</span><b>Pedidos de oração</b><small>Conte com nossa oração</small></button>
       <button class="tile" data-go="devocional"><span class="ico">✧</span><b>Palavra e devocional</b><small>Um momento com Deus</small></button>
       <button class="tile" data-go="cadastro"><span class="ico">✚</span><b>Faça seu cadastro</b><small>Conecte-se à nossa família</small></button>
       <button class="tile" data-go="membros"><span class="ico">♙</span><b>Área de membros</b><small>Acesso reservado</small></button>
-      <button class="tile" data-go="aniversariantes"><span class="ico">✧</span><b>Aniversariantes</b><small>Celebrando vidas da nossa família</small></button>
-      <button class="tile" data-go="galeria"><span class="ico">▧</span><b>Mídia</b><small>Galeria exclusiva para membros</small></button>
+      <button class="tile" data-go="aniversariantes" data-auth-only hidden><span class="ico">✧</span><b>Aniversariantes</b><small>Celebrando vidas da nossa família</small></button>
+      <button class="tile" data-go="galeria" data-auth-only hidden><span class="ico">▧</span><b>Mídia</b><small>Galeria exclusiva para membros</small></button>
     </div>
     <div class="section-head"><div><div class="eyebrow">Fique por dentro</div><h2>Próximos encontros</h2></div><button class="ghost" data-go="agenda">Ver agenda</button></div>
     <div class="panel">
@@ -206,7 +208,7 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
     </div>
   </section>
 
-  <section id="aniversariantes" class="view">
+  <section id="aniversariantes" class="view" data-requires-auth>
     <div class="section-head"><div><div class="eyebrow">Nossa família</div><h2>Aniversariantes</h2></div></div>
     <div class="panel">
       <div class="ico" style="font-size:25px;color:var(--gold);margin-bottom:8px">✧</div>
@@ -257,7 +259,7 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
     </div>
   </section>
 
-  <section id="kids" class="view">
+  <section id="kids" class="view" data-requires-auth>
     <div class="section-head"><div><div class="eyebrow">Cuidado, fé e aprendizado</div><h2>Espaço Kids</h2></div></div>
     <div class="notice"><strong>Área reservada a pais e responsáveis cadastrados.</strong> O acesso individual ainda será ativado após a implantação do sistema seguro de login.</div>
     <div class="panel">
@@ -274,7 +276,7 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
     <div class="notice" style="margin-top:12px">A equipe Infantil enviará conteúdos para aprovação da administração antes da publicação. Fotos e informações que identifiquem crianças somente serão divulgadas com autorização dos responsáveis. Dados individuais de cada criança ficarão restritos aos respectivos responsáveis e à equipe autorizada.</div>
   </section>
 
-  <section id="ministerios" class="view">
+  <section id="ministerios" class="view" data-requires-auth>
     <div class="section-head"><div><div class="eyebrow">Faça parte</div><h2>Ministérios e departamentos</h2></div></div>
     <div class="notice">Todos os usuários poderão conhecer os ministérios. Os líderes encaminharão conteúdos e alterações, que serão publicados somente após aprovação dos Apóstolos.</div>
     <div class="grid">
@@ -307,7 +309,7 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
     <div class="panel"><h3>Como participar</h3><p>Quando as células forem cadastradas, você poderá solicitar participação pelo aplicativo ou falar diretamente com o líder pelo WhatsApp. O contato e o endereço serão inseridos pela administração, com autorização do responsável.</p><div class="notice" style="margin-top:10px">Os botões de solicitação e WhatsApp serão ativados quando o cadastro das células e a integração segura estiverem prontos.</div></div>
   </section>
 
-  <section id="estudos" class="view">
+  <section id="estudos" class="view" data-requires-auth>
     <div class="section-head"><div><div class="eyebrow">Material oficial para líderes</div><h2>Biblioteca de estudos</h2></div></div>
     <div class="notice"><strong>Área restrita a líderes de células autorizados.</strong> O login e a verificação de permissões ainda serão implantados. Não publique estudos confidenciais nesta versão estática.</div>
     <div class="panel"><h3>Estudos oficiais</h3><p>Os Apóstolos serão responsáveis pela publicação dos estudos. Os líderes autorizados poderão consultar os materiais, ler no aplicativo e baixar os PDFs.</p></div>
@@ -397,7 +399,7 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
     <div class="notice">Nenhuma chave Pix ou dado bancário foi incluído para evitar informações incorretas. Usaremos somente os dados oficiais fornecidos pela liderança.</div>
   </section>
 
-  <section id="galeria" class="view">
+  <section id="galeria" class="view" data-requires-auth>
     <div class="section-head"><div><div class="eyebrow">Registros da nossa caminhada</div><h2>Mídia</h2></div></div>
     <div class="panel"><h3>Encontre suas fotos</h3><p>Reviva os momentos especiais da família da Igreja Comunidade Evangélica da Aliança. A galeria será exclusiva para membros cadastrados e autenticados.</p></div>
     <div class="grid">
@@ -408,7 +410,7 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
     </div>
     <div class="notice" style="margin-top:12px">A equipe de Mídia enviará fotos e vídeos para aprovação da administração antes da publicação. A galeria será restrita a membros autenticados. Imagens de crianças e pessoas identificáveis dependerão das autorizações necessárias. O envio, a aprovação e o controle de acesso ainda serão conectados ao sistema seguro.</div>
   </section>
-  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 34</footer>
+  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 35</footer>
 </main>
 <nav>
   <button class="active" data-go="home"><span>⌂</span>Início</button>
@@ -424,8 +426,28 @@ const SUPABASE_URL="https://joztddhvrgawcoldmaqe.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_XjjIJ8noOKsVmGA5Z_ssEw_AzmYuMpa";
 const supabaseClient=window.supabase?.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const views=[...document.querySelectorAll('.view')], nav=[...document.querySelectorAll('nav button')];
-function go(id){views.forEach(v=>v.classList.toggle('active',v.id===id));nav.forEach(b=>b.classList.toggle('active',b.dataset.go===id));window.scrollTo({top:0,behavior:'smooth'});}
+const protectedViews=new Set(['ministerios','kids','estudos','aniversariantes','galeria']);
+let authenticatedUser=null;
+let authReady=false;
+function updateRestrictedAreas(){
+ document.querySelectorAll('[data-auth-only]').forEach(el=>{el.hidden=!authenticatedUser;});
+}
+function go(id){
+ if(protectedViews.has(id) && !authenticatedUser){
+  views.forEach(v=>v.classList.toggle('active',v.id==='membros'));
+  nav.forEach(b=>b.classList.toggle('active',b.dataset.go==='membros'));
+  const box=document.getElementById('memberAuthMessage');
+  if(box){box.hidden=false;box.textContent=authReady?'Esta área é exclusiva para pessoas cadastradas. Entre com seu e-mail e senha para acessar.':'Verificando seu acesso. Aguarde um instante e tente novamente.';}
+  window.scrollTo({top:0,behavior:'smooth'});
+  return;
+ }
+ views.forEach(v=>v.classList.toggle('active',v.id===id));
+ nav.forEach(b=>b.classList.toggle('active',b.dataset.go===id));
+ window.scrollTo({top:0,behavior:'smooth'});
+}
 function showHomeAfterAuthentication(user){
+ authenticatedUser=user||authenticatedUser;
+ updateRestrictedAreas();
  const welcome=document.getElementById('authWelcome');
  const name=user?.user_metadata?.full_name||user?.email||'bem-vindo(a)';
  if(welcome){welcome.textContent='Acesso realizado com sucesso. Olá, '+name+'! Seja bem-vindo(a) à nossa família.';welcome.hidden=false;}
@@ -548,15 +570,28 @@ memberForm.addEventListener('submit',async e=>{
 // a sessão autenticada também a leva à página inicial.
 if(supabaseClient){
  supabaseClient.auth.onAuthStateChange((event,session)=>{
+  authenticatedUser=session?.user||null;
+  authReady=true;
+  updateRestrictedAreas();
   if(event==='SIGNED_IN' && session?.user){
    showHomeAfterAuthentication(session.user);
   }
  });
+ supabaseClient.auth.getSession().then(({data,error})=>{
+  if(error) throw error;
+  authenticatedUser=data.session?.user||null;
+  authReady=true;
+  updateRestrictedAreas();
+ }).catch(()=>{authenticatedUser=null;authReady=true;updateRestrictedAreas();});
+}else{
+ authReady=true;
+ updateRestrictedAreas();
 }
 document.getElementById('memberSignupBtn').addEventListener('click',event=>{event.preventDefault();go('cadastro');showRegistrationStep(1);history.replaceState(null,'','#cadastro');document.getElementById('regName').focus({preventScroll:true});window.scrollTo({top:0,behavior:'smooth'});});
 document.getElementById('memberForgotBtn').addEventListener('click',async()=>{const email=document.getElementById('memberEmail').value.trim();const box=document.getElementById('memberAuthMessage');box.hidden=false;if(!email){box.textContent='Informe seu e-mail acima para receber o link de redefinição de senha.';document.getElementById('memberEmail').focus();return;}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;box.textContent='Se houver uma conta para esse e-mail, enviaremos as instruções para redefinir a senha.';}catch(error){box.textContent=error.message||'Não foi possível solicitar a redefinição agora.';}});
 
 showRegistrationStep(1);
+updateRestrictedAreas();
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
 </body></html>
