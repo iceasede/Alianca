@@ -42,3 +42,21 @@ Toda alteração enviada por líderes de ministérios deve ficar como **pendente
 
 ## Nome do repositório
 Nome recomendado: `alianca` (simples, sem hífen ou acento). Ao renomear o repositório no GitHub, o endereço do GitHub Pages também mudará para `https://iceasede.github.io/alianca/` depois da publicação.
+
+
+## Área de Estudo da Célula
+Foi adicionada à tela inicial uma área para disponibilizar estudos bíblicos e roteiros das células. O conteúdo permanece demonstrativo até a igreja fornecer os estudos oficiais. Sugestões enviadas por líderes devem ser avaliadas e aprovadas pelos Apóstolos antes da publicação.
+
+
+## Estudos da Célula: leitura + PDF + biblioteca
+A área de Estudos da Célula foi organizada para oferecer:
+- leitura integral do estudo dentro do aplicativo;
+- arquivo PDF para baixar;
+- biblioteca permanente com todos os estudos anteriores;
+- publicação somente após avaliação e aprovação dos Apóstolos.
+
+A interface está preparada, mas ainda não há estudos reais publicados nem armazenamento/administração conectados. Para ativar a publicação de PDFs e a biblioteca dinâmica, será necessário configurar uma área segura de administração e armazenamento dos materiais aprovados.
+
+
+## Fluxo dos Estudos da Célula — corrigido
+Os Apóstolos são responsáveis por disponibilizar os estudos oficiais diretamente aos líderes de células. Os líderes acessam o material para leitura no aplicativo e download do PDF. A biblioteca mantém o histórico dos estudos anteriores. Não há fluxo de envio de estudos pelos líderes nesta definição.

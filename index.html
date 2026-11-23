@@ -42,7 +42,7 @@ footer{text-align:center;color:#8a8a87;font-size:10px;padding:22px 0}
 <body>
 <header>
   <div class="top">
-    <div class="brand"><div class="mark"><img src="logo-alianca.png" alt="Logo oficial da Comunidade Evangélica da Aliança"></div><div><strong>ALIANÇA</strong><small>COMUNIDADE EVANGÉLICA</small></div></div>
+    <div class="brand"><div class="mark"><img src="logo-alianca.png" alt="Logo oficial da Comunidade Evangélica da Aliança"></div><div><strong>COMUNIDADE ALIANÇA</strong><small>EVANGÉLICA</small></div></div>
     <div aria-label="Menu" style="font-size:22px;color:#e4d3ad">✧</div>
   </div>
   <h1>Uma família, uma aliança,<br>um propósito.</h1>
@@ -54,6 +54,7 @@ footer{text-align:center;color:#8a8a87;font-size:10px;padding:22px 0}
     <div class="grid">
       <button class="tile" data-go="agenda"><span class="ico">▦</span><b>Agenda</b><small>Cultos e eventos</small></button>
       <button class="tile" data-go="ministerios"><span class="ico">♧</span><b>Ministérios</b><small>Servir e participar</small></button>
+      <button class="tile" data-go="celulas"><span class="ico">⌂</span><b>Estudo da célula</b><small>Estudos bíblicos e roteiros</small></button>
       <button class="tile" data-go="oracao"><span class="ico">♡</span><b>Pedidos de oração</b><small>Conte com nossa oração</small></button>
       <button class="tile" data-go="ao-vivo"><span class="ico">▷</span><b>Cultos ao vivo</b><small>Assista e acompanhe</small></button>
       <button class="tile" data-go="devocional"><span class="ico">✧</span><b>Palavra e devocional</b><small>Um momento com Deus</small></button>
@@ -92,6 +93,42 @@ footer{text-align:center;color:#8a8a87;font-size:10px;padding:22px 0}
     </div>
   </section>
 
+
+  <section id="celulas" class="view">
+    <div class="section-head"><div><div class="eyebrow">Material oficial para líderes</div><h2>Estudo da célula</h2></div></div>
+    <div class="notice">Os Apóstolos disponibilizam os estudos oficiais diretamente aos líderes de células. Os líderes poderão ler o material no aplicativo e baixar o PDF para preparar os encontros.</div>
+
+    <div class="panel">
+      <div class="eyebrow">Estudo mais recente</div>
+      <h3>Próximo estudo em preparação</h3>
+      <p>Quando os Apóstolos publicarem o estudo, os líderes poderão abrir o conteúdo completo nesta área ou baixar sua versão em PDF.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:13px">
+        <button class="primary" type="button" disabled style="opacity:.55;cursor:not-allowed">Leitura no aplicativo</button>
+        <button class="ghost" type="button" disabled style="opacity:.55;cursor:not-allowed">PDF em breve</button>
+      </div>
+      <small style="display:block;color:var(--muted);margin-top:9px">Ainda não há um estudo oficial publicado.</small>
+    </div>
+
+    <div class="section-head"><div><div class="eyebrow">Biblioteca</div><h2>Estudos anteriores</h2></div></div>
+    <div class="panel">
+      <h3>Histórico de estudos</h3>
+      <p>A biblioteca reunirá todos os estudos disponibilizados pelos Apóstolos, para que os líderes de células consultem materiais anteriores. Cada registro terá tema, data, referência bíblica, leitura no aplicativo e arquivo PDF.</p>
+      <div style="margin-top:14px;padding:16px;border:1px dashed var(--line);border-radius:12px;text-align:center">
+        <div style="font-size:26px;margin-bottom:7px">📚</div>
+        <strong style="font-size:13px">Sua biblioteca está sendo preparada</strong>
+        <p style="margin-top:6px">Os estudos aparecerão aqui conforme forem aprovados e publicados.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>O que cada estudo terá</h3>
+      <div class="event"><div class="date"><b>01</b><small>Parte</small></div><div><strong>Tema e texto bíblico</strong><small>Assunto central e passagem das Escrituras</small></div></div>
+      <div class="event"><div class="date"><b>02</b><small>Parte</small></div><div><strong>Introdução e desenvolvimento</strong><small>Conteúdo completo para acompanhar a ministração</small></div></div>
+      <div class="event"><div class="date"><b>03</b><small>Parte</small></div><div><strong>Perguntas para reflexão</strong><small>Questões para compartilhar durante a célula</small></div></div>
+      <div class="event"><div class="date"><b>04</b><small>Parte</small></div><div><strong>Aplicação e oração</strong><small>Prática da Palavra e encerramento do encontro</small></div></div>
+    </div>
+    <div class="notice" style="margin-top:12px">Os Apóstolos são responsáveis por disponibilizar os estudos aos líderes de células. Os líderes terão acesso ao material publicado para preparar e conduzir seus encontros.</div>
+  </section>
   <section id="oracao" class="view">
     <div class="section-head"><div><div class="eyebrow">Estamos com você</div><h2>Pedido de oração</h2></div></div>
     <div class="panel"><p>Compartilhe seu pedido com a equipe de oração. Evite incluir dados pessoais sensíveis de terceiros.</p><form id="prayerForm">
