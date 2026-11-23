@@ -1,5 +1,5 @@
-COMUNIDADE EVANGÉLICA DA ALIANÇA — VERSÃO 24
+COMUNIDADE EVANGÉLICA DA ALIANÇA — VERSÃO 25
 
-Atualização da identidade visual para marfim, vinho e dourado, mantendo a estrutura, navegação, calendário anual e áreas da versão anterior.
+Esta atualização refina somente o cabeçalho institucional: logo maior e centralizada, nome em duas linhas com tipografia serifada vinho sem sombra/contorno, filetes dourados ao redor de “31 ANOS DE HISTÓRIA” e espaçamento mais equilibrado. O restante do aplicativo foi preservado.
 
-Para publicar: envie index.html, sw.js, manifest.webmanifest e logo-alianca.png diretamente para a raiz do repositório iceasede/Alianca e confirme o Commit changes.
+No GitHub, substitua na raiz: index.html, sw.js, manifest.webmanifest e logo-alianca.png. Depois faça Commit changes.

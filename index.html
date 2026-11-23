@@ -110,12 +110,27 @@ nav button.active,nav .nav-instagram:active{color:var(--navy)}
 .visit-schedule div{background:#f4eadd;border-color:#e8d9c5}
 :focus-visible{outline:2px solid #c49a45;outline-offset:3px}
 
+
+/* Cabeçalho institucional refinado — v25 */
+header{padding:24px 18px 25px;background:#fffdf9;border-bottom:1px solid #dfc99f;box-shadow:0 4px 18px rgba(104,29,40,.045)}
+header .top{width:100%;max-width:900px}
+header .brand{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;width:100%;text-align:center}
+header .brand .mark{width:112px;height:76px;margin:0 auto;display:flex;align-items:center;justify-content:center}
+header .brand .mark img{width:100%;height:100%;object-fit:contain;filter:none}
+header .brand>div:last-child{width:100%;min-width:0;flex:none;text-align:center}
+header .brand strong{display:block;width:100%;max-width:100%;margin:0 auto;color:#681d28;font-family:Georgia,'Times New Roman',serif;font-size:clamp(17px,4.7vw,25px);font-weight:600;letter-spacing:.045em;line-height:1.16;text-align:center;text-shadow:none;white-space:normal}
+header .brand .anniversary{display:flex;align-items:center;justify-content:center;gap:10px;margin:12px auto 0;color:#9a7437;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:2.1px;line-height:1.3}
+header .brand .anniversary:before,header .brand .anniversary:after{content:'';display:block;width:30px;height:1px;background:#c49a45}
+header h1{margin:24px auto 8px;color:#681d28;font-family:Georgia,'Times New Roman',serif;font-size:clamp(27px,6vw,36px);font-weight:400;line-height:1.12;letter-spacing:-.02em;text-align:center}
+header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:center}
+@media(min-width:650px){header{padding-top:30px;padding-bottom:30px}header .brand .mark{width:128px;height:84px}header .brand strong{font-size:25px}header h1{margin-top:28px}}
+
 </style>
 </head>
 <body>
 <header>
   <div class="top">
-    <div class="brand"><div class="mark"><img src="logo-alianca.png" alt="Logo oficial da Comunidade Evangélica da Aliança"></div><div><strong>COMUNIDADE EVANGÉLICA DA ALIANÇA</strong><small class="anniversary">31 ANOS DE HISTÓRIA</small></div></div>
+    <div class="brand"><div class="mark"><img src="logo-alianca.png" alt="Logo oficial da Comunidade Evangélica da Aliança"></div><div><strong>COMUNIDADE EVANGÉLICA<br>DA ALIANÇA</strong><small class="anniversary">31 ANOS DE HISTÓRIA</small></div></div>
   </div>
   <h1>Uma família, uma aliança,<br>um propósito.</h1>
   <p>Seja bem-vindo à nossa casa. Este é o espaço de conexão da família Aliança.</p>
