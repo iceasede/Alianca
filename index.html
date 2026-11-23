@@ -354,14 +354,21 @@ const churchEvents={
 };
 function renderCalendar(calendarId,detailId,year,month){
  const el=document.getElementById(calendarId), detail=document.getElementById(detailId); if(!el||!detail)return;
+ // Força grade de sete colunas diretamente no elemento para evitar conflitos de CSS/cache em navegadores móveis.
+ el.style.setProperty('display','grid','important');
+ el.style.setProperty('grid-template-columns','repeat(7, minmax(0, 1fr))','important');
+ el.style.setProperty('grid-auto-flow','row','important');
+ el.style.setProperty('width','100%','important');
+ el.style.setProperty('gap','6px','important');
+ el.style.setProperty('align-items','center','important');
  const first=new Date(year,month-1,1), total=new Date(year,month,0).getDate();
  const monthLabel=document.getElementById(calendarId+'Month'); if(monthLabel) monthLabel.textContent=first.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
- ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'].forEach(label=>{const h=document.createElement('div');h.className='weekday';h.textContent=label;el.appendChild(h)});
- for(let i=0;i<first.getDay();i++){const blank=document.createElement('div');blank.className='day empty';el.appendChild(blank)}
+ ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'].forEach(label=>{const h=document.createElement('div');h.className='weekday';h.textContent=label;h.style.cssText='display:flex!important;align-items:center;justify-content:center;min-width:0;text-align:center;font-size:clamp(9px,2.8vw,12px);font-weight:750;padding:7px 0;';el.appendChild(h)});
+ for(let i=0;i<first.getDay();i++){const blank=document.createElement('div');blank.className='day empty';blank.style.cssText='display:block;width:100%;aspect-ratio:1/1;min-width:0;';el.appendChild(blank)}
  for(let day=1;day<=total;day++){
   const key=year+'-'+String(month).padStart(2,'0')+'-'+String(day).padStart(2,'0'), event=churchEvents[key];
-  const btn=document.createElement('button');btn.type='button';btn.className='day'+(event?' has-event':'');btn.textContent=day;
-  if(event){btn.setAttribute('aria-label',day+' - '+event.title);btn.addEventListener('click',()=>{el.querySelectorAll('.selected').forEach(x=>x.classList.remove('selected'));btn.classList.add('selected');detail.innerHTML='<strong>'+event.title+'</strong>'+String(day).padStart(2,'0')+'/'+String(month).padStart(2,'0')+'/'+year+' · '+event.time+'<br>'+event.place;});}
+  const btn=document.createElement('button');btn.type='button';btn.className='day'+(event?' has-event':'');btn.textContent=day;btn.style.cssText='display:flex!important;align-items:center;justify-content:center;width:100%;min-width:0;aspect-ratio:1/1;border:1px solid '+(event?'#9fc5df':'transparent')+';border-radius:50%;padding:0;background:'+(event?'#dcecf8':'#f0f1f3')+';color:'+(event?'#174d73':'#1e2937')+';font:600 clamp(11px,3.2vw,14px)/1 Inter,system-ui,sans-serif;';
+  if(event){btn.setAttribute('aria-label',day+' - '+event.title);btn.addEventListener('click',()=>{el.querySelectorAll('.selected').forEach(x=>{x.classList.remove('selected');x.style.background=x.classList.contains('has-event')?'#dcecf8':'#f0f1f3';x.style.color=x.classList.contains('has-event')?'#174d73':'#1e2937';});btn.classList.add('selected');btn.style.background='#223d5d';btn.style.color='#fff';detail.innerHTML='<strong>'+event.title+'</strong>'+String(day).padStart(2,'0')+'/'+String(month).padStart(2,'0')+'/'+year+' · '+event.time+'<br>'+event.place;});}
   el.appendChild(btn);
  }
 }
