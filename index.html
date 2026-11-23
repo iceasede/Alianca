@@ -32,6 +32,10 @@ button.primary{border:0;border-radius:12px;background:var(--navy);color:#fff;pad
 button.ghost{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:11px;padding:10px 13px;cursor:pointer}
 nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:center;gap:0;padding:8px max(8px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom));z-index:5}
 nav button{background:none;border:0;color:var(--muted);font-size:10px;flex:1;max-width:150px;padding:5px;cursor:pointer}nav button span{display:block;font-size:19px;margin-bottom:3px}nav button.active{color:var(--navy);font-weight:700}
+nav .nav-instagram{background:none;border:0;color:var(--muted);font-size:10px;flex:1;max-width:150px;padding:5px;text-decoration:none;text-align:center;display:block}
+nav .nav-instagram span{display:block;font-size:19px;margin-bottom:3px}
+nav .nav-instagram:active{color:var(--navy)}
+@media(max-width:390px){nav button,nav .nav-instagram{font-size:9px;padding:4px 1px}nav button span,nav .nav-instagram span{font-size:17px}}
 .brand strong{display:block;max-width:270px;font-size:clamp(13px,3.3vw,18px);line-height:1.25;letter-spacing:.035em;text-transform:uppercase}.view{display:none}.view.active{display:block}
 form{display:grid;gap:10px}label{font-size:12px;font-weight:650;color:var(--navy)}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit;background:#fff}textarea{min-height:100px;resize:vertical}
 .notice{background:#f8f3e8;border:1px solid #eadfc9;border-radius:13px;padding:13px;color:#665638;font-size:12px;line-height:1.5}
@@ -76,8 +80,6 @@ header h1, header p { text-align:center; margin-left:auto; margin-right:auto; }
 
 /* Ajustes da página inicial — versão 19 */
 header{position:relative}
-.header-instagram{position:absolute;right:18px;top:14px;display:flex;align-items:center;gap:5px;color:var(--navy2);font-size:20px;font-weight:700;text-decoration:none;padding:7px 9px;border:1px solid #eadfc9;border-radius:999px;background:#fff;z-index:2}
-.header-instagram span{font-size:10px;letter-spacing:.2px}
 .home-center{text-align:center;padding:20px 17px}
 .home-center h3{margin:0 0 9px}
 .home-center .year-verse{font-family:Georgia,serif;font-size:20px;line-height:1.45;color:var(--navy);margin:8px auto;max-width:650px}
@@ -88,7 +90,6 @@ header{position:relative}
 .visit-schedule div{background:#f3f6fa;border:1px solid #dce6ef;border-radius:12px;padding:10px 12px;display:grid;gap:3px}
 .visit-schedule strong{color:var(--navy)}
 .visit-schedule span{font-size:13px;color:var(--muted)}
-@media(max-width:390px){.header-instagram{right:10px;top:9px;padding:6px 7px}.header-instagram span{display:none}}
 
 </style>
 </head>
@@ -96,7 +97,6 @@ header{position:relative}
 <header>
   <div class="top">
     <div class="brand"><div class="mark"><img src="logo-alianca.png" alt="Logo oficial da Comunidade Evangélica da Aliança"></div><div><strong>COMUNIDADE EVANGÉLICA DA ALIANÇA</strong><small class="anniversary">31 ANOS DE HISTÓRIA</small></div></div>
-    <a class="header-instagram" href="https://www.instagram.com/iceasedeof/" target="_blank" rel="noopener" aria-label="Instagram oficial da igreja" title="Instagram oficial">◎<span>Instagram</span></a>
   </div>
   <h1>Uma família, uma aliança,<br>um propósito.</h1>
   <p>Seja bem-vindo à nossa casa. Este é o espaço de conexão da família Aliança.</p>
@@ -125,7 +125,7 @@ header{position:relative}
       <div id="homeEventDetail" class="calendar-detail" aria-live="polite">Toque em uma data destacada para ver os detalhes do encontro.</div>
     </div>
     <div class="panel home-center"><div class="eyebrow">Versículo do ano</div><h3 class="year-verse">“O meu Deus, segundo as suas riquezas, suprirá todas as vossas necessidades em glória, por Cristo Jesus.”</h3><p><strong>Filipenses 4:19</strong></p></div>
-    <div class="panel home-center"><div class="eyebrow">Esperamos por você</div><h3>Visite nossa igreja</h3><p><strong>Comunidade Evangélica da Aliança</strong></p><p class="church-address">Quadra 06, Área Especial 01, Setor Veredas, Brazlândia/DF</p><div class="visit-schedule"><div><strong>Quinta-feira</strong><span>Culto de cura e libertação — 20h</span></div><div><strong>Domingo</strong><span>Culto para toda a família — 19h</span></div></div></div>
+    <div class="panel home-center" id="visitSection"><div class="eyebrow">Esperamos por você</div><h3>Visite nossa igreja</h3><p><strong>Comunidade Evangélica da Aliança</strong></p><p class="church-address">Quadra 06, Área Especial 01, Setor Veredas, Brazlândia/DF</p><div class="visit-schedule"><div><strong>Quinta-feira</strong><span>Culto de cura e libertação — 20h</span></div><div><strong>Domingo</strong><span>Culto para toda a família — 19h</span></div></div></div>
   </section>
 
   <section id="agenda" class="view">
@@ -337,11 +337,19 @@ header{position:relative}
   <button data-go="agenda"><span>▦</span>Agenda</button>
   <button data-go="oracao"><span>♡</span>Oração</button>
   <button data-go="membros"><span>♙</span>Membros</button>
+  <button type="button" id="cultosNav"><span>✧</span>Cultos</button>
+  <a class="nav-instagram" href="https://www.instagram.com/iceasedeof/" target="_blank" rel="noopener" aria-label="Instagram oficial da igreja"><span>◎</span>Instagram</a>
 </nav>
 <script>
 const views=[...document.querySelectorAll('.view')], nav=[...document.querySelectorAll('nav button')];
 function go(id){views.forEach(v=>v.classList.toggle('active',v.id===id));nav.forEach(b=>b.classList.toggle('active',b.dataset.go===id));window.scrollTo({top:0,behavior:'smooth'});}
 document.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click',()=>go(el.dataset.go)));
+
+document.getElementById('cultosNav')?.addEventListener('click',()=>{
+  const home=document.getElementById('home');
+  if(!home.classList.contains('active')) go('home');
+  setTimeout(()=>document.getElementById('visitSection')?.scrollIntoView({behavior:'smooth',block:'center'}),80);
+});
 
 const churchEvents={
 '2026-11-01':{title:'Santa Ceia do Senhor',time:'19h',place:'Na igreja'},
