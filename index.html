@@ -10,12 +10,12 @@
 <style>
 :root{--navy:#172b46;--navy2:#223d5d;--gold:#c6a66a;--cream:#f6f4ef;--ink:#1e2937;--muted:#6b7280;--white:#fff;--line:#e7e4dd}
 *{box-sizing:border-box}body{margin:0;background:var(--cream);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
-header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:26px 20px 24px;border-radius:0 0 26px 26px}
+header{background:#fff;color:var(--navy);padding:26px 20px 24px;border-bottom:1px solid #eadfc9;border-radius:0 0 26px 26px;box-shadow:0 5px 20px #17365d0a}
 .top{display:flex;align-items:center;justify-content:space-between;max-width:900px;margin:auto}
 .brand{display:flex;gap:12px;align-items:center}.mark{width:116px;height:58px;background:transparent;border-radius:0;display:flex;align-items:center;justify-content:center;overflow:visible;padding:0}.mark img{width:100%;height:100%;object-fit:contain}
-.brand strong{display:block;letter-spacing:1.6px;font-size:16px}.brand small{color:#d7deea;font-size:9px;letter-spacing:1.5px}
-header h1{font-family:Georgia,serif;font-weight:500;font-size:29px;line-height:1.15;max-width:650px;margin:32px auto 8px}
-header p{max-width:650px;margin:0 auto;color:#dbe3ed;font-size:14px}
+.brand strong{display:block;letter-spacing:1.1px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(15px,4vw,20px);line-height:1.25;color:var(--navy);text-shadow:1px 1px 0 #d9bd80,-1px -1px 0 #d9bd80,1px -1px 0 #d9bd80,-1px 1px 0 #d9bd80}.brand small{display:block;color:var(--navy2);font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:2px;margin-top:4px}.brand .anniversary{color:#b58a3b;font-family:Arial,sans-serif;font-size:8px;font-weight:700;letter-spacing:1px;margin-top:5px}
+header h1{font-family:Georgia,serif;font-weight:500;font-size:29px;line-height:1.15;max-width:650px;margin:32px auto 8px;color:var(--navy)}
+header p{max-width:650px;margin:0 auto;color:#586779;font-size:14px}
 main{max-width:900px;margin:0 auto;padding:20px 16px 100px}
 .section-head{display:flex;align-items:center;justify-content:space-between;margin:24px 2px 12px}
 h2{font-family:Georgia,serif;font-size:22px;font-weight:500;margin:0;color:var(--navy)}
@@ -42,7 +42,7 @@ footer{text-align:center;color:#8a8a87;font-size:10px;padding:22px 0}
 <body>
 <header>
   <div class="top">
-    <div class="brand"><div class="mark"><img src="logo-alianca.png" alt="Logo oficial da Comunidade Evangélica da Aliança"></div><div><strong>COMUNIDADE ALIANÇA</strong><small>EVANGÉLICA</small></div></div>
+    <div class="brand"><div class="mark"><img src="logo-alianca.png" alt="Logo oficial da Comunidade Evangélica da Aliança"></div><div><strong>COMUNIDADE ALIANÇA</strong><small>EVANGÉLICA</small><small class="anniversary">31 ANOS DE HISTÓRIA • DESDE MAIO DE 1995</small></div></div>
     <div aria-label="Menu" style="font-size:22px;color:#e4d3ad">✧</div>
   </div>
   <h1>Uma família, uma aliança,<br>um propósito.</h1>
@@ -54,6 +54,7 @@ footer{text-align:center;color:#8a8a87;font-size:10px;padding:22px 0}
     <div class="grid">
       <button class="tile" data-go="agenda"><span class="ico">▦</span><b>Agenda</b><small>Cultos e eventos</small></button>
       <button class="tile" data-go="ministerios"><span class="ico">♧</span><b>Ministérios</b><small>Servir e participar</small></button>
+      <button class="tile" data-go="kids"><span class="ico">♡</span><b>Espaço Kids</b><small>Atividades e novidades das crianças</small></button>
       <button class="tile" data-go="celulas"><span class="ico">⌂</span><b>Estudo da célula</b><small>Estudos bíblicos e roteiros</small></button>
       <button class="tile" data-go="oracao"><span class="ico">♡</span><b>Pedidos de oração</b><small>Conte com nossa oração</small></button>
       <button class="tile" data-go="ao-vivo"><span class="ico">▷</span><b>Cultos ao vivo</b><small>Assista e acompanhe</small></button>
@@ -62,7 +63,10 @@ footer{text-align:center;color:#8a8a87;font-size:10px;padding:22px 0}
     </div>
     <div class="section-head"><div><div class="eyebrow">Fique por dentro</div><h2>Próximos encontros</h2></div><button class="ghost" data-go="agenda">Ver agenda</button></div>
     <div class="panel">
-      <div class="event"><div class="date"><b>—</b><small>Data</small></div><div><strong>Programação em atualização</strong><small>Em breve você encontrará aqui os próximos cultos e eventos.</small></div></div>
+      <div class="event"><div class="date"><b>DOM</b><small>19h</small></div><div><strong>Culto para toda a família</strong><small>Todos os domingos</small></div></div>
+      <div class="event"><div class="date"><b>QUI</b><small>20h</small></div><div><strong>Culto de cura e libertação</strong><small>Todas as quintas-feiras</small></div></div>
+      <div class="event"><div class="date"><b>QUA</b><small>—</small></div><div><strong>Células</strong><small>Encontros nos lares; endereços e líderes serão divulgados</small></div></div>
+      <div class="event"><div class="date"><b>SEG–SEX</b><small>08h–10h</small></div><div><strong>Oração de mulheres</strong><small>De segunda a sexta-feira</small></div></div>
     </div>
     <div class="panel"><h3>“Eu e a minha casa serviremos ao Senhor.”</h3><p>Josué 24:15</p></div>
     <div class="panel"><h3>Visite nossa igreja</h3><p>Comunidade Evangélica da Aliança</p><p style="margin-top:7px">Quadra 06, Área Especial 01, Setor Veredas, Brazlândia/DF</p></div>
@@ -71,13 +75,47 @@ footer{text-align:center;color:#8a8a87;font-size:10px;padding:22px 0}
 
   <section id="agenda" class="view">
     <div class="section-head"><div><div class="eyebrow">Participe</div><h2>Agenda da igreja</h2></div></div>
-    <div class="notice">A agenda oficial será atualizada pela equipe responsável. Os horários abaixo são campos de demonstração até recebermos a programação atual.</div>
     <div class="panel">
-      <div class="event"><div class="date"><b>TER</b><small>20h</small></div><div><strong>Monte de oração</strong><small>Encontro semanal</small></div></div>
-      <div class="event"><div class="date"><b>QUA</b><small>20h</small></div><div><strong>Células</strong><small>Encontros nos lares</small></div></div>
-      <div class="event"><div class="date"><b>QUI</b><small>20h</small></div><div><strong>Culto de cura e libertação</strong><small>Culto presencial</small></div></div>
-      <div class="event"><div class="date"><b>DOM</b><small>19h</small></div><div><strong>Culto da Família</strong><small>Um tempo para toda a família</small></div></div>
+      <div class="eyebrow">Programação semanal</div>
+      <div class="event"><div class="date"><b>DOM</b><small>19h</small></div><div><strong>Culto para toda a família</strong><small>Todos os domingos</small></div></div>
+      <div class="event"><div class="date"><b>QUI</b><small>20h</small></div><div><strong>Culto de cura e libertação</strong><small>Todas as quintas-feiras</small></div></div>
+      <div class="event"><div class="date"><b>QUA</b><small>—</small></div><div><strong>Células</strong><small>Encontros nos lares; endereços e líderes serão divulgados</small></div></div>
+      <div class="event"><div class="date"><b>SEG–SEX</b><small>08h–10h</small></div><div><strong>Oração de mulheres</strong><small>De segunda a sexta-feira</small></div></div>
     </div>
+    <div class="section-head"><div><div class="eyebrow">Programação especial</div><h2>Agenda mensal</h2></div></div>
+    <div class="panel">
+      <h3>Agenda do mês</h3>
+      <p>Este espaço será atualizado mensalmente com cultos especiais, conferências, encontros, campanhas e atividades dos departamentos.</p>
+      <div style="margin-top:14px;padding:16px;border:1px dashed var(--line);border-radius:12px;text-align:center">
+        <div style="font-size:26px;margin-bottom:7px">🗓️</div>
+        <strong style="font-size:13px">Programação mensal em preparação</strong>
+        <p style="margin-top:6px">A agenda do mês será publicada aqui assim que estiver definida.</p>
+      </div>
+    </div>
+    <div class="section-head"><div><div class="eyebrow">Encontre uma célula</div><h2>Células de quarta-feira</h2></div></div>
+    <div class="notice">Os endereços dos encontros e os nomes dos líderes serão incluídos aqui assim que forem enviados, para que os membros encontrem a célula mais próxima.</div>
+  </section>
+
+  <section id="kids" class="view">
+    <div class="section-head"><div><div class="eyebrow">Cuidado, fé e aprendizado</div><h2>Espaço Kids</h2></div></div>
+    <div class="notice">Durante as programações da igreja, as crianças contam com um espaço preparado para acolhimento, cuidado e atividades adequadas à sua faixa etária.</div>
+    <div class="panel">
+      <h3>Acompanhe as atividades das crianças</h3>
+      <p>Este será o canal para os pais e responsáveis acompanharem os temas, histórias bíblicas, atividades, projetos e avisos do Departamento Infantil.</p>
+    </div>
+    <div class="section-head"><div><div class="eyebrow">Informações para as famílias</div><h2>Novidades do Departamento Infantil</h2></div></div>
+    <div class="panel">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div style="font-size:26px">🎨</div>
+        <div><strong style="font-size:13px;color:var(--navy)">Atividades e registros</strong><small style="display:block;color:var(--muted);font-size:11px">Conteúdos publicados pela equipe infantil</small></div>
+      </div>
+      <p>Em breve, os pais poderão consultar aqui os resumos das aulas, versículos trabalhados, atividades realizadas e comunicados importantes.</p>
+      <div style="margin-top:14px;padding:15px;border:1px dashed var(--line);border-radius:12px;text-align:center">
+        <strong style="font-size:13px">A programação infantil será publicada aqui</strong>
+        <p style="margin-top:6px">Acompanhe as novidades do Departamento Infantil da Comunidade Aliança.</p>
+      </div>
+    </div>
+    <div class="notice" style="margin-top:12px">Para preservar a segurança das crianças, fotos, nomes e informações individuais somente deverão ser publicados com autorização dos pais ou responsáveis. Este espaço ainda será conectado a um sistema de publicação da equipe responsável.</div>
   </section>
 
   <section id="ministerios" class="view">

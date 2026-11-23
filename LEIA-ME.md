@@ -64,3 +64,22 @@ Os Apóstolos são responsáveis por disponibilizar os estudos oficiais diretame
 
 ## Ajuste visual da marca
 A logo PNG agora possui fundo transparente, e o cartão branco atrás da marca foi removido para integrar a imagem ao fundo azul-marinho do cabeçalho.
+
+
+## Atualização visual e agenda semanal
+- Cabeçalho alterado para fundo branco.
+- Nome institucional em azul-marinho com contorno/detalhe dourado e tipografia serifada elegante.
+- Culto para toda a família: domingos às 19h.
+- Culto de cura e libertação: quintas-feiras às 20h.
+- Células: quartas-feiras; endereços e líderes serão inseridos após recebimento.
+- Oração de mulheres: segunda a sexta-feira, das 08h às 10h.
+- Criada área para publicação da agenda mensal.
+
+
+## 31 anos de história
+Identificação institucional adicionada ao cabeçalho: “31 ANOS DE HISTÓRIA • DESDE MAIO DE 1995”, considerando o aniversário de 31 anos celebrado em maio de 2026.
+
+
+## Espaço Kids
+Foi criada uma seção chamada Espaço Kids para apresentar a salinha/área infantil da igreja e disponibilizar aos pais e responsáveis informações sobre temas, histórias bíblicas, atividades e avisos do Departamento Infantil.
+A publicação dinâmica ainda depende de um painel/sistema de gestão. Não inserir fotos, nomes ou dados identificáveis de crianças sem autorização dos responsáveis.
