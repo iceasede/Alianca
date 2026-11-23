@@ -1,5 +1,9 @@
-COMUNIDADE EVANGÉLICA DA ALIANÇA — VERSÃO 20
+COMUNIDADE EVANGÉLICA DA ALIANÇA — ATUALIZAÇÃO V22
 
-Alterações: os atalhos Cultos e Instagram foram colocados na barra inferior, ao lado de Membros. O atalho Cultos leva à seção Visite nossa igreja, onde estão os horários de quinta-feira (20h) e domingo (19h). O Instagram abre @iceasedeof. O atalho do Instagram foi removido do cabeçalho.
+Alterações:
+- Removido o quadro com os horários dos cultos da página inicial.
+- Criada uma página própria “Cultos”, acessada pelo botão Cultos da barra inferior.
+- A página Cultos mostra: quinta-feira, 20h — Culto de cura e libertação; domingo, 19h — Culto para toda a família.
+- Atualizado o cache do service worker para v22.
 
-Para publicar: envie index.html, sw.js, manifest.webmanifest e logo-alianca.png diretamente para a raiz do repositório GitHub, substituindo os arquivos anteriores, e faça Commit changes.
+No GitHub, envie os arquivos diretamente para a raiz do repositório, substituindo os arquivos de mesmo nome. Faça Commit changes.
