@@ -60,3 +60,7 @@ A interface está preparada, mas ainda não há estudos reais publicados nem arm
 
 ## Fluxo dos Estudos da Célula — corrigido
 Os Apóstolos são responsáveis por disponibilizar os estudos oficiais diretamente aos líderes de células. Os líderes acessam o material para leitura no aplicativo e download do PDF. A biblioteca mantém o histórico dos estudos anteriores. Não há fluxo de envio de estudos pelos líderes nesta definição.
+
+
+## Ajuste visual da marca
+A logo PNG agora possui fundo transparente, e o cartão branco atrás da marca foi removido para integrar a imagem ao fundo azul-marinho do cabeçalho.
