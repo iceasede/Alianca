@@ -83,3 +83,11 @@ Identificação institucional adicionada ao cabeçalho: “31 ANOS DE HISTÓRIA 
 ## Espaço Kids
 Foi criada uma seção chamada Espaço Kids para apresentar a salinha/área infantil da igreja e disponibilizar aos pais e responsáveis informações sobre temas, histórias bíblicas, atividades e avisos do Departamento Infantil.
 A publicação dinâmica ainda depende de um painel/sistema de gestão. Não inserir fotos, nomes ou dados identificáveis de crianças sem autorização dos responsáveis.
+
+
+## Atualização de programação e páginas institucionais
+- Programação semanal na ordem solicitada: oração de mulheres (segunda a sexta, 08h–10h), células (quarta, 20h), culto de cura e libertação (quinta, 20h) e culto para toda a família (domingo, 19h).
+- Semana de Primícias: primeira semana de cada mês, das 20h às 21h, na igreja.
+- Criadas páginas para Sobre Nós, Conheça Nosso Presbitério e Nossas Filiais (Jardim Botânico e Vendinha/GO).
+- O cabeçalho agora apresenta o nome na ordem “COMUNIDADE EVANGÉLICA DA ALIANÇA”.
+- Os endereços das filiais e os nomes/fotos do presbitério ainda dependem de confirmação da igreja.
