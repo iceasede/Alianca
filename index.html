@@ -59,6 +59,22 @@ header h1, header p { text-align:center; margin-left:auto; margin-right:auto; }
   header .mark { width:100px; height:66px; }
   header .brand strong { font-size:18px; letter-spacing:.025em; }
 }
+
+/* Calendario responsivo: sete colunas fixas, dias alinhados e eventos destacados */
+.calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;width:100%;margin-top:12px;align-items:center}
+.calendar .weekday{display:flex;align-items:center;justify-content:center;min-width:0;color:var(--muted);font-size:12px;font-weight:750;padding:7px 0;text-align:center}
+.calendar .day{appearance:none;-webkit-appearance:none;display:flex;align-items:center;justify-content:center;width:100%;min-width:0;aspect-ratio:1/1;border:1px solid transparent;border-radius:50%;padding:0;background:#f0f1f3;color:var(--ink);font:600 13px/1 Inter,system-ui,sans-serif;cursor:default}
+.calendar .day.empty{background:transparent;border-color:transparent}
+.calendar .day.has-event{background:#dcecf8;border:1px solid #9fc5df;color:#174d73;font-weight:800;cursor:pointer;box-shadow:inset 0 0 0 1px #ffffff}
+.calendar .day.has-event::after{content:'';width:4px;height:4px;border-radius:50%;background:#c49b4e;position:absolute;margin-top:27px}
+.calendar .day{position:relative}
+.calendar .day.selected{background:var(--navy2);border-color:var(--navy2);color:#fff}
+.calendar .day.selected::after{background:#f3d28b}
+.calendar-detail{margin-top:14px;padding:12px 14px;border-radius:12px;background:#f7f3e9;border:1px solid #eadfc9;color:var(--ink);font-size:13px;line-height:1.5;min-height:46px}
+.calendar-detail strong{display:block;color:var(--navy);font-size:14px;margin-bottom:3px}
+.calendar-month{margin-top:8px;color:var(--navy);font-family:Georgia,serif;font-size:17px;font-weight:600}
+@media(min-width:650px){.calendar{gap:10px}.calendar .day{max-width:48px;justify-self:center}.calendar .weekday{font-size:13px}}
+
 </style>
 </head>
 <body>
@@ -90,6 +106,7 @@ header h1, header p { text-align:center; margin-left:auto; margin-right:auto; }
     <div class="section-head"><div><div class="eyebrow">Fique por dentro</div><h2>Próximos encontros</h2></div><button class="ghost" data-go="agenda">Ver agenda</button></div>
     <div class="panel">
       <div class="eyebrow">Calendário dos próximos encontros</div>
+      <div id="homeCalendarMonth" class="calendar-month">Dezembro de 2026</div>
       <div id="homeCalendar" class="calendar"></div>
       <div id="homeEventDetail" class="calendar-detail" aria-live="polite">Toque em uma data destacada para ver os detalhes do encontro.</div>
     </div>
@@ -338,7 +355,8 @@ const churchEvents={
 function renderCalendar(calendarId,detailId,year,month){
  const el=document.getElementById(calendarId), detail=document.getElementById(detailId); if(!el||!detail)return;
  const first=new Date(year,month-1,1), total=new Date(year,month,0).getDate();
- ['D','S','T','Q','Q','S','S'].forEach(label=>{const h=document.createElement('div');h.className='weekday';h.textContent=label;el.appendChild(h)});
+ const monthLabel=document.getElementById(calendarId+'Month'); if(monthLabel) monthLabel.textContent=first.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+ ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'].forEach(label=>{const h=document.createElement('div');h.className='weekday';h.textContent=label;el.appendChild(h)});
  for(let i=0;i<first.getDay();i++){const blank=document.createElement('div');blank.className='day empty';el.appendChild(blank)}
  for(let day=1;day<=total;day++){
   const key=year+'-'+String(month).padStart(2,'0')+'-'+String(day).padStart(2,'0'), event=churchEvents[key];
