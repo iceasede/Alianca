@@ -1,7 +1,5 @@
-ATUALIZAÇÃO V23 — NAVEGAÇÃO CULTOS
+COMUNIDADE EVANGÉLICA DA ALIANÇA — VERSÃO 24
 
-Substitua os arquivos diretamente na raiz do repositório iceasede/Alianca.
-Envie index.html, sw.js, manifest.webmanifest e logo-alianca.png.
+Atualização da identidade visual para marfim, vinho e dourado, mantendo a estrutura, navegação, calendário anual e áreas da versão anterior.
 
-O botão CULTOS da barra inferior agora é um link de navegação direta para a seção exclusiva #cultos. Os horários não devem aparecer na página inicial.
-Após Commit changes, feche a aba do Safari e reabra o site.
+Para publicar: envie index.html, sw.js, manifest.webmanifest e logo-alianca.png diretamente para a raiz do repositório iceasede/Alianca e confirme o Commit changes.
