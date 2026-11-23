@@ -1,98 +1,13 @@
-# Aplicativo Aliança — protótipo inicial
+COMUNIDADE EVANGÉLICA DA ALIANÇA — PACOTE COMPLETO ATUALIZADO
 
-Este pacote contém a primeira interface navegável do aplicativo da Comunidade Evangélica da Aliança.
+Este pacote reúne a versão acumulada mais recente do aplicativo.
 
-## Identidade visual
-A logo oficial enviada foi incluída no cabeçalho do aplicativo como `logo-alianca.png`.
+Arquivos: index.html, sw.js, manifest.webmanifest, logo-alianca.png.
 
-## O que já está incluído
-- Layout responsivo para celular e computador.
-- Navegação entre Início, Agenda, Ministérios, Pedidos de oração, Devocional, Área de membros, Contribuições e Galeria.
-- Manifesto PWA e service worker inicial para permitir instalação quando hospedado em HTTPS.
-- Conteúdo demonstrativo claramente identificado.
+Inclui: identidade visual e cabeçalho em uma linha; versículo do ano Filipenses 4:19; programação semanal; Semana de Primícias; agendas de novembro e dezembro; Santa Ceia em 06/12 às 19h; culto de gratidão das crianças em 12/12 às 19h30; confraternização das células em 19/12 às 19h30; culto da virada em 31/12 às 20h; aniversariantes; ministérios Homens, Liderança e Diaconato com espaço de escala; filiais Jardim Botânico e Vendinha com endereços e campos para pastores responsáveis e agenda; Sobre nós; presbitério; Espaço Kids; Mídia/galeria.
 
-## Importante: ainda não é uma versão pronta para os membros
-Não há banco de dados, autenticação, envio real de pedidos, notificações push, pagamentos, upload de fotos ou painel administrativo. Essas partes precisam ser conectadas e testadas antes de divulgar o aplicativo. Em especial, cadastro e área de membros devem usar autenticação e regras de acesso seguras.
+Não inclui cultos on-line ou transmissão ao vivo.
 
-## Próximas informações necessárias
-1. Logo oficial em PNG/SVG e cores institucionais (se houver).
-2. Endereço da igreja e contatos oficiais.
-3. Programação atual confirmada.
-5. Chave Pix e instruções oficiais, somente se a liderança quiser exibir no app.
-6. Lista de ministérios e responsáveis que podem ser divulgados.
+PUBLICAÇÃO: extraia o ZIP e envie/substitua TODOS os arquivos na raiz do repositório GitHub Pages, mantendo os nomes. Faça Commit changes. Não apague arquivos existentes que não estejam neste pacote.
 
-## Como visualizar
-Abra `index.html` no navegador para testar a interface. Para instalar como PWA, publique os arquivos em um domínio HTTPS; depois use “Adicionar à Tela de Início” no iPhone ou “Instalar app” no Android, conforme o navegador.
-
-
-## Administração definida
-A igreja escolheu uma **equipe de administradores**. Na próxima etapa, recomendamos permissões por função:
-- **Administrador geral:** configura o aplicativo e gerencia acessos.
-- **Comunicação:** publica avisos, agenda, fotos e vídeos.
-- **Líderes de ministérios:** enviam propostas de atualização do próprio departamento, sem publicação direta.
-- **Apóstolos:** avaliam e aprovam as alterações antes de qualquer publicação.
-- **Equipe de oração:** acessa somente os pedidos de oração autorizados.
-
-Essas permissões ainda precisam ser implementadas no backend com login individual, regras de acesso e proteção dos dados. Não compartilhe senhas entre os administradores.
-
-## Fluxo obrigatório de aprovação
-Toda alteração enviada por líderes de ministérios deve ficar como **pendente de avaliação**. Somente os Apóstolos podem aprovar a publicação. O sistema final deverá registrar quem enviou, quem avaliou, a decisão e a data, sem permitir publicação direta pelo líder.
-
-
-## Nome do repositório
-Nome recomendado: `alianca` (simples, sem hífen ou acento). Ao renomear o repositório no GitHub, o endereço do GitHub Pages também mudará para `https://iceasede.github.io/alianca/` depois da publicação.
-
-
-## Área de Estudo da Célula
-Foi adicionada à tela inicial uma área para disponibilizar estudos bíblicos e roteiros das células. O conteúdo permanece demonstrativo até a igreja fornecer os estudos oficiais. Sugestões enviadas por líderes devem ser avaliadas e aprovadas pelos Apóstolos antes da publicação.
-
-
-## Estudos da Célula: leitura + PDF + biblioteca
-A área de Estudos da Célula foi organizada para oferecer:
-- leitura integral do estudo dentro do aplicativo;
-- arquivo PDF para baixar;
-- biblioteca permanente com todos os estudos anteriores;
-- publicação somente após avaliação e aprovação dos Apóstolos.
-
-A interface está preparada, mas ainda não há estudos reais publicados nem armazenamento/administração conectados. Para ativar a publicação de PDFs e a biblioteca dinâmica, será necessário configurar uma área segura de administração e armazenamento dos materiais aprovados.
-
-
-## Fluxo dos Estudos da Célula — corrigido
-Os Apóstolos são responsáveis por disponibilizar os estudos oficiais diretamente aos líderes de células. Os líderes acessam o material para leitura no aplicativo e download do PDF. A biblioteca mantém o histórico dos estudos anteriores. Não há fluxo de envio de estudos pelos líderes nesta definição.
-
-
-## Ajuste visual da marca
-A logo PNG agora possui fundo transparente, e o cartão branco atrás da marca foi removido para integrar a imagem ao fundo azul-marinho do cabeçalho.
-
-
-## Atualização visual e agenda semanal
-- Cabeçalho alterado para fundo branco.
-- Nome institucional em azul-marinho com contorno/detalhe dourado e tipografia serifada elegante.
-- Culto para toda a família: domingos às 19h.
-- Culto de cura e libertação: quintas-feiras às 20h.
-- Células: quartas-feiras; endereços e líderes serão inseridos após recebimento.
-- Oração de mulheres: segunda a sexta-feira, das 08h às 10h.
-- Criada área para publicação da agenda mensal.
-
-
-## 31 anos de história
-Identificação institucional adicionada ao cabeçalho: “31 ANOS DE HISTÓRIA • DESDE MAIO DE 1995”, considerando o aniversário de 31 anos celebrado em maio de 2026.
-
-
-## Espaço Kids
-Foi criada uma seção chamada Espaço Kids para apresentar a salinha/área infantil da igreja e disponibilizar aos pais e responsáveis informações sobre temas, histórias bíblicas, atividades e avisos do Departamento Infantil.
-A publicação dinâmica ainda depende de um painel/sistema de gestão. Não inserir fotos, nomes ou dados identificáveis de crianças sem autorização dos responsáveis.
-
-
-## Atualização de programação e páginas institucionais
-- Programação semanal na ordem solicitada: oração de mulheres (segunda a sexta, 08h–10h), células (quarta, 20h), culto de cura e libertação (quinta, 20h) e culto para toda a família (domingo, 19h).
-- Semana de Primícias: primeira semana de cada mês, das 20h às 21h, na igreja.
-- Criadas páginas para Sobre Nós, Conheça Nosso Presbitério e Nossas Filiais (Jardim Botânico e Vendinha/GO).
-- O cabeçalho agora apresenta o nome na ordem “COMUNIDADE EVANGÉLICA DA ALIANÇA”.
-- Os endereços das filiais e os nomes/fotos do presbitério ainda dependem de confirmação da igreja.
-
-
-Atualização mais recente: cabeçalho em caixa alta com “COMUNIDADE EVANGÉLICA DA ALIANÇA” e “31 ANOS DE HISTÓRIA”; versículo do ano atualizado para Filipenses 4:19; não haverá transmissão de cultos pelo aplicativo.
-
-
-Atualização v6: reforçada a remoção de qualquer seção, botão ou menu de culto on-line/ao vivo e renovado o cache do aplicativo para que a versão nova seja carregada.
+OBSERVAÇÃO: áreas como mídia, aniversariantes, escala, agendas das filiais e presbitério são espaços preparados para conteúdo; não significam que já exista painel administrativo, banco de dados ou publicação dinâmica conectada.
