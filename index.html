@@ -145,6 +145,7 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
 <main>
   <section id="home" class="view active">
     <div class="section-head"><div><div class="eyebrow">Conectados em fé</div><h2>Bem-vindo à Igreja</h2></div></div>
+    <div id="authWelcome" class="notice" hidden role="status" aria-live="polite" style="margin-bottom:14px"></div>
     <div class="grid">
       <button class="tile" data-go="sobre"><span class="ico">✧</span><b>Sobre nós</b><small>Nossa história e propósito</small></button>
       <button class="tile" data-go="presbiterio"><span class="ico">♙</span><b>Conheça nosso presbitério</b><small>Liderança espiritual</small></button>
@@ -407,7 +408,7 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
     </div>
     <div class="notice" style="margin-top:12px">A equipe de Mídia enviará fotos e vídeos para aprovação da administração antes da publicação. A galeria será restrita a membros autenticados. Imagens de crianças e pessoas identificáveis dependerão das autorizações necessárias. O envio, a aprovação e o controle de acesso ainda serão conectados ao sistema seguro.</div>
   </section>
-  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 29</footer>
+  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 34</footer>
 </main>
 <nav>
   <button class="active" data-go="home"><span>⌂</span>Início</button>
@@ -424,6 +425,13 @@ const SUPABASE_PUBLISHABLE_KEY="sb_publishable_XjjIJ8noOKsVmGA5Z_ssEw_AzmYuMpa";
 const supabaseClient=window.supabase?.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const views=[...document.querySelectorAll('.view')], nav=[...document.querySelectorAll('nav button')];
 function go(id){views.forEach(v=>v.classList.toggle('active',v.id===id));nav.forEach(b=>b.classList.toggle('active',b.dataset.go===id));window.scrollTo({top:0,behavior:'smooth'});}
+function showHomeAfterAuthentication(user){
+ const welcome=document.getElementById('authWelcome');
+ const name=user?.user_metadata?.full_name||user?.email||'bem-vindo(a)';
+ if(welcome){welcome.textContent='Acesso realizado com sucesso. Olá, '+name+'! Seja bem-vindo(a) à nossa família.';welcome.hidden=false;}
+ go('home');
+ history.replaceState(null,'',location.pathname+location.search);
+}
 document.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click',()=>go(el.dataset.go)));
 
 document.getElementById('cultosNav')?.addEventListener('click',event=>{event.preventDefault();go('cultos');history.replaceState(null,'','#cultos');});
@@ -520,7 +528,31 @@ registrationForm.addEventListener('submit',async e=>{
  finally{submit.disabled=false;submit.textContent='Enviar cadastro';}
 });
 const memberForm=document.getElementById('memberForm');
-memberForm.addEventListener('submit',async e=>{e.preventDefault();const box=document.getElementById('memberAuthMessage');box.hidden=false;if(!supabaseClient){box.textContent='Serviço de autenticação indisponível. Tente novamente mais tarde.';return;}const button=memberForm.querySelector('button[type="submit"]');button.disabled=true;button.textContent='Entrando...';try{const {data,error}=await supabaseClient.auth.signInWithPassword({email:document.getElementById('memberEmail').value.trim(),password:document.getElementById('memberPass').value});if(error)throw error;box.textContent='Acesso realizado com sucesso. Olá, '+(data.user.user_metadata?.full_name||data.user.email)+'!';}catch(error){box.textContent=error.message||'Não foi possível entrar. Confira o e-mail, a senha e a confirmação do e-mail.';}finally{button.disabled=false;button.textContent='Entrar';}});
+memberForm.addEventListener('submit',async e=>{
+ e.preventDefault();
+ const box=document.getElementById('memberAuthMessage');
+ box.hidden=false;
+ if(!supabaseClient){box.textContent='Serviço de autenticação indisponível. Tente novamente mais tarde.';return;}
+ const button=memberForm.querySelector('button[type="submit"]');
+ button.disabled=true;button.textContent='Entrando...';
+ try{
+  const {data,error}=await supabaseClient.auth.signInWithPassword({email:document.getElementById('memberEmail').value.trim(),password:document.getElementById('memberPass').value});
+  if(error)throw error;
+  showHomeAfterAuthentication(data.user);
+  memberForm.reset();
+ }catch(error){box.textContent=error.message||'Não foi possível entrar. Confira o e-mail, a senha e a confirmação do e-mail.';}
+ finally{button.disabled=false;button.textContent='Entrar';}
+});
+
+// Quando a pessoa confirma o e-mail e retorna ao aplicativo, ou conclui o login,
+// a sessão autenticada também a leva à página inicial.
+if(supabaseClient){
+ supabaseClient.auth.onAuthStateChange((event,session)=>{
+  if(event==='SIGNED_IN' && session?.user){
+   showHomeAfterAuthentication(session.user);
+  }
+ });
+}
 document.getElementById('memberSignupBtn').addEventListener('click',event=>{event.preventDefault();go('cadastro');showRegistrationStep(1);history.replaceState(null,'','#cadastro');document.getElementById('regName').focus({preventScroll:true});window.scrollTo({top:0,behavior:'smooth'});});
 document.getElementById('memberForgotBtn').addEventListener('click',async()=>{const email=document.getElementById('memberEmail').value.trim();const box=document.getElementById('memberAuthMessage');box.hidden=false;if(!email){box.textContent='Informe seu e-mail acima para receber o link de redefinição de senha.';document.getElementById('memberEmail').focus();return;}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;box.textContent='Se houver uma conta para esse e-mail, enviaremos as instruções para redefinir a senha.';}catch(error){box.textContent=error.message||'Não foi possível solicitar a redefinição agora.';}});
 

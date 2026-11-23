@@ -23,3 +23,11 @@ Para atualizar: extraia o ZIP e substitua os arquivos na raiz do repositório Gi
 - O botão “Quero me cadastrar” direciona diretamente para a primeira etapa do cadastro.
 - A versão mantém a integração de autenticação Supabase já configurada na versão anterior.
 - O cache do aplicativo foi atualizado para forçar a recarga dos arquivos após a publicação.
+
+
+## Versão 34 — redirecionamento após autenticação
+- Após entrar com e-mail e senha, o usuário é levado automaticamente à página inicial.
+- A página inicial exibe uma saudação de acesso realizado.
+- O mesmo redirecionamento é aplicado quando o Supabase informa uma sessão autenticada, inclusive após confirmação de e-mail.
+- A sessão continua sendo mantida pelo Supabase Auth no navegador.
+- O cache do service worker foi atualizado para a versão 34.
