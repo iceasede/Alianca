@@ -7,7 +7,7 @@ A logo oficial enviada foi incluída no cabeçalho do aplicativo como `logo-alia
 
 ## O que já está incluído
 - Layout responsivo para celular e computador.
-- Navegação entre Início, Agenda, Ministérios, Pedidos de oração, Cultos ao vivo, Devocional, Área de membros, Contribuições e Galeria.
+- Navegação entre Início, Agenda, Ministérios, Pedidos de oração, Devocional, Área de membros, Contribuições e Galeria.
 - Manifesto PWA e service worker inicial para permitir instalação quando hospedado em HTTPS.
 - Conteúdo demonstrativo claramente identificado.
 
@@ -18,7 +18,6 @@ Não há banco de dados, autenticação, envio real de pedidos, notificações p
 1. Logo oficial em PNG/SVG e cores institucionais (se houver).
 2. Endereço da igreja e contatos oficiais.
 3. Programação atual confirmada.
-4. Link do YouTube/transmissão.
 5. Chave Pix e instruções oficiais, somente se a liderança quiser exibir no app.
 6. Lista de ministérios e responsáveis que podem ser divulgados.
 
@@ -93,7 +92,7 @@ A publicação dinâmica ainda depende de um painel/sistema de gestão. Não ins
 - Os endereços das filiais e os nomes/fotos do presbitério ainda dependem de confirmação da igreja.
 
 
-Atualização mais recente: cabeçalho em caixa alta com “COMUNIDADE EVANGÉLICA DA ALIANÇA” e “31 ANOS DE HISTÓRIA”; versículo do ano atualizado para Filipenses 4:19; removidas as opções e a seção de cultos ao vivo.
+Atualização mais recente: cabeçalho em caixa alta com “COMUNIDADE EVANGÉLICA DA ALIANÇA” e “31 ANOS DE HISTÓRIA”; versículo do ano atualizado para Filipenses 4:19; não haverá transmissão de cultos pelo aplicativo.
 
 
-Atualização v5: o destaque da página inicial agora apresenta o versículo do ano de Filipenses 4:19 no lugar de Josué 24:15. Não há seção, botão ou menu de culto on-line/ao vivo no aplicativo.
+Atualização v6: reforçada a remoção de qualquer seção, botão ou menu de culto on-line/ao vivo e renovado o cache do aplicativo para que a versão nova seja carregada.
