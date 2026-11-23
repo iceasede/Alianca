@@ -36,6 +36,13 @@ nav button{background:none;border:0;color:var(--muted);font-size:10px;flex:1;max
 form{display:grid;gap:10px}label{font-size:12px;font-weight:650;color:var(--navy)}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit;background:#fff}textarea{min-height:100px;resize:vertical}
 .notice{background:#f8f3e8;border:1px solid #eadfc9;border-radius:13px;padding:13px;color:#665638;font-size:12px;line-height:1.5}
 footer{text-align:center;color:#8a8a87;font-size:10px;padding:22px 0}
+/* Cabeçalho compacto: nome institucional sempre em uma única linha */
+.brand{gap:8px;min-width:0;flex:1}
+.brand>div:last-child{min-width:0;flex:1}
+.mark{width:clamp(50px,15vw,76px);height:50px;flex:0 0 auto}
+.brand strong{max-width:none;width:100%;white-space:nowrap;font-size:clamp(8px,2.55vw,18px);letter-spacing:0;line-height:1.15}
+.brand small,.brand .anniversary{white-space:nowrap}
+@media(min-width:650px){.mark{width:116px;height:58px}.brand{gap:12px}.brand strong{font-size:clamp(13px,2vw,18px);letter-spacing:.025em}}
 @media(min-width:650px){.grid{grid-template-columns:repeat(3,1fr)}header{padding-left:30px;padding-right:30px}header h1,header p{margin-left:max(calc((100% - 840px)/2),0px)}}
 </style>
 </head>
