@@ -60,10 +60,7 @@ header h1, header p { text-align:center; margin-left:auto; margin-right:auto; }
   header .brand strong { font-size:18px; letter-spacing:.025em; }
 }
 
-/* Calendario responsivo: sete colunas fixas, dias alinhados e eventos destacados */
-.calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;width:100%;margin-top:12px;align-items:center}
-.calendar .weekday{display:flex;align-items:center;justify-content:center;min-width:0;color:var(--muted);font-size:12px;font-weight:750;padding:7px 0;text-align:center}
-.calendar .day{appearance:none;-webkit-appearance:none;display:flex;align-items:center;justify-content:center;width:100%;min-width:0;aspect-ratio:1/1;border:1px solid transparent;border-radius:50%;padding:0;background:#f0f1f3;color:var(--ink);font:600 13px/1 Inter,system-ui,sans-serif;cursor:default}
+
 .calendar .day.empty{background:transparent;border-color:transparent}
 .calendar .day.has-event{background:#dcecf8;border:1px solid #9fc5df;color:#174d73;font-weight:800;cursor:pointer;box-shadow:inset 0 0 0 1px #ffffff}
 .calendar .day.has-event::after{content:'';width:4px;height:4px;border-radius:50%;background:#c49b4e;position:absolute;margin-top:27px}
@@ -354,23 +351,24 @@ const churchEvents={
 };
 function renderCalendar(calendarId,detailId,year,month){
  const el=document.getElementById(calendarId), detail=document.getElementById(detailId); if(!el||!detail)return;
- // Força grade de sete colunas diretamente no elemento para evitar conflitos de CSS/cache em navegadores móveis.
- el.style.setProperty('display','grid','important');
- el.style.setProperty('grid-template-columns','repeat(7, minmax(0, 1fr))','important');
- el.style.setProperty('grid-auto-flow','row','important');
- el.style.setProperty('width','100%','important');
- el.style.setProperty('gap','6px','important');
- el.style.setProperty('align-items','center','important');
+ el.innerHTML='';
+ el.removeAttribute('style');
+ el.classList.remove('calendar');
+ el.style.cssText='display:block!important;width:100%!important;max-width:100%!important;overflow:visible!important;';
  const first=new Date(year,month-1,1), total=new Date(year,month,0).getDate();
  const monthLabel=document.getElementById(calendarId+'Month'); if(monthLabel) monthLabel.textContent=first.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
- ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'].forEach(label=>{const h=document.createElement('div');h.className='weekday';h.textContent=label;h.style.cssText='display:flex!important;align-items:center;justify-content:center;min-width:0;text-align:center;font-size:clamp(9px,2.8vw,12px);font-weight:750;padding:7px 0;';el.appendChild(h)});
- for(let i=0;i<first.getDay();i++){const blank=document.createElement('div');blank.className='day empty';blank.style.cssText='display:block;width:100%;aspect-ratio:1/1;min-width:0;';el.appendChild(blank)}
- for(let day=1;day<=total;day++){
-  const key=year+'-'+String(month).padStart(2,'0')+'-'+String(day).padStart(2,'0'), event=churchEvents[key];
-  const btn=document.createElement('button');btn.type='button';btn.className='day'+(event?' has-event':'');btn.textContent=day;btn.style.cssText='display:flex!important;align-items:center;justify-content:center;width:100%;min-width:0;aspect-ratio:1/1;border:1px solid '+(event?'#9fc5df':'transparent')+';border-radius:50%;padding:0;background:'+(event?'#dcecf8':'#f0f1f3')+';color:'+(event?'#174d73':'#1e2937')+';font:600 clamp(11px,3.2vw,14px)/1 Inter,system-ui,sans-serif;';
-  if(event){btn.setAttribute('aria-label',day+' - '+event.title);btn.addEventListener('click',()=>{el.querySelectorAll('.selected').forEach(x=>{x.classList.remove('selected');x.style.background=x.classList.contains('has-event')?'#dcecf8':'#f0f1f3';x.style.color=x.classList.contains('has-event')?'#174d73':'#1e2937';});btn.classList.add('selected');btn.style.background='#223d5d';btn.style.color='#fff';detail.innerHTML='<strong>'+event.title+'</strong>'+String(day).padStart(2,'0')+'/'+String(month).padStart(2,'0')+'/'+year+' · '+event.time+'<br>'+event.place;});}
-  el.appendChild(btn);
- }
+ const table=document.createElement('table');
+ table.setAttribute('role','grid');
+ table.style.cssText='display:table!important;table-layout:fixed!important;width:100%!important;max-width:100%!important;border-collapse:separate!important;border-spacing:4px 6px!important;border:0!important;margin:8px 0 0!important;padding:0!important;';
+ const colgroup=document.createElement('colgroup');
+ for(let i=0;i<7;i++){const col=document.createElement('col');col.style.cssText='width:14.2857%!important;';colgroup.appendChild(col)}
+ table.appendChild(colgroup);
+ const thead=document.createElement('thead'), headRow=document.createElement('tr');
+ ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'].forEach(label=>{const th=document.createElement('th');th.textContent=label;th.setAttribute('scope','col');th.style.cssText='display:table-cell!important;width:14.2857%!important;text-align:center!important;vertical-align:middle!important;padding:5px 0!important;border:0!important;background:transparent!important;color:#718096!important;font:700 clamp(9px,2.7vw,12px)/1.2 system-ui,sans-serif!important;white-space:nowrap!important;';headRow.appendChild(th)});
+ thead.appendChild(headRow);table.appendChild(thead);
+ const tbody=document.createElement('tbody');let day=1;const offset=first.getDay();
+ while(day<=total){const tr=document.createElement('tr');tr.style.cssText='display:table-row!important;';for(let col=0;col<7;col++){const td=document.createElement('td');td.style.cssText='display:table-cell!important;width:14.2857%!important;padding:1px!important;text-align:center!important;vertical-align:middle!important;border:0!important;background:transparent!important;';if((day===1&&col<offset)||day>total){td.innerHTML='&nbsp;'}else{const n=day,key=year+'-'+String(month).padStart(2,'0')+'-'+String(n).padStart(2,'0'),event=churchEvents[key],btn=document.createElement('button');btn.type='button';btn.textContent=n;btn.className='day'+(event?' has-event':'');btn.style.cssText='appearance:none!important;-webkit-appearance:none!important;display:block!important;box-sizing:border-box!important;width:100%!important;max-width:42px!important;height:auto!important;aspect-ratio:1/1!important;margin:0 auto!important;padding:0!important;border-radius:50%!important;border:1px solid '+(event?'#9fc5df':'transparent')+'!important;background:'+(event?'#dcecf8':'#f0f1f3')+'!important;color:'+(event?'#174d73':'#253246')+'!important;font:600 clamp(11px,3.2vw,14px)/1 system-ui,sans-serif!important;';if(event){btn.setAttribute('aria-label',n+' - '+event.title);btn.addEventListener('click',()=>{el.querySelectorAll('button.day').forEach(b=>{b.style.background=b.classList.contains('has-event')?'#dcecf8':'#f0f1f3';b.style.color=b.classList.contains('has-event')?'#174d73':'#253246'});btn.style.background='#245b86';btn.style.color='#fff';detail.innerHTML='<strong>'+event.title+'</strong><br>'+String(n).padStart(2,'0')+'/'+String(month).padStart(2,'0')+'/'+year+' · '+event.time+'<br>'+event.place;});}td.appendChild(btn);day++;}tr.appendChild(td)}tbody.appendChild(tr)}
+ table.appendChild(tbody);el.appendChild(table);
 }
 renderCalendar('homeCalendar','homeEventDetail',2026,12);
 renderCalendar('novCalendar','novEventDetail',2026,11);
