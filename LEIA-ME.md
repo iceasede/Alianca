@@ -3,7 +3,7 @@
 Este pacote contém a primeira interface navegável do aplicativo da Comunidade Evangélica da Aliança.
 
 ## Identidade visual
-A logo oficial enviada foi incluída no cabeçalho do aplicativo como `logo-alianca.jpg`.
+A logo oficial enviada foi incluída no cabeçalho do aplicativo como `logo-alianca.png`.
 
 ## O que já está incluído
 - Layout responsivo para celular e computador.
@@ -38,3 +38,7 @@ Essas permissões ainda precisam ser implementadas no backend com login individu
 
 ## Fluxo obrigatório de aprovação
 Toda alteração enviada por líderes de ministérios deve ficar como **pendente de avaliação**. Somente os Apóstolos podem aprovar a publicação. O sistema final deverá registrar quem enviou, quem avaliou, a decisão e a data, sem permitir publicação direta pelo líder.
+
+
+## Nome do repositório
+Nome recomendado: `alianca` (simples, sem hífen ou acento). Ao renomear o repositório no GitHub, o endereço do GitHub Pages também mudará para `https://iceasede.github.io/alianca/` depois da publicação.
