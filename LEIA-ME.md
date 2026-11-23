@@ -11,3 +11,6 @@ Não inclui cultos on-line ou transmissão ao vivo.
 PUBLICAÇÃO: extraia o ZIP e envie/substitua TODOS os arquivos na raiz do repositório GitHub Pages, mantendo os nomes. Faça Commit changes. Não apague arquivos existentes que não estejam neste pacote.
 
 OBSERVAÇÃO: áreas como mídia, aniversariantes, escala, agendas das filiais e presbitério são espaços preparados para conteúdo; não significam que já exista painel administrativo, banco de dados ou publicação dinâmica conectada.
+
+
+ATUALIZAÇÃO v13: cabeçalho centralizado (logo, nome institucional, 31 anos e texto de boas-vindas), mantendo o nome COMUNIDADE EVANGÉLICA DA ALIANÇA em uma única linha. Cache atualizado para forçar a renovação da versão publicada.

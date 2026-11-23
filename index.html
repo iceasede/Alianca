@@ -44,6 +44,21 @@ footer{text-align:center;color:#8a8a87;font-size:10px;padding:22px 0}
 .brand small,.brand .anniversary{white-space:nowrap}
 @media(min-width:650px){.mark{width:116px;height:58px}.brand{gap:12px}.brand strong{font-size:clamp(13px,2vw,18px);letter-spacing:.025em}}
 @media(min-width:650px){.grid{grid-template-columns:repeat(3,1fr)}header{padding-left:30px;padding-right:30px}header h1,header p{margin-left:max(calc((100% - 840px)/2),0px)}}
+
+/* Cabeçalho centralizado em todos os dispositivos; nome institucional em uma única linha */
+header { text-align:center; }
+header .top { justify-content:center; }
+header .brand { width:100%; flex:0 1 auto; min-width:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:7px; text-align:center; }
+header .brand > div:last-child { width:100%; min-width:0; flex:0 1 auto; text-align:center; }
+header .mark { width:82px; height:58px; margin:0 auto; flex:0 0 auto; }
+header .brand strong { display:block; width:100%; max-width:100%; white-space:nowrap; text-align:center; font-size:clamp(8px, 2.65vw, 18px); letter-spacing:0; line-height:1.2; }
+header .brand small, header .brand .anniversary { display:block; text-align:center; white-space:nowrap; }
+header h1, header p { text-align:center; margin-left:auto; margin-right:auto; }
+@media(min-width:650px) {
+  header .brand { gap:9px; }
+  header .mark { width:100px; height:66px; }
+  header .brand strong { font-size:18px; letter-spacing:.025em; }
+}
 </style>
 </head>
 <body>
