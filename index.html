@@ -347,7 +347,7 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
           <div><label for="regName">Nome completo</label><input id="regName" name="name" autocomplete="name" required placeholder="Seu nome completo"></div>
           <div><label for="regBirth">Data de nascimento</label><input id="regBirth" name="birth" type="date" required></div>
           <div><label for="regPhone">Telefone / WhatsApp</label><input id="regPhone" name="phone" type="tel" autocomplete="tel" required placeholder="(00) 00000-0000"></div>
-          <div><label for="regEmail">E-mail</label><input id="regEmail" name="email" type="email" autocomplete="email" placeholder="voce@exemplo.com"></div>
+          <div><label for="regEmail">E-mail</label><input id="regEmail" name="email" type="email" autocomplete="email" required placeholder="voce@exemplo.com"></div>
           <div><label for="regAddress">Endereço</label><input id="regAddress" name="address" autocomplete="street-address" placeholder="Rua, número, bairro e cidade"></div>
           <div class="step-actions"><span></span><button class="primary" type="button" data-next-step="2">Continuar</button></div>
         </div>
@@ -363,25 +363,30 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
           <div><label for="regCell">Participação em célula</label><select id="regCell" name="cell"><option value="">Selecione</option><option>Já participo</option><option>Quero participar</option><option>Ainda não</option></select></div>
           <div><label for="regMinistry">Tem interesse em algum ministério?</label><input id="regMinistry" name="ministry" placeholder="Se desejar, informe qual"></div>
           <div><label for="regMessage">Pedido de oração ou mensagem (opcional)</label><textarea id="regMessage" name="message" placeholder="Escreva aqui, se desejar"></textarea></div>
+          <div class="notice">Crie sua senha para acessar futuramente a Área de Membros. Use pelo menos 8 caracteres, com letra maiúscula, minúscula e número.</div>
+          <div><label for="regPassword">Criar senha</label><input id="regPassword" name="password" type="password" autocomplete="new-password" minlength="8" required placeholder="Mínimo de 8 caracteres"></div>
+          <div><label for="regPasswordConfirm">Confirmar senha</label><input id="regPasswordConfirm" name="password_confirm" type="password" autocomplete="new-password" minlength="8" required placeholder="Digite a senha novamente"></div>
           <label class="consent-label"><input id="regConsent" type="checkbox" required>Autorizo o uso dos dados informados para que a equipe da igreja entre em contato comigo sobre este cadastro. Li e concordo com o aviso de privacidade.</label>
           <div class="step-actions"><button class="ghost" type="button" data-prev-step="2">Voltar</button><button class="primary" type="submit">Enviar cadastro</button></div>
         </div>
       </form>
     </div>
-    <div id="registrationConfirmation" class="notice confirmation" hidden role="status" aria-live="polite"><strong>Cadastro enviado com sucesso!</strong><p>Obrigado por se conectar à nossa família! Em breve, nossa equipe entrará em contato.</p><small>Esta é uma prévia da confirmação. O cadastro ainda não foi enviado nem armazenado.</small></div>
-    <div class="panel permissions-panel"><div class="eyebrow">Organização e segurança</div><h3>Atualização dos seus dados</h3><p>Depois que o acesso individual estiver ativo, cada pessoa poderá corrigir e atualizar seus próprios dados pessoais, contatos, endereço, congregação e informações de participação.</p><p>A classificação de vínculo com a igreja — visitante, novo convertido, membro ou interessado — ficará disponível somente para alteração pela equipe administrativa autorizada.</p><div class="notice">As alterações administrativas terão histórico com responsável, informação modificada, data e horário. O login, o banco de dados e o histórico real ainda precisam ser implantados com acesso seguro.</div></div>
-    <p class="notice">Prévia do formulário: o envio e o armazenamento ainda não estão conectados a uma base segura. Não informe dados pessoais reais até a ativação do sistema.</p>
+    <div id="registrationConfirmation" class="notice confirmation" hidden role="status" aria-live="polite"></div>
+    <div class="panel permissions-panel"><div class="eyebrow">Organização e segurança</div><h3>Atualização dos seus dados</h3><p>Depois que o acesso individual estiver ativo, cada pessoa poderá corrigir e atualizar seus próprios dados pessoais, contatos, endereço, congregação e informações de participação.</p><p>A classificação de vínculo com a igreja — visitante, novo convertido, membro ou interessado — ficará disponível somente para alteração pela equipe administrativa autorizada.</p><div class="notice">A conta será criada com acesso individual. A classificação de vínculo e as permissões administrativas continuarão sob controle da liderança autorizada.</div></div>
+    <p class="notice">Após o cadastro, confira seu e-mail para confirmar a conta, caso receba a mensagem de confirmação. O acesso à área de membros será liberado após a confirmação.</p>
   </section>
 
   <section id="membros" class="view">
     <div class="section-head"><div><div class="eyebrow">Comunidade</div><h2>Área de membros</h2></div></div>
-    <div class="notice">A área exclusiva terá login individual. Cada membro poderá consultar e atualizar apenas o próprio perfil. Não haverá diretório de membros. O login ainda não está ativo nesta versão.</div>
+    <div class="notice">Entre com o e-mail e a senha usados no cadastro. Cada pessoa terá acesso individual; não haverá diretório público de membros. A confirmação do e-mail poderá ser solicitada antes do primeiro acesso.</div>
     <div class="panel"><div class="eyebrow">Meu perfil</div><h3>Seus dados, sob seu controle</h3><p>Quando o acesso individual estiver ativo, você poderá corrigir seus dados pessoais e atualizar telefone, e-mail, endereço, congregação e informações de participação. A categoria de vínculo com a igreja será ajustada somente pela equipe administrativa autorizada.</p></div>
     <div class="panel"><form id="memberForm">
-      <div><label for="memberEmail">E-mail</label><input id="memberEmail" type="email" placeholder="seuemail@exemplo.com"></div>
-      <div><label for="memberPass">Senha</label><input id="memberPass" type="password" placeholder="••••••••"></div>
-      <button type="button" class="primary" onclick="alert('O acesso será habilitado após a configuração segura de cadastro e autenticação.')">Entrar</button>
-      <button type="button" class="ghost" onclick="alert('O cadastro será disponibilizado após a configuração da base segura de membros.')">Quero me cadastrar</button>
+      <div><label for="memberEmail">E-mail</label><input id="memberEmail" type="email" autocomplete="email" required placeholder="seuemail@exemplo.com"></div>
+      <div><label for="memberPass">Senha</label><input id="memberPass" type="password" autocomplete="current-password" required placeholder="Sua senha"></div>
+      <button type="submit" class="primary">Entrar</button>
+      <button type="button" class="ghost" id="memberSignupBtn">Quero me cadastrar</button>
+      <button type="button" class="ghost" id="memberForgotBtn">Esqueci minha senha</button>
+      <div id="memberAuthMessage" class="notice" hidden role="status" aria-live="polite"></div>
     </form></div>
   </section>
 
@@ -412,7 +417,11 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
   <a class="nav-instagram nav-cultos" href="#cultos" id="cultosNav"><span>✧</span>Cultos</a>
   <a class="nav-instagram" href="https://www.instagram.com/iceasedeof/" target="_blank" rel="noopener" aria-label="Instagram oficial da igreja"><span>◎</span>Instagram</a>
 </nav>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const SUPABASE_URL="https://joztddhvrgawcoldmaqe.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_XjjIJ8noOKsVmGA5Z_ssEw_AzmYuMpa";
+const supabaseClient=window.supabase?.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const views=[...document.querySelectorAll('.view')], nav=[...document.querySelectorAll('nav button')];
 function go(id){views.forEach(v=>v.classList.toggle('active',v.id===id));nav.forEach(b=>b.classList.toggle('active',b.dataset.go===id));window.scrollTo({top:0,behavior:'smooth'});}
 document.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click',()=>go(el.dataset.go)));
@@ -488,7 +497,33 @@ document.querySelectorAll('[data-next-step]').forEach(btn=>btn.addEventListener(
  showRegistrationStep(Number(btn.dataset.nextStep));
 }));
 document.querySelectorAll('[data-prev-step]').forEach(btn=>btn.addEventListener('click',()=>showRegistrationStep(Number(btn.dataset.prevStep))));
-registrationForm.addEventListener('submit',e=>{e.preventDefault();if(!registrationForm.reportValidity())return;document.getElementById('registrationConfirmation').hidden=false;document.getElementById('registrationConfirmation').scrollIntoView({behavior:'smooth',block:'center'});});
+registrationForm.addEventListener('submit',async e=>{
+ e.preventDefault();
+ if(!registrationForm.reportValidity())return;
+ const msg=document.getElementById('registrationConfirmation');
+ const password=document.getElementById('regPassword').value;
+ const confirmPassword=document.getElementById('regPasswordConfirm').value;
+ if(password!==confirmPassword){document.getElementById('regPasswordConfirm').setCustomValidity('As senhas não coincidem.');document.getElementById('regPasswordConfirm').reportValidity();document.getElementById('regPasswordConfirm').setCustomValidity('');return;}
+ if(!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}/.test(password)){document.getElementById('regPassword').setCustomValidity('Use 8 caracteres ou mais, com maiúscula, minúscula e número.');document.getElementById('regPassword').reportValidity();document.getElementById('regPassword').setCustomValidity('');return;}
+ if(!supabaseClient){msg.hidden=false;msg.textContent='Não foi possível iniciar a conexão segura. Atualize a página e tente novamente.';return;}
+ const submit=registrationForm.querySelector('button[type="submit"]');submit.disabled=true;submit.textContent='Criando sua conta...';
+ const val=id=>document.getElementById(id)?.value?.trim()||null;
+ const metadata={full_name:val('regName'),birth_date:val('regBirth'),phone:val('regPhone'),address:val('regAddress'),relationship:val('regRelation'),congregation:val('regCongregation'),baptism:val('regBaptism'),cell_participation:val('regCell'),ministry_interest:val('regMinistry'),registration_source:'public_app',privacy_consent:true};
+ try{
+  const {data,error}=await supabaseClient.auth.signUp({email:val('regEmail'),password,options:{data:metadata,emailRedirectTo:SUPABASE_URL?location.origin+location.pathname:undefined}});
+  if(error)throw error;
+  msg.hidden=false;
+  if(data.session){msg.innerHTML='<strong>Conta criada com sucesso!</strong><p>Você já pode entrar na Área de Membros com seu e-mail e senha.</p>';}
+  else{msg.innerHTML='<strong>Cadastro iniciado com sucesso!</strong><p>Enviamos uma mensagem de confirmação para <b></b>. Abra seu e-mail e confirme a conta. Depois, volte à Área de Membros para entrar.</p>';msg.querySelector('b').textContent=val('regEmail');}
+  registrationForm.reset();showRegistrationStep(1);msg.scrollIntoView({behavior:'smooth',block:'center'});
+ }catch(error){msg.hidden=false;msg.textContent=error.message||'Não foi possível concluir o cadastro. Verifique os dados e tente novamente.';msg.scrollIntoView({behavior:'smooth',block:'center'});}
+ finally{submit.disabled=false;submit.textContent='Enviar cadastro';}
+});
+const memberForm=document.getElementById('memberForm');
+memberForm.addEventListener('submit',async e=>{e.preventDefault();const box=document.getElementById('memberAuthMessage');box.hidden=false;if(!supabaseClient){box.textContent='Serviço de autenticação indisponível. Tente novamente mais tarde.';return;}const button=memberForm.querySelector('button[type="submit"]');button.disabled=true;button.textContent='Entrando...';try{const {data,error}=await supabaseClient.auth.signInWithPassword({email:document.getElementById('memberEmail').value.trim(),password:document.getElementById('memberPass').value});if(error)throw error;box.textContent='Acesso realizado com sucesso. Olá, '+(data.user.user_metadata?.full_name||data.user.email)+'!';}catch(error){box.textContent=error.message||'Não foi possível entrar. Confira o e-mail, a senha e a confirmação do e-mail.';}finally{button.disabled=false;button.textContent='Entrar';}});
+document.getElementById('memberSignupBtn').addEventListener('click',()=>{go('cadastro');showRegistrationStep(1);document.getElementById('regName').focus();});
+document.getElementById('memberForgotBtn').addEventListener('click',async()=>{const email=document.getElementById('memberEmail').value.trim();const box=document.getElementById('memberAuthMessage');box.hidden=false;if(!email){box.textContent='Informe seu e-mail acima para receber o link de redefinição de senha.';document.getElementById('memberEmail').focus();return;}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;box.textContent='Se houver uma conta para esse e-mail, enviaremos as instruções para redefinir a senha.';}catch(error){box.textContent=error.message||'Não foi possível solicitar a redefinição agora.';}});
+
 showRegistrationStep(1);
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>

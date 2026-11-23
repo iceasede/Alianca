@@ -7,3 +7,13 @@ Etapas: 1) Dados pessoais; 2) Sua caminhada com a igreja; 3) Participação. A p
 IMPORTANTE: o formulário ainda é demonstrativo. Não envia nem armazena cadastros. Banco de dados, login individual, permissões reais e histórico de alterações precisam ser implantados com autenticação e segurança antes de receber dados pessoais reais.
 
 Para atualizar: extraia o ZIP e substitua os arquivos na raiz do repositório GitHub: index.html, sw.js, manifest.webmanifest, logo-alianca.png e logo-alianca.jpg. Faça Commit changes e aguarde a publicação do GitHub Pages.
+
+
+## Versão 32 — autenticação inicial com Supabase
+- O formulário público cria uma conta com e-mail e senha no Supabase Auth.
+- Os dados cadastrais básicos são enviados como metadados da conta autenticada.
+- A Área de Membros permite entrar com e-mail e senha, solicitar redefinição de senha e direciona “Quero me cadastrar” ao formulário público.
+- A confirmação de e-mail depende da configuração do projeto Supabase.
+- A criação da conta NÃO concede função administrativa.
+- A sincronização dos dados para a tabela `profiles`, permissões por congregação, aprovação administrativa e auditoria ainda precisam ser configuradas e testadas no banco antes de usar com dados reais.
+- A chave Publishable fica no código do navegador; nunca inserir Secret key ou service_role no site.
