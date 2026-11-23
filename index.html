@@ -35,6 +35,7 @@ nav button{background:none;border:0;color:var(--muted);font-size:10px;flex:1 1 0
 nav .nav-instagram{background:none;border:0;color:var(--muted);font-size:10px;flex:1 1 0;min-width:0;width:16.6667%;max-width:none;padding:5px 1px;text-decoration:none;text-align:center;display:block;white-space:nowrap}
 nav .nav-instagram span{display:block;font-size:19px;margin-bottom:3px}
 nav .nav-instagram:active{color:var(--navy)}
+nav .nav-cultos{color:var(--muted)} nav .nav-cultos:focus,nav .nav-cultos:active{color:var(--navy)}
 @media(max-width:430px){nav button,nav .nav-instagram{font-size:9px;padding:4px 0;letter-spacing:-.2px}nav button span,nav .nav-instagram span{font-size:17px;margin-bottom:3px}}
 .brand strong{display:block;max-width:270px;font-size:clamp(13px,3.3vw,18px);line-height:1.25;letter-spacing:.035em;text-transform:uppercase}.view{display:none}.view.active{display:block}
 form{display:grid;gap:10px}label{font-size:12px;font-weight:650;color:var(--navy)}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit;background:#fff}textarea{min-height:100px;resize:vertical}
@@ -349,7 +350,7 @@ header{position:relative}
   <button data-go="agenda"><span>▦</span>Agenda</button>
   <button data-go="oracao"><span>♡</span>Oração</button>
   <button data-go="membros"><span>♙</span>Membros</button>
-  <button type="button" id="cultosNav"><span>✧</span>Cultos</button>
+  <a class="nav-instagram nav-cultos" href="#cultos" id="cultosNav"><span>✧</span>Cultos</a>
   <a class="nav-instagram" href="https://www.instagram.com/iceasedeof/" target="_blank" rel="noopener" aria-label="Instagram oficial da igreja"><span>◎</span>Instagram</a>
 </nav>
 <script>
@@ -357,7 +358,9 @@ const views=[...document.querySelectorAll('.view')], nav=[...document.querySelec
 function go(id){views.forEach(v=>v.classList.toggle('active',v.id===id));nav.forEach(b=>b.classList.toggle('active',b.dataset.go===id));window.scrollTo({top:0,behavior:'smooth'});}
 document.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click',()=>go(el.dataset.go)));
 
-document.getElementById('cultosNav')?.addEventListener('click',()=>go('cultos'));
+document.getElementById('cultosNav')?.addEventListener('click',event=>{event.preventDefault();go('cultos');history.replaceState(null,'','#cultos');});
+window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(id && document.getElementById(id)?.classList.contains('view')) go(id);});
+if(location.hash==='#cultos') go('cultos');
 
 const churchEvents={
 '2026-11-01':{title:'Santa Ceia do Senhor',time:'19h',place:'Na igreja'},

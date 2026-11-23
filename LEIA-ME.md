@@ -1,9 +1,7 @@
-COMUNIDADE EVANGÉLICA DA ALIANÇA — ATUALIZAÇÃO V22
+ATUALIZAÇÃO V23 — NAVEGAÇÃO CULTOS
 
-Alterações:
-- Removido o quadro com os horários dos cultos da página inicial.
-- Criada uma página própria “Cultos”, acessada pelo botão Cultos da barra inferior.
-- A página Cultos mostra: quinta-feira, 20h — Culto de cura e libertação; domingo, 19h — Culto para toda a família.
-- Atualizado o cache do service worker para v22.
+Substitua os arquivos diretamente na raiz do repositório iceasede/Alianca.
+Envie index.html, sw.js, manifest.webmanifest e logo-alianca.png.
 
-No GitHub, envie os arquivos diretamente para a raiz do repositório, substituindo os arquivos de mesmo nome. Faça Commit changes.
+O botão CULTOS da barra inferior agora é um link de navegação direta para a seção exclusiva #cultos. Os horários não devem aparecer na página inicial.
+Após Commit changes, feche a aba do Safari e reabra o site.
