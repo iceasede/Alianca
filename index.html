@@ -182,6 +182,10 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
 .admin-filter-label{font-size:13px;color:var(--muted);margin:12px 0 4px}
 @media(min-width:640px){.admin-category-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.admin-tools{grid-template-columns:1fr auto;align-items:end}}
 
+
+.cell-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:10px}
+.cell-list .admin-person{margin:0;background:#fffdfa}
+.cell-list .admin-person p{margin:6px 0 0}
 </style>
 </head>
 <body>
@@ -359,12 +363,44 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
 
   <section id="celulas" class="view">
     <div class="section-head"><div><div class="eyebrow">Comunhão e cuidado</div><h2>Nossas células</h2></div></div>
-    <div class="panel"><h3>Há um lugar para você!</h3><p>As células são momentos de comunhão, oração e crescimento na Palavra. Consulte as informações e escolha como deseja se aproximar.</p></div>
+    <div class="panel"><h3>Há um lugar para você!</h3><p>As células são momentos de comunhão, oração e crescimento na Palavra. Encontre uma região próxima e conheça os endereços dos encontros.</p><div class="notice" style="margin-top:10px">Se você se interessar por alguma célula, poderá manifestar seu interesse para que a equipe encaminhe seu pedido ao líder responsável. Ele poderá entrar em contato posteriormente para apresentar a célula e compartilhar mais informações. Os telefones pessoais dos líderes não são exibidos.</div></div>
     <div class="section-head"><div><div class="eyebrow">Encontre uma célula</div><h2>Por congregação</h2></div></div>
-    <div class="panel"><h3>Sede — Brazlândia/DF</h3><p>As células e seus endereços completos serão exibidos aqui após o cadastro oficial pela administração.</p><div class="notice" style="margin-top:10px">Ainda não há células cadastradas para exibição.</div></div>
-    <div class="panel"><h3>Jardim Botânico/DF</h3><p>As células e seus endereços completos serão exibidos aqui após o cadastro oficial pela administração.</p><div class="notice" style="margin-top:10px">Ainda não há células cadastradas para exibição.</div></div>
-    <div class="panel"><h3>Vendinha/GO</h3><p>As células e seus endereços completos serão exibidos aqui após o cadastro oficial pela administração.</p><div class="notice" style="margin-top:10px">Ainda não há células cadastradas para exibição.</div></div>
-    <div class="panel"><h3>Como participar</h3><p>Quando as células forem cadastradas, você poderá solicitar participação pelo aplicativo ou falar diretamente com o líder pelo WhatsApp. O contato e o endereço serão inseridos pela administração, com autorização do responsável.</p><div class="notice" style="margin-top:10px">Os botões de solicitação e WhatsApp serão ativados quando o cadastro das células e a integração segura estiverem prontos.</div></div>
+    <div class="panel">
+      <h3>Sede — Brazlândia/DF</h3>
+      <p class="muted">Células vinculadas à sede, organizadas por região. Os contatos telefônicos dos líderes não são publicados.</p>
+      <div class="eyebrow" style="margin-top:18px">Setor Norte</div>
+      <div class="cell-list">
+        <article class="admin-person"><h4>Apóstolos Omar e Cícera</h4><p><strong>Endereço:</strong> Qd. 10, Casa 97</p></article>
+      </div>
+      <div class="eyebrow" style="margin-top:18px">Setor Veredas</div>
+      <div class="cell-list">
+        <article class="admin-person"><h4>Diac. José Júnior</h4><p><strong>Endereço:</strong> Qd. 02, Conj. G, Casa 01</p></article>
+        <article class="admin-person"><h4>Diac. Renilson e Isabel</h4><p><strong>Endereço:</strong> Qd. 03, Conj. E, Casa 15</p></article>
+        <article class="admin-person"><h4>Prs. Evaldo e Zizi</h4><p><strong>Endereço:</strong> Qd. 04, Conj. F, Casa 02</p></article>
+        <article class="admin-person"><h4>Diac. Cleide e Guilherme</h4><p><strong>Endereço:</strong> Qd. 05, Conj. F, Casa 03</p></article>
+        <article class="admin-person"><h4>Diac. Antônio L. e Alaídes</h4><p><strong>Endereço:</strong> Qd. 05, Conj. K, Casa 03</p></article>
+        <article class="admin-person"><h4>Prs. Sandro e Antônia</h4><p><strong>Endereço:</strong> Qd. 06, Conj. A, Casa 20</p></article>
+      </div>
+      <div class="eyebrow" style="margin-top:18px">Vila São José</div>
+      <div class="cell-list">
+        <article class="admin-person"><h4>Prs. Pedro e Carmem</h4><p><strong>Endereço:</strong> Qd. 33, Conj. A, Casa 15</p></article>
+        <article class="admin-person"><h4>Diac. Humberto e Gaby</h4><p><strong>Endereço:</strong> Qd. 35, Conj. D, Casa 19</p></article>
+        <article class="admin-person"><h4>Bps. André e Márcia</h4><p><strong>Endereço:</strong> Qd. 37, Conj. B, Casa 21</p></article>
+        <article class="admin-person"><h4>Diac. Renilde</h4><p><strong>Endereço:</strong> Qd. 37, Conj. F, Casa 05</p></article>
+        <article class="admin-person"><h4>Diac. Josefa</h4><p><strong>Endereço:</strong> Qd. 38, Conj. I, Casa 13</p></article>
+        <article class="admin-person"><h4>Prs. Inácio e Albanete</h4><p><strong>Endereço:</strong> Qd. 56, Conj. F, Casa 228</p></article>
+        <article class="admin-person"><h4>Diac. Cristiano e Glauce</h4><p><strong>Endereço:</strong> Qd. 58, Conj. N, Casa 17</p></article>
+      </div>
+      <div class="eyebrow" style="margin-top:18px">Chapadinha</div>
+      <div class="cell-list"><article class="admin-person"><h4>Prs. Rossini e Adriana</h4><p><strong>Endereço:</strong> Não informado na relação recebida</p></article></div>
+      <div class="eyebrow" style="margin-top:18px">Águas Lindas/GO</div>
+      <div class="cell-list"><article class="admin-person"><h4>Prs. Paulo e Zaine</h4><p><strong>Endereço:</strong> Qd. 03, Ch. 17, Recreio Paraíso 01</p></article></div>
+      <div class="eyebrow" style="margin-top:18px">Ceilândia</div>
+      <div class="cell-list"><article class="admin-person"><h4>Diac. Ramiro e Lúcia</h4><p><strong>Endereço:</strong> QNM 34, Conj. G2, Casa 51 – M Norte</p></article></div>
+    </div>
+    <div class="panel"><h3>Jardim Botânico/DF</h3><p>As informações das células desta congregação serão incluídas após o recebimento da relação oficial.</p></div>
+    <div class="panel"><h3>Vendinha/GO</h3><p>As informações das células desta congregação serão incluídas após o recebimento da relação oficial.</p></div>
+    <div class="panel"><h3>Quero conhecer uma célula</h3><p>Se alguma região despertou seu interesse, procure a equipe da igreja e manifeste seu desejo de participar. Sua solicitação poderá ser encaminhada ao líder responsável para um contato posterior.</p><div class="notice" style="margin-top:10px">A solicitação diretamente pelo aplicativo ainda depende da implantação de um canal seguro de encaminhamento. Por enquanto, não há envio automático de pedidos nesta página.</div></div>
   </section>
 
   <section id="estudos" class="view" data-requires-auth>
