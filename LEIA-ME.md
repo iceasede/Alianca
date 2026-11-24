@@ -57,3 +57,11 @@ Para publicar, extraia o ZIP e substitua na raiz do repositório os arquivos `in
 - Confirma a atualização retornando a classificação gravada pelo Supabase.
 - Atualiza o cache do aplicativo para v38.
 - Não altera permissões, políticas RLS nem o papel de superadministrador.
+
+
+## Versão 39 — acesso à conta no cabeçalho
+- Adiciona no canto superior direito o acesso “Entrar” quando não há sessão autenticada.
+- Quando há sessão, o controle passa a exibir “Minha conta” e abre um menu com o e-mail conectado e a opção “Sair da conta”.
+- “Sair da conta” solicita confirmação, encerra a sessão Supabase, mantém os dados cadastrados e retorna à página inicial.
+- Após sair, a pessoa pode entrar com outra conta pela opção “Entrar”.
+- Mantém a autenticação e as permissões existentes; não altera tabelas, políticas RLS ou papéis administrativos.

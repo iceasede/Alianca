@@ -141,12 +141,39 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
 #adminProfiles .admin-actions{display:flex;gap:8px;align-items:end;flex-wrap:wrap;margin-top:10px}
 #adminProfiles .admin-actions select{flex:1;min-width:180px}
 #adminProfiles .admin-actions button{white-space:nowrap}
+
+/* Acesso à conta no canto superior direito do cabeçalho */
+header .top{position:relative;justify-content:center;padding:0 4px;min-height:34px}
+.account-control{position:absolute;right:0;top:0;z-index:20}
+.account-trigger{display:inline-flex;align-items:center;gap:6px;border:1px solid #e6d5b8;border-radius:999px;background:#fff;color:var(--navy);padding:8px 11px;font:600 12px/1.2 system-ui,-apple-system,Segoe UI,sans-serif;cursor:pointer;box-shadow:0 2px 8px #681d2810}
+.account-trigger:focus-visible,.account-menu button:focus-visible{outline:3px solid #c49a45;outline-offset:2px}
+.account-menu{position:absolute;right:0;top:calc(100% + 8px);width:min(250px,calc(100vw - 32px));background:#fff;border:1px solid #e6d5b8;border-radius:14px;padding:12px;box-shadow:0 12px 30px #35272a24;text-align:left}
+.account-menu[hidden]{display:none!important}
+.account-email{display:block;font-size:12px;color:var(--muted);overflow-wrap:anywhere;padding:3px 5px 10px}
+.account-menu button{width:100%;border:0;border-radius:9px;background:#f7f1e7;color:var(--navy);padding:11px;text-align:left;font:600 13px/1.3 system-ui,-apple-system,Segoe UI,sans-serif;cursor:pointer}
+.account-menu button.danger{margin-top:7px;background:#fff1ef;color:#8d2b2b}
+@media(max-width:420px){
+ header .brand{padding:0 68px}
+ .account-trigger{padding:7px 9px;font-size:11px}
+ .account-trigger .account-label{display:none}
+}
+
 </style>
 </head>
 <body>
 <header>
   <div class="top">
     <div class="brand"><div class="mark"><img src="logo-alianca.png" alt="Logo oficial da Igreja Comunidade Evangélica da Aliança"></div><div><strong>IGREJA<br>COMUNIDADE EVANGÉLICA DA ALIANÇA</strong><small class="anniversary">31 ANOS DE HISTÓRIA</small></div></div>
+    <div class="account-control" id="accountControl">
+      <button type="button" class="account-trigger" id="accountTrigger" aria-haspopup="true" aria-expanded="false">
+        <span aria-hidden="true">♙</span><span class="account-label" id="accountTriggerLabel">Entrar</span>
+      </button>
+      <div class="account-menu" id="accountMenu" hidden>
+        <span class="account-email" id="accountEmail"></span>
+        <button type="button" id="accountOpenLogin">Minha conta</button>
+        <button type="button" class="danger" id="accountSignOut">Sair da conta</button>
+      </div>
+    </div>
   </div>
   <h1>Uma família, uma aliança,<br>um propósito.</h1>
   <p>Seja bem-vindo à nossa casa. Este é o espaço de conexão da família da Igreja Comunidade Evangélica da Aliança.</p>
@@ -478,6 +505,7 @@ function go(id){
 }
 function showHomeAfterAuthentication(user){
  authenticatedUser=user||authenticatedUser;
+ refreshAccountControl();
  updateRestrictedAreas();
  const welcome=document.getElementById('authWelcome');
  const name=user?.user_metadata?.full_name||user?.email||'bem-vindo(a)';
@@ -602,6 +630,7 @@ memberForm.addEventListener('submit',async e=>{
 if(supabaseClient){
  supabaseClient.auth.onAuthStateChange((event,session)=>{
   authenticatedUser=session?.user||null;
+  refreshAccountControl();
   authReady=true;
   updateRestrictedAreas();
   checkAdminAccess();
@@ -612,16 +641,85 @@ if(supabaseClient){
  supabaseClient.auth.getSession().then(({data,error})=>{
   if(error) throw error;
   authenticatedUser=data.session?.user||null;
+  refreshAccountControl();
   authReady=true;
   updateRestrictedAreas();
   checkAdminAccess();
- }).catch(()=>{authenticatedUser=null;authReady=true;updateRestrictedAreas();});
+ }).catch(()=>{authenticatedUser=null;authReady=true;refreshAccountControl();updateRestrictedAreas();});
 }else{
  authReady=true;
+ refreshAccountControl();
  updateRestrictedAreas();
 }
 document.getElementById('memberSignupBtn').addEventListener('click',event=>{event.preventDefault();go('cadastro');showRegistrationStep(1);history.replaceState(null,'','#cadastro');document.getElementById('regName').focus({preventScroll:true});window.scrollTo({top:0,behavior:'smooth'});});
 document.getElementById('memberForgotBtn').addEventListener('click',async()=>{const email=document.getElementById('memberEmail').value.trim();const box=document.getElementById('memberAuthMessage');box.hidden=false;if(!email){box.textContent='Informe seu e-mail acima para receber o link de redefinição de senha.';document.getElementById('memberEmail').focus();return;}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;box.textContent='Se houver uma conta para esse e-mail, enviaremos as instruções para redefinir a senha.';}catch(error){box.textContent=error.message||'Não foi possível solicitar a redefinição agora.';}});
+
+
+// Controle de sessão no cabeçalho: entrar ou trocar de usuário sem apagar o cadastro.
+function refreshAccountControl(){
+ const trigger=document.getElementById('accountTrigger');
+ const label=document.getElementById('accountTriggerLabel');
+ const email=document.getElementById('accountEmail');
+ const menu=document.getElementById('accountMenu');
+ if(!trigger||!label||!email||!menu)return;
+ const signedIn=!!authenticatedUser;
+ label.textContent=signedIn?'Minha conta':'Entrar';
+ email.textContent=signedIn?(authenticatedUser.email||'Conta conectada'):'';
+ menu.hidden=!signedIn || menu.hidden;
+ trigger.setAttribute('aria-expanded',String(!menu.hidden));
+}
+function closeAccountMenu(){
+ const menu=document.getElementById('accountMenu');
+ const trigger=document.getElementById('accountTrigger');
+ if(menu)menu.hidden=true;
+ if(trigger)trigger.setAttribute('aria-expanded','false');
+}
+document.getElementById('accountTrigger')?.addEventListener('click',()=>{
+ if(!authenticatedUser){
+  closeAccountMenu();
+  go('membros');
+  document.getElementById('memberEmail')?.focus({preventScroll:true});
+  window.scrollTo({top:0,behavior:'smooth'});
+  return;
+ }
+ const menu=document.getElementById('accountMenu');
+ const trigger=document.getElementById('accountTrigger');
+ menu.hidden=!menu.hidden;
+ trigger.setAttribute('aria-expanded',String(!menu.hidden));
+});
+document.getElementById('accountOpenLogin')?.addEventListener('click',()=>{
+ closeAccountMenu();
+ if(authenticatedUser){
+  const box=document.getElementById('memberAuthMessage');
+  if(box){box.hidden=false;box.textContent='Você está conectado como '+(authenticatedUser.email||'usuário autenticado')+'. Para usar outra conta, escolha “Sair da conta” primeiro.';}
+ }
+ go('membros');
+ window.scrollTo({top:0,behavior:'smooth'});
+});
+document.getElementById('accountSignOut')?.addEventListener('click',async()=>{
+ if(!authenticatedUser){closeAccountMenu();return;}
+ if(!window.confirm('Deseja sair desta conta? Seu cadastro e seus dados continuarão salvos.'))return;
+ const button=document.getElementById('accountSignOut');
+ button.disabled=true;button.textContent='Saindo...';
+ try{
+  const {error}=await supabaseClient.auth.signOut();
+  if(error)throw error;
+  authenticatedUser=null;currentAdminRole=false;
+  updateRestrictedAreas();checkAdminAccess();refreshAccountControl();
+  closeAccountMenu();go('home');
+  const welcome=document.getElementById('authWelcome');
+  if(welcome){welcome.hidden=false;welcome.textContent='Você saiu da sua conta com segurança. Para entrar com outro usuário, toque em “Entrar”.';}
+  window.scrollTo({top:0,behavior:'smooth'});
+ }catch(error){
+  alert('Não foi possível sair da conta: '+(error.message||'Tente novamente.'));
+ }finally{
+  button.disabled=false;button.textContent='Sair da conta';
+ }
+});
+document.addEventListener('click',event=>{
+ const control=document.getElementById('accountControl');
+ if(control&&!control.contains(event.target))closeAccountMenu();
+});
 
 let currentAdminRole=false;
 async function checkAdminAccess(){
