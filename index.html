@@ -363,7 +363,7 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
         </div>
         <div class="registration-step" data-step="2" hidden>
           <div class="step-heading"><div class="eyebrow">Etapa 2 de 3</div><h3>Sua caminhada com a igreja</h3><p>Essas informações ajudam nossa equipe a acolher você.</p></div>
-          <div><label for="regRelation">Como você se identifica em relação à igreja?</label><select id="regRelation" name="relation" required><option value="">Selecione</option><option>Novo convertido</option><option>Membro</option><option>Visitante</option><option>Interessado</option></select><small class="field-help">A equipe administrativa autorizada poderá ajustar essa classificação, se necessário.</small></div>
+          <div><label for="regRelation">Como você se identifica em relação à igreja?</label><select id="regRelation" name="relation" required><option value="">Selecione</option><option value="novo_convertido">Novo convertido</option><option value="membro">Membro</option><option value="visitante">Visitante</option><option value="interessado">Interessado</option></select><small class="field-help">A equipe administrativa autorizada poderá ajustar essa classificação, se necessário.</small></div>
           <div><label for="regCongregation">Qual congregação deseja frequentar?</label><select id="regCongregation" name="congregation" required><option value="">Selecione</option><option>Sede — Brazlândia/DF</option><option>Jardim Botânico/DF</option><option>Vendinha — Padre Bernardo/GO</option></select></div>
           <div><label for="regBaptism">Batismo nas águas</label><select id="regBaptism" name="baptism"><option value="">Selecione</option><option>Já sou batizado(a)</option><option>Desejo me batizar</option><option>Ainda não</option></select></div>
           <div class="step-actions"><button class="ghost" type="button" data-prev-step="1">Voltar</button><button class="primary" type="button" data-next-step="3">Continuar</button></div>
@@ -441,7 +441,7 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
     </div>
     <div class="notice" style="margin-top:12px">A equipe de Mídia enviará fotos e vídeos para aprovação da administração antes da publicação. A galeria será restrita a membros autenticados. Imagens de crianças e pessoas identificáveis dependerão das autorizações necessárias. O envio, a aprovação e o controle de acesso ainda serão conectados ao sistema seguro.</div>
   </section>
-  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 35</footer>
+  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 37</footer>
 </main>
 <nav>
   <button class="active" data-go="home"><span>⌂</span>Início</button>
@@ -650,9 +650,9 @@ async function loadAdminProfiles(){
  if(error){setAdminStatus('Não foi possível consultar os cadastros: '+error.message);return;}
  const rows=data||[];
  document.getElementById('adminTotal').textContent=rows.length;
- document.getElementById('adminVisitors').textContent=rows.filter(r=>r.relationship==='Visitante').length;
- document.getElementById('adminNew').textContent=rows.filter(r=>r.relationship==='Novo convertido').length;
- document.getElementById('adminMembers').textContent=rows.filter(r=>r.relationship==='Membro').length;
+ document.getElementById('adminVisitors').textContent=rows.filter(r=>r.relationship==='visitante').length;
+ document.getElementById('adminNew').textContent=rows.filter(r=>r.relationship==='novo_convertido').length;
+ document.getElementById('adminMembers').textContent=rows.filter(r=>r.relationship==='membro').length;
  if(!rows.length){
   setAdminStatus('Nenhum perfil encontrado na tabela profiles. A autenticação já está ativa, mas a sincronização dos dados do formulário público para essa tabela ainda precisa ser implantada. Nenhum cadastro foi apagado.');
   return;
@@ -664,18 +664,19 @@ async function loadAdminProfiles(){
   const details=document.createElement('p');
   details.textContent=[profile.email,profile.phone,profile.congregation_id?'ID da congregação: '+profile.congregation_id:null].filter(Boolean).join(' · ');
   card.appendChild(details);
-  const current=document.createElement('p');current.textContent='Classificação atual: '+(profile.relationship||'Não informada');card.appendChild(current);
+  const labels={novo_convertido:'Novo convertido',membro:'Membro',visitante:'Visitante',interessado:'Interessado'};
+  const current=document.createElement('p');current.textContent='Classificação atual: '+(labels[profile.relationship]||'Não informada');card.appendChild(current);
   const actions=document.createElement('div');actions.className='admin-actions';
   const select=document.createElement('select');
-  [['Novo convertido','Novo convertido'],['Membro','Membro'],['Visitante','Visitante'],['Interessado','Interessado']].forEach(([value,label])=>{const option=document.createElement('option');option.value=value;option.textContent=label;select.appendChild(option);});
-  select.value=profile.relationship||'Interessado';
+  [['novo_convertido','Novo convertido'],['membro','Membro'],['visitante','Visitante'],['interessado','Interessado']].forEach(([value,label])=>{const option=document.createElement('option');option.value=value;option.textContent=label;select.appendChild(option);});
+  select.value=profile.relationship||'interessado';
   const save=document.createElement('button');save.type='button';save.className='primary';save.textContent='Salvar classificação';
   save.addEventListener('click',async()=>{
    save.disabled=true;save.textContent='Salvando...';
    const {error:updateError}=await supabaseClient.from('profiles').update({relationship:select.value,updated_at:new Date().toISOString()}).eq('user_id',profile.user_id);
    save.disabled=false;save.textContent='Salvar classificação';
    if(updateError){setAdminStatus('Não foi possível salvar a classificação: '+updateError.message);return;}
-   current.textContent='Classificação atual: '+select.value;
+   current.textContent='Classificação atual: '+({novo_convertido:'Novo convertido',membro:'Membro',visitante:'Visitante',interessado:'Interessado'}[select.value]||select.value);
    setAdminStatus('Classificação atualizada com sucesso.');
    await loadAdminProfiles();
   });
@@ -691,3 +692,10 @@ if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigat
 </script>
 </body></html>
 \n## Versão 36 — painel administrativo inicial\n- Inclui entrada administrativa visível somente após validação da função `can_manage_registration(NULL)` para a sessão autenticada.\n- Inclui painel com contagem e listagem de perfis autorizados, permitindo alterar apenas a classificação de vínculo.\n- A consulta e a atualização continuam sujeitas às políticas RLS da tabela `profiles`.\n- IMPORTANTE: o formulário público ainda envia os dados como metadados ao Supabase Auth; a sincronização desses dados para `public.profiles` não foi implementada nesta versão. Se a tabela estiver vazia, o painel informará isso e não inventará cadastros.\n- A função `can_manage_registration` deve permanecer SECURITY DEFINER, com `search_path` seguro, e a política RLS deve continuar restrita a `authenticated`. Nunca inserir chave `service_role` no aplicativo.\n
+
+## Versão 37 — padronização das classificações
+- Corrige os valores enviados pelo painel administrativo para a tabela `profiles`: `novo_convertido`, `membro`, `visitante` e `interessado`, em minúsculas e no formato aceito pela validação do banco.
+- Mantém os rótulos apresentados às pessoas em português, com acentuação e capitalização.
+- Corrige a contagem dos cartões do painel para considerar os valores normalizados.
+- O formulário público também envia a classificação normalizada nos metadados do Supabase Auth.
+- Não altera nem remove políticas RLS ou restrições do banco de dados.

@@ -44,3 +44,9 @@ As áreas Ministérios, Espaço Kids, Estudos para Líderes, Aniversariantes e M
 - A consulta e a atualização continuam sujeitas às políticas RLS da tabela `profiles`.
 - IMPORTANTE: o formulário público ainda envia os dados como metadados ao Supabase Auth; a sincronização desses dados para `public.profiles` não foi implementada nesta versão. Se a tabela estiver vazia, o painel informará isso e não inventará cadastros.
 - A função `can_manage_registration` deve permanecer SECURITY DEFINER, com `search_path` seguro, e a política RLS deve continuar restrita a `authenticated`. Nunca inserir chave `service_role` no aplicativo.
+
+
+## Atualização da versão 37
+Esta versão corrige o envio das classificações no painel administrativo. O banco espera os valores `visitante`, `novo_convertido`, `membro` e `interessado`; a interface continua exibindo os nomes amigáveis em português. O cache foi atualizado para v37.
+
+Para publicar, extraia o ZIP e substitua na raiz do repositório os arquivos `index.html`, `sw.js`, `manifest.webmanifest`, `logo-alianca.png` e `logo-alianca.jpg`. Depois faça Commit changes e aguarde o GitHub Pages publicar. Não altere as políticas RLS do Supabase nesta etapa.
