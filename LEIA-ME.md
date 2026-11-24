@@ -50,3 +50,10 @@ As áreas Ministérios, Espaço Kids, Estudos para Líderes, Aniversariantes e M
 Esta versão corrige o envio das classificações no painel administrativo. O banco espera os valores `visitante`, `novo_convertido`, `membro` e `interessado`; a interface continua exibindo os nomes amigáveis em português. O cache foi atualizado para v37.
 
 Para publicar, extraia o ZIP e substitua na raiz do repositório os arquivos `index.html`, `sw.js`, `manifest.webmanifest`, `logo-alianca.png` e `logo-alianca.jpg`. Depois faça Commit changes e aguarde o GitHub Pages publicar. Não altere as políticas RLS do Supabase nesta etapa.
+
+
+## Versão 38 — correção reforçada da classificação administrativa
+- Normaliza explicitamente a opção escolhida para um dos quatro valores aceitos pela restrição `profiles_relationship_check`.
+- Confirma a atualização retornando a classificação gravada pelo Supabase.
+- Atualiza o cache do aplicativo para v38.
+- Não altera permissões, políticas RLS nem o papel de superadministrador.

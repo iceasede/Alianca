@@ -441,7 +441,7 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
     </div>
     <div class="notice" style="margin-top:12px">A equipe de Mídia enviará fotos e vídeos para aprovação da administração antes da publicação. A galeria será restrita a membros autenticados. Imagens de crianças e pessoas identificáveis dependerão das autorizações necessárias. O envio, a aprovação e o controle de acesso ainda serão conectados ao sistema seguro.</div>
   </section>
-  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 37</footer>
+  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 38</footer>
 </main>
 <nav>
   <button class="active" data-go="home"><span>⌂</span>Início</button>
@@ -673,12 +673,36 @@ async function loadAdminProfiles(){
   const save=document.createElement('button');save.type='button';save.className='primary';save.textContent='Salvar classificação';
   save.addEventListener('click',async()=>{
    save.disabled=true;save.textContent='Salvando...';
-   const {error:updateError}=await supabaseClient.from('profiles').update({relationship:select.value,updated_at:new Date().toISOString()}).eq('user_id',profile.user_id);
-   save.disabled=false;save.textContent='Salvar classificação';
-   if(updateError){setAdminStatus('Não foi possível salvar a classificação: '+updateError.message);return;}
-   current.textContent='Classificação atual: '+({novo_convertido:'Novo convertido',membro:'Membro',visitante:'Visitante',interessado:'Interessado'}[select.value]||select.value);
-   setAdminStatus('Classificação atualizada com sucesso.');
-   await loadAdminProfiles();
+   // Normaliza o valor selecionado para corresponder exatamente ao CHECK do banco.
+   const relationshipMap={
+    'Novo convertido':'novo_convertido',
+    'Membro':'membro',
+    'Visitante':'visitante',
+    'Interessado':'interessado'
+   };
+   const relationship=relationshipMap[select.options[select.selectedIndex]?.text] || String(select.value||'').trim().toLowerCase();
+   const allowedRelationships=['visitante','novo_convertido','membro','interessado'];
+   if(!allowedRelationships.includes(relationship)){
+    save.disabled=false;save.textContent='Salvar classificação';
+    setAdminStatus('Classificação inválida. Selecione uma das opções disponíveis.');
+    return;
+   }
+   try{
+    const {data:updatedProfile,error:updateError}=await supabaseClient
+     .from('profiles')
+     .update({relationship,updated_at:new Date().toISOString()})
+     .eq('user_id',profile.user_id)
+     .select('relationship')
+     .single();
+    save.disabled=false;save.textContent='Salvar classificação';
+    if(updateError){setAdminStatus('Não foi possível salvar a classificação: '+updateError.message);return;}
+    current.textContent='Classificação atual: '+({novo_convertido:'Novo convertido',membro:'Membro',visitante:'Visitante',interessado:'Interessado'}[updatedProfile.relationship]||updatedProfile.relationship);
+    setAdminStatus('Classificação atualizada com sucesso.');
+    await loadAdminProfiles();
+   }catch(error){
+    save.disabled=false;save.textContent='Salvar classificação';
+    setAdminStatus('Ocorreu um erro ao salvar: '+(error?.message||'tente novamente.'));
+   }
   });
   actions.append(select,save);card.appendChild(actions);list.appendChild(card);
  });
