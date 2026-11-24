@@ -65,3 +65,12 @@ Para publicar, extraia o ZIP e substitua na raiz do repositório os arquivos `in
 - “Sair da conta” solicita confirmação, encerra a sessão Supabase, mantém os dados cadastrados e retorna à página inicial.
 - Após sair, a pessoa pode entrar com outra conta pela opção “Entrar”.
 - Mantém a autenticação e as permissões existentes; não altera tabelas, políticas RLS ou papéis administrativos.
+
+
+## Versão 40 — Minha conta
+- Adiciona página Minha conta com edição de nome, nascimento, telefone e endereço, lendo primeiro o perfil em `public.profiles` e usando metadados como preenchimento inicial.
+- Atualiza também metadados do usuário autenticado após salvar o perfil.
+- Solicita alteração de e-mail via Supabase Auth (`updateUser`), respeitando as confirmações configuradas no projeto.
+- Inclui alteração de senha com validação de força e confirmação.
+- Inclui orientação para solicitação de exclusão, mas não executa exclusão: a exclusão definitiva exige função segura no servidor (Edge Function) e política de retenção/remoção dos dados relacionados.
+- A classificação de relacionamento e os papéis administrativos não podem ser editados pela pessoa na página Minha conta.

@@ -158,6 +158,16 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
  .account-trigger .account-label{display:none}
 }
 
+
+/* Minha conta — edição segura dos dados pessoais */
+.account-page .account-grid{display:grid;gap:12px}
+.account-page .account-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.account-page input,.account-page select{width:100%;box-sizing:border-box}
+.account-page .danger-panel{border:1px solid #e7b8b4;background:#fff9f8}
+.account-page .danger-panel h3{color:#8d2b2b}
+.account-page .field-note{display:block;color:var(--muted);font-size:12px;line-height:1.45;margin-top:5px}
+.account-page .notice{overflow-wrap:anywhere}
+
 </style>
 </head>
 <body>
@@ -451,6 +461,28 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
     <button type="button" class="ghost" id="backToMembers">Voltar à Área de Membros</button>
   </section>
 
+  <section id="minha-conta" class="view account-page">
+    <div class="section-head"><div><div class="eyebrow">Área pessoal</div><h2>Minha conta</h2></div></div>
+    <div class="panel"><div class="eyebrow">Meus dados pessoais</div><h3>Atualize suas informações</h3><p>Você pode corrigir seus dados de contato e endereço. A classificação de vínculo com a igreja e as permissões administrativas continuam sob responsabilidade da equipe autorizada.</p>
+      <form id="accountProfileForm" class="account-grid">
+        <div><label for="accountFullName">Nome completo</label><input id="accountFullName" autocomplete="name" required></div>
+        <div><label for="accountBirthDate">Data de nascimento</label><input id="accountBirthDate" type="date"></div>
+        <div><label for="accountPhone">Telefone / WhatsApp</label><input id="accountPhone" type="tel" autocomplete="tel"></div>
+        <div><label for="accountAddress">Endereço completo</label><input id="accountAddress" autocomplete="street-address"></div>
+        <div id="accountProfileMessage" class="notice" hidden role="status" aria-live="polite"></div>
+        <div class="account-actions"><button class="primary" type="submit" id="accountSaveProfile">Salvar dados pessoais</button></div>
+      </form>
+    </div>
+    <div class="panel"><div class="eyebrow">Dados de acesso</div><h3>E-mail</h3>
+      <form id="accountEmailForm" class="account-grid"><div><label for="accountNewEmail">E-mail atual / novo e-mail</label><input id="accountNewEmail" type="email" autocomplete="email" required><small class="field-note">Ao solicitar a alteração, o Supabase enviará a confirmação conforme as configurações de autenticação do projeto. O novo endereço só será considerado confirmado após concluir a verificação recebida por e-mail.</small></div><div id="accountEmailMessage" class="notice" hidden role="status" aria-live="polite"></div><div class="account-actions"><button type="submit" class="primary" id="accountSaveEmail">Solicitar alteração de e-mail</button></div></form>
+    </div>
+    <div class="panel"><div class="eyebrow">Segurança</div><h3>Alterar senha</h3>
+      <form id="accountPasswordForm" class="account-grid"><div><label for="accountNewPassword">Nova senha</label><input id="accountNewPassword" type="password" autocomplete="new-password" minlength="8" required placeholder="Mínimo de 8 caracteres"></div><div><label for="accountConfirmPassword">Confirmar nova senha</label><input id="accountConfirmPassword" type="password" autocomplete="new-password" minlength="8" required></div><div id="accountPasswordMessage" class="notice" hidden role="status" aria-live="polite"></div><div class="account-actions"><button type="submit" class="primary" id="accountSavePassword">Atualizar senha</button></div></form>
+    </div>
+    <div class="panel danger-panel"><div class="eyebrow">Encerramento da conta</div><h3>Excluir minha conta</h3><p>Você pode solicitar a exclusão da sua conta. Por segurança, a exclusão definitiva precisa ser processada por uma função protegida no servidor, que ainda não está configurada neste projeto. Não é seguro apagar uma conta diretamente pelo navegador.</p><button type="button" class="ghost" id="accountDeleteRequest">Como solicitar a exclusão</button><div id="accountDeleteMessage" class="notice" hidden role="status" aria-live="polite"></div></div>
+    <button type="button" class="ghost" id="accountBackHome">Voltar ao início</button>
+  </section>
+
   <section id="contribuicoes" class="view">
     <div class="section-head"><div><div class="eyebrow">Generosidade</div><h2>Dízimos e ofertas</h2></div></div>
     <div class="panel"><h3>Contribua com a obra</h3><p>Em breve, esta área terá as orientações oficiais para dízimos e ofertas, com meios de contribuição confirmados pela igreja.</p></div>
@@ -484,7 +516,7 @@ const SUPABASE_URL="https://joztddhvrgawcoldmaqe.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_XjjIJ8noOKsVmGA5Z_ssEw_AzmYuMpa";
 const supabaseClient=window.supabase?.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const views=[...document.querySelectorAll('.view')], nav=[...document.querySelectorAll('nav button')];
-const protectedViews=new Set(['ministerios','kids','estudos','aniversariantes','galeria']);
+const protectedViews=new Set(['ministerios','kids','estudos','aniversariantes','galeria','minha-conta']);
 let authenticatedUser=null;
 let authReady=false;
 function updateRestrictedAreas(){
@@ -687,14 +719,11 @@ document.getElementById('accountTrigger')?.addEventListener('click',()=>{
  menu.hidden=!menu.hidden;
  trigger.setAttribute('aria-expanded',String(!menu.hidden));
 });
-document.getElementById('accountOpenLogin')?.addEventListener('click',()=>{
+document.getElementById('accountOpenLogin')?.addEventListener('click',async()=>{
  closeAccountMenu();
- if(authenticatedUser){
-  const box=document.getElementById('memberAuthMessage');
-  if(box){box.hidden=false;box.textContent='Você está conectado como '+(authenticatedUser.email||'usuário autenticado')+'. Para usar outra conta, escolha “Sair da conta” primeiro.';}
- }
- go('membros');
- window.scrollTo({top:0,behavior:'smooth'});
+ if(!authenticatedUser){go('membros');return;}
+ go('minha-conta');
+ await loadMyAccount();
 });
 document.getElementById('accountSignOut')?.addEventListener('click',async()=>{
  if(!authenticatedUser){closeAccountMenu();return;}
@@ -720,6 +749,58 @@ document.addEventListener('click',event=>{
  const control=document.getElementById('accountControl');
  if(control&&!control.contains(event.target))closeAccountMenu();
 });
+
+// Minha conta: carrega dados do perfil e permite alterações pessoais com a sessão autenticada.
+function accountMessage(id,message,isError=false){const el=document.getElementById(id);if(!el)return;el.hidden=false;el.textContent=message;el.style.borderColor=isError?'#d99a95':'';}
+async function loadMyAccount(){
+ if(!authenticatedUser){go('membros');return;}
+ const meta=authenticatedUser.user_metadata||{};
+ const fields={accountFullName:meta.full_name||'',accountBirthDate:meta.birth_date||'',accountPhone:meta.phone||'',accountAddress:meta.address||'',accountNewEmail:authenticatedUser.email||''};
+ Object.entries(fields).forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.value=value;});
+ const {data,error}=await supabaseClient.from('profiles').select('full_name,birth_date,phone,address').eq('user_id',authenticatedUser.id).maybeSingle();
+ if(data){document.getElementById('accountFullName').value=data.full_name||'';document.getElementById('accountBirthDate').value=data.birth_date||'';document.getElementById('accountPhone').value=data.phone||'';document.getElementById('accountAddress').value=data.address||'';}
+ else if(error){accountMessage('accountProfileMessage','Não foi possível carregar o perfil salvo: '+error.message+'. Os campos foram preenchidos com os dados disponíveis na conta.',true);}
+}
+document.getElementById('accountProfileForm')?.addEventListener('submit',async event=>{
+ event.preventDefault();if(!authenticatedUser)return;
+ const button=document.getElementById('accountSaveProfile');button.disabled=true;button.textContent='Salvando...';
+ const values={full_name:document.getElementById('accountFullName').value.trim(),birth_date:document.getElementById('accountBirthDate').value||null,phone:document.getElementById('accountPhone').value.trim()||null,address:document.getElementById('accountAddress').value.trim()||null,updated_at:new Date().toISOString()};
+ try{
+  const {data,error}=await supabaseClient.from('profiles').update(values).eq('user_id',authenticatedUser.id).select('user_id').maybeSingle();
+  if(error)throw error;
+  if(!data)throw new Error('Nenhum perfil foi atualizado. Confirme se seu cadastro já existe na tabela profiles e se a política RLS permite atualizar o próprio perfil.');
+  const {error:metaError}=await supabaseClient.auth.updateUser({data:{full_name:values.full_name,birth_date:values.birth_date,phone:values.phone,address:values.address}});
+  if(metaError)throw metaError;
+  authenticatedUser=(await supabaseClient.auth.getUser()).data.user||authenticatedUser;
+  accountMessage('accountProfileMessage','Seus dados pessoais foram atualizados com sucesso.');
+ }catch(error){accountMessage('accountProfileMessage','Não foi possível salvar: '+(error.message||'tente novamente.'),true);}
+ finally{button.disabled=false;button.textContent='Salvar dados pessoais';}
+});
+document.getElementById('accountEmailForm')?.addEventListener('submit',async event=>{
+ event.preventDefault();if(!authenticatedUser)return;
+ const email=document.getElementById('accountNewEmail').value.trim();
+ if(email.toLowerCase()===String(authenticatedUser.email||'').toLowerCase()){accountMessage('accountEmailMessage','Este já é o e-mail atual da sua conta.');return;}
+ const button=document.getElementById('accountSaveEmail');button.disabled=true;button.textContent='Enviando...';
+ try{const {error}=await supabaseClient.auth.updateUser({email},{emailRedirectTo:location.origin+location.pathname});if(error)throw error;accountMessage('accountEmailMessage','Solicitação enviada. Confira a caixa de entrada do novo endereço e siga o link de confirmação do Supabase. Dependendo das configurações do projeto, também poderá ser solicitada confirmação no endereço atual.');}
+ catch(error){accountMessage('accountEmailMessage','Não foi possível solicitar a alteração: '+(error.message||'tente novamente.'),true);}
+ finally{button.disabled=false;button.textContent='Solicitar alteração de e-mail';}
+});
+document.getElementById('accountPasswordForm')?.addEventListener('submit',async event=>{
+ event.preventDefault();if(!authenticatedUser)return;
+ const password=document.getElementById('accountNewPassword').value,confirm=document.getElementById('accountConfirmPassword').value;
+ if(password!==confirm){accountMessage('accountPasswordMessage','As senhas não coincidem.',true);return;}
+ if(!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}/.test(password)){accountMessage('accountPasswordMessage','Use pelo menos 8 caracteres, com letra maiúscula, minúscula e número.',true);return;}
+ const button=document.getElementById('accountSavePassword');button.disabled=true;button.textContent='Atualizando...';
+ try{const {error}=await supabaseClient.auth.updateUser({password});if(error)throw error;document.getElementById('accountPasswordForm').reset();accountMessage('accountPasswordMessage','Senha atualizada com sucesso.');}
+ catch(error){accountMessage('accountPasswordMessage','Não foi possível atualizar a senha: '+(error.message||'tente novamente.'),true);}
+ finally{button.disabled=false;button.textContent='Atualizar senha';}
+});
+document.getElementById('accountDeleteRequest')?.addEventListener('click',()=>{
+ if(!authenticatedUser)return;
+ const ok=window.confirm('Você deseja ver as orientações para solicitar a exclusão da sua conta? Nenhum dado será apagado agora.');
+ if(ok)accountMessage('accountDeleteMessage','A exclusão definitiva ainda não está disponível automaticamente. Entre em contato com a administração da Igreja para formalizar a solicitação. A equipe deverá verificar sua identidade e processar a exclusão por procedimento seguro.');
+});
+document.getElementById('accountBackHome')?.addEventListener('click',()=>go('home'));
 
 let currentAdminRole=false;
 async function checkAdminAccess(){
