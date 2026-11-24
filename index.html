@@ -134,6 +134,13 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
 
 
 [data-auth-only][hidden]{display:none!important}
+
+#adminProfiles .admin-person{border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0;background:#fff}
+#adminProfiles .admin-person h4{margin:0 0 6px;color:var(--navy)}
+#adminProfiles .admin-person p{margin:4px 0;font-size:14px;color:var(--muted);overflow-wrap:anywhere}
+#adminProfiles .admin-actions{display:flex;gap:8px;align-items:end;flex-wrap:wrap;margin-top:10px}
+#adminProfiles .admin-actions select{flex:1;min-width:180px}
+#adminProfiles .admin-actions button{white-space:nowrap}
 </style>
 </head>
 <body>
@@ -383,6 +390,12 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
     <div class="section-head"><div><div class="eyebrow">Comunidade</div><h2>Área de membros</h2></div></div>
     <div class="notice">Entre com o e-mail e a senha usados no cadastro. Cada pessoa terá acesso individual; não haverá diretório público de membros. A confirmação do e-mail poderá ser solicitada antes do primeiro acesso.</div>
     <div class="panel"><div class="eyebrow">Meu perfil</div><h3>Seus dados, sob seu controle</h3><p>Quando o acesso individual estiver ativo, você poderá corrigir seus dados pessoais e atualizar telefone, e-mail, endereço, congregação e informações de participação. A categoria de vínculo com a igreja será ajustada somente pela equipe administrativa autorizada.</p></div>
+    <div class="panel" id="adminEntryPanel" hidden>
+      <div class="eyebrow">Acesso administrativo</div>
+      <h3>Painel da administração</h3>
+      <p>Área restrita para pessoas autorizadas, com visão dos cadastros e classificação de vínculo.</p>
+      <button type="button" class="primary" id="openAdminPanel">Abrir painel administrativo</button>
+    </div>
     <div class="panel"><form id="memberForm">
       <div><label for="memberEmail">E-mail</label><input id="memberEmail" type="email" autocomplete="email" required placeholder="seuemail@exemplo.com"></div>
       <div><label for="memberPass">Senha</label><input id="memberPass" type="password" autocomplete="current-password" required placeholder="Sua senha"></div>
@@ -391,6 +404,24 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
       <button type="button" class="ghost" id="memberForgotBtn">Esqueci minha senha</button>
       <div id="memberAuthMessage" class="notice" hidden role="status" aria-live="polite"></div>
     </form></div>
+  </section>
+
+  <section id="painel-admin" class="view">
+    <div class="section-head"><div><div class="eyebrow">Acesso restrito</div><h2>Painel administrativo</h2></div></div>
+    <div class="notice">Este painel é exclusivo para administradores autorizados. Os dados exibidos respeitam as permissões configuradas no Supabase.</div>
+    <div class="grid" id="adminStats">
+      <div class="tile"><span class="ico">♙</span><b id="adminTotal">—</b><small>Cadastros visíveis</small></div>
+      <div class="tile"><span class="ico">✧</span><b id="adminVisitors">—</b><small>Visitantes</small></div>
+      <div class="tile"><span class="ico">♡</span><b id="adminNew">—</b><small>Novos convertidos</small></div>
+      <div class="tile"><span class="ico">⌂</span><b id="adminMembers">—</b><small>Membros</small></div>
+    </div>
+    <div class="panel">
+      <div class="section-head"><div><div class="eyebrow">Gestão de cadastros</div><h3>Cadastros e classificação</h3></div><button type="button" class="ghost" id="refreshAdmin">Atualizar</button></div>
+      <p>Você pode ajustar a classificação de vínculo com a igreja. Os demais dados pessoais permanecem sob controle de cada pessoa.</p>
+      <div id="adminStatus" class="notice" role="status" aria-live="polite">Carregando painel...</div>
+      <div id="adminProfiles" class="stack"></div>
+    </div>
+    <button type="button" class="ghost" id="backToMembers">Voltar à Área de Membros</button>
   </section>
 
   <section id="contribuicoes" class="view">
@@ -433,7 +464,7 @@ function updateRestrictedAreas(){
  document.querySelectorAll('[data-auth-only]').forEach(el=>{el.hidden=!authenticatedUser;});
 }
 function go(id){
- if(protectedViews.has(id) && !authenticatedUser){
+ if((protectedViews.has(id) && !authenticatedUser) || (id==='painel-admin' && !currentAdminRole)){
   views.forEach(v=>v.classList.toggle('active',v.id==='membros'));
   nav.forEach(b=>b.classList.toggle('active',b.dataset.go==='membros'));
   const box=document.getElementById('memberAuthMessage');
@@ -573,6 +604,7 @@ if(supabaseClient){
   authenticatedUser=session?.user||null;
   authReady=true;
   updateRestrictedAreas();
+  checkAdminAccess();
   if(event==='SIGNED_IN' && session?.user){
    showHomeAfterAuthentication(session.user);
   }
@@ -582,6 +614,7 @@ if(supabaseClient){
   authenticatedUser=data.session?.user||null;
   authReady=true;
   updateRestrictedAreas();
+  checkAdminAccess();
  }).catch(()=>{authenticatedUser=null;authReady=true;updateRestrictedAreas();});
 }else{
  authReady=true;
@@ -590,8 +623,71 @@ if(supabaseClient){
 document.getElementById('memberSignupBtn').addEventListener('click',event=>{event.preventDefault();go('cadastro');showRegistrationStep(1);history.replaceState(null,'','#cadastro');document.getElementById('regName').focus({preventScroll:true});window.scrollTo({top:0,behavior:'smooth'});});
 document.getElementById('memberForgotBtn').addEventListener('click',async()=>{const email=document.getElementById('memberEmail').value.trim();const box=document.getElementById('memberAuthMessage');box.hidden=false;if(!email){box.textContent='Informe seu e-mail acima para receber o link de redefinição de senha.';document.getElementById('memberEmail').focus();return;}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;box.textContent='Se houver uma conta para esse e-mail, enviaremos as instruções para redefinir a senha.';}catch(error){box.textContent=error.message||'Não foi possível solicitar a redefinição agora.';}});
 
+let currentAdminRole=false;
+async function checkAdminAccess(){
+ const entry=document.getElementById('adminEntryPanel');
+ if(!supabaseClient || !authenticatedUser){currentAdminRole=false;if(entry)entry.hidden=true;return false;}
+ try{
+  // A função é SECURITY DEFINER e consulta o papel do usuário autenticado.
+  const {data,error}=await supabaseClient.rpc('can_manage_registration',{target_congregation:null});
+  if(error)throw error;
+  currentAdminRole=data===true;
+ }catch(error){
+  currentAdminRole=false;
+  console.warn('Não foi possível verificar o acesso administrativo:',error.message);
+ }
+ if(entry)entry.hidden=!currentAdminRole;
+ return currentAdminRole;
+}
+function setAdminStatus(message){const el=document.getElementById('adminStatus');if(el)el.textContent=message;}
+async function loadAdminProfiles(){
+ if(!currentAdminRole){setAdminStatus('Acesso não autorizado. Entre com uma conta administrativa.');return;}
+ setAdminStatus('Consultando cadastros autorizados...');
+ const list=document.getElementById('adminProfiles');list.replaceChildren();
+ const {data,error}=await supabaseClient.from('profiles')
+  .select('user_id,full_name,birth_date,phone,email,address,congregation_id,relationship,baptized,wants_baptism,attends_cell,wants_cell,ministry_interest,created_at')
+  .order('created_at',{ascending:false});
+ if(error){setAdminStatus('Não foi possível consultar os cadastros: '+error.message);return;}
+ const rows=data||[];
+ document.getElementById('adminTotal').textContent=rows.length;
+ document.getElementById('adminVisitors').textContent=rows.filter(r=>r.relationship==='Visitante').length;
+ document.getElementById('adminNew').textContent=rows.filter(r=>r.relationship==='Novo convertido').length;
+ document.getElementById('adminMembers').textContent=rows.filter(r=>r.relationship==='Membro').length;
+ if(!rows.length){
+  setAdminStatus('Nenhum perfil encontrado na tabela profiles. A autenticação já está ativa, mas a sincronização dos dados do formulário público para essa tabela ainda precisa ser implantada. Nenhum cadastro foi apagado.');
+  return;
+ }
+ setAdminStatus(rows.length+' perfil(is) encontrado(s). A lista respeita as regras de acesso do Supabase.');
+ rows.forEach(profile=>{
+  const card=document.createElement('article');card.className='admin-person';
+  const title=document.createElement('h4');title.textContent=profile.full_name||'Nome não informado';card.appendChild(title);
+  const details=document.createElement('p');
+  details.textContent=[profile.email,profile.phone,profile.congregation_id?'ID da congregação: '+profile.congregation_id:null].filter(Boolean).join(' · ');
+  card.appendChild(details);
+  const current=document.createElement('p');current.textContent='Classificação atual: '+(profile.relationship||'Não informada');card.appendChild(current);
+  const actions=document.createElement('div');actions.className='admin-actions';
+  const select=document.createElement('select');
+  [['Novo convertido','Novo convertido'],['Membro','Membro'],['Visitante','Visitante'],['Interessado','Interessado']].forEach(([value,label])=>{const option=document.createElement('option');option.value=value;option.textContent=label;select.appendChild(option);});
+  select.value=profile.relationship||'Interessado';
+  const save=document.createElement('button');save.type='button';save.className='primary';save.textContent='Salvar classificação';
+  save.addEventListener('click',async()=>{
+   save.disabled=true;save.textContent='Salvando...';
+   const {error:updateError}=await supabaseClient.from('profiles').update({relationship:select.value,updated_at:new Date().toISOString()}).eq('user_id',profile.user_id);
+   save.disabled=false;save.textContent='Salvar classificação';
+   if(updateError){setAdminStatus('Não foi possível salvar a classificação: '+updateError.message);return;}
+   current.textContent='Classificação atual: '+select.value;
+   setAdminStatus('Classificação atualizada com sucesso.');
+   await loadAdminProfiles();
+  });
+  actions.append(select,save);card.appendChild(actions);list.appendChild(card);
+ });
+}
+document.getElementById('openAdminPanel')?.addEventListener('click',async()=>{if(await checkAdminAccess()){go('painel-admin');await loadAdminProfiles();}});
+document.getElementById('refreshAdmin')?.addEventListener('click',loadAdminProfiles);
+document.getElementById('backToMembers')?.addEventListener('click',()=>go('membros'));
 showRegistrationStep(1);
 updateRestrictedAreas();
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
 </body></html>
+\n## Versão 36 — painel administrativo inicial\n- Inclui entrada administrativa visível somente após validação da função `can_manage_registration(NULL)` para a sessão autenticada.\n- Inclui painel com contagem e listagem de perfis autorizados, permitindo alterar apenas a classificação de vínculo.\n- A consulta e a atualização continuam sujeitas às políticas RLS da tabela `profiles`.\n- IMPORTANTE: o formulário público ainda envia os dados como metadados ao Supabase Auth; a sincronização desses dados para `public.profiles` não foi implementada nesta versão. Se a tabela estiver vazia, o painel informará isso e não inventará cadastros.\n- A função `can_manage_registration` deve permanecer SECURITY DEFINER, com `search_path` seguro, e a política RLS deve continuar restrita a `authenticated`. Nunca inserir chave `service_role` no aplicativo.\n

@@ -1,4 +1,4 @@
-IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA — VERSÃO 31
+IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA — VERSÃO 36
 
 Esta atualização corrige a exibição do formulário de cadastro público em três etapas. Agora somente a etapa ativa fica visível; as etapas seguintes permanecem ocultas até a pessoa avançar pelo botão Continuar. Também reforça a navegação acessível entre as etapas.
 
@@ -36,3 +36,11 @@ Para atualizar: extraia o ZIP e substitua os arquivos na raiz do repositório Gi
 ## Versão 35 — áreas restritas
 
 As áreas Ministérios, Espaço Kids, Estudos para Líderes, Aniversariantes e Mídia ficam ocultas para visitantes e são exibidas somente após autenticação. Tentativas de abrir essas páginas sem login retornam à Área de Membros. O acesso visual do aplicativo não substitui políticas de segurança (RLS) no banco de dados para proteger dados privados.
+
+
+## Versão 36 — painel administrativo inicial
+- Inclui entrada administrativa visível somente após validação da função `can_manage_registration(NULL)` para a sessão autenticada.
+- Inclui painel com contagem e listagem de perfis autorizados, permitindo alterar apenas a classificação de vínculo.
+- A consulta e a atualização continuam sujeitas às políticas RLS da tabela `profiles`.
+- IMPORTANTE: o formulário público ainda envia os dados como metadados ao Supabase Auth; a sincronização desses dados para `public.profiles` não foi implementada nesta versão. Se a tabela estiver vazia, o painel informará isso e não inventará cadastros.
+- A função `can_manage_registration` deve permanecer SECURITY DEFINER, com `search_path` seguro, e a política RLS deve continuar restrita a `authenticated`. Nunca inserir chave `service_role` no aplicativo.
