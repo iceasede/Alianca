@@ -168,6 +168,20 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
 .account-page .field-note{display:block;color:var(--muted);font-size:12px;line-height:1.45;margin-top:5px}
 .account-page .notice{overflow-wrap:anywhere}
 
+
+/* Gestão e exportação de cadastros — v41 */
+.admin-tools{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}
+.admin-category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.admin-category{border:1px solid var(--line);border-radius:13px;background:#fff;padding:12px;text-align:left;color:var(--ink);cursor:pointer;font:inherit}
+.admin-category strong{display:block;color:var(--navy);font-size:14px}
+.admin-category small{display:block;color:var(--muted);font-size:11px;margin-top:4px}
+.admin-category.active{border-color:var(--gold);background:var(--cream);box-shadow:inset 0 0 0 1px var(--gold)}
+.admin-export-row{display:flex;gap:8px;flex-wrap:wrap}
+.admin-export-row button{flex:1;min-width:180px}
+.admin-search{width:100%;margin-top:10px}
+.admin-filter-label{font-size:13px;color:var(--muted);margin:12px 0 4px}
+@media(min-width:640px){.admin-category-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.admin-tools{grid-template-columns:1fr auto;align-items:end}}
+
 </style>
 </head>
 <body>
@@ -453,7 +467,25 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
       <div class="tile"><span class="ico">⌂</span><b id="adminMembers">—</b><small>Membros</small></div>
     </div>
     <div class="panel">
-      <div class="section-head"><div><div class="eyebrow">Gestão de cadastros</div><h3>Cadastros e classificação</h3></div><button type="button" class="ghost" id="refreshAdmin">Atualizar</button></div>
+      <div class="section-head"><div><div class="eyebrow">Relatórios e exportação</div><h3>Consultar por classificação</h3></div></div>
+      <div class="admin-category-grid" id="adminCategoryFilters">
+        <button type="button" class="admin-category active" data-relationship="todos"><strong>Todos</strong><small id="countTodos">Todos os cadastros</small></button>
+        <button type="button" class="admin-category" data-relationship="membro"><strong>Membros</strong><small id="countMembro">0 cadastros</small></button>
+        <button type="button" class="admin-category" data-relationship="visitante"><strong>Visitantes</strong><small id="countVisitante">0 cadastros</small></button>
+        <button type="button" class="admin-category" data-relationship="novo_convertido"><strong>Novos convertidos</strong><small id="countNovo">0 cadastros</small></button>
+        <button type="button" class="admin-category" data-relationship="interessado"><strong>Interessados</strong><small id="countInteressado">0 cadastros</small></button>
+      </div>
+      <div class="admin-tools">
+        <div><label for="adminSearch">Pesquisar nesta classificação</label><input id="adminSearch" class="admin-search" type="search" placeholder="Digite um nome, e-mail ou telefone"></div>
+        <div class="admin-export-row">
+          <button type="button" class="primary" id="exportFiltered">Baixar classificação (.xlsx)</button>
+          <button type="button" class="ghost" id="exportAll">Baixar todos os cadastros (.xlsx)</button>
+        </div>
+      </div>
+      <div id="adminExportMessage" class="notice" hidden role="status" aria-live="polite"></div>
+    </div>
+    <div class="panel">
+      <div class="section-head"><div><div class="eyebrow">Gestão de cadastros</div><h3 id="adminListTitle">Todos os cadastros</h3></div><button type="button" class="ghost" id="refreshAdmin">Atualizar</button></div>
       <p>Você pode ajustar a classificação de vínculo com a igreja. Os demais dados pessoais permanecem sob controle de cada pessoa.</p>
       <div id="adminStatus" class="notice" role="status" aria-live="polite">Carregando painel...</div>
       <div id="adminProfiles" class="stack"></div>
@@ -510,6 +542,7 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
   <a class="nav-instagram nav-cultos" href="#cultos" id="cultosNav"><span>✧</span>Cultos</a>
   <a class="nav-instagram" href="https://www.instagram.com/iceasedeof/" target="_blank" rel="noopener" aria-label="Instagram oficial da igreja"><span>◎</span>Instagram</a>
 </nav>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL="https://joztddhvrgawcoldmaqe.supabase.co";
@@ -819,73 +852,107 @@ async function checkAdminAccess(){
  return currentAdminRole;
 }
 function setAdminStatus(message){const el=document.getElementById('adminStatus');if(el)el.textContent=message;}
-async function loadAdminProfiles(){
- if(!currentAdminRole){setAdminStatus('Acesso não autorizado. Entre com uma conta administrativa.');return;}
- setAdminStatus('Consultando cadastros autorizados...');
- const list=document.getElementById('adminProfiles');list.replaceChildren();
- const {data,error}=await supabaseClient.from('profiles')
-  .select('user_id,full_name,birth_date,phone,email,address,congregation_id,relationship,baptized,wants_baptism,attends_cell,wants_cell,ministry_interest,created_at')
-  .order('created_at',{ascending:false});
- if(error){setAdminStatus('Não foi possível consultar os cadastros: '+error.message);return;}
- const rows=data||[];
- document.getElementById('adminTotal').textContent=rows.length;
- document.getElementById('adminVisitors').textContent=rows.filter(r=>r.relationship==='visitante').length;
- document.getElementById('adminNew').textContent=rows.filter(r=>r.relationship==='novo_convertido').length;
- document.getElementById('adminMembers').textContent=rows.filter(r=>r.relationship==='membro').length;
- if(!rows.length){
-  setAdminStatus('Nenhum perfil encontrado na tabela profiles. A autenticação já está ativa, mas a sincronização dos dados do formulário público para essa tabela ainda precisa ser implantada. Nenhum cadastro foi apagado.');
-  return;
- }
- setAdminStatus(rows.length+' perfil(is) encontrado(s). A lista respeita as regras de acesso do Supabase.');
+
+let adminProfilesCache=[];
+let adminRelationshipFilter='todos';
+const adminRelationshipLabels={novo_convertido:'Novo convertido',membro:'Membro',visitante:'Visitante',interessado:'Interessado'};
+function updateAdminCategoryCounts(rows){
+ const counts={todos:rows.length,membro:0,visitante:0,novo_convertido:0,interessado:0};
+ rows.forEach(r=>{if(Object.prototype.hasOwnProperty.call(counts,r.relationship))counts[r.relationship]++;});
+ const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value+' cadastro(s)';};
+ set('countTodos',counts.todos);set('countMembro',counts.membro);set('countVisitante',counts.visitante);set('countNovo',counts.novo_convertido);set('countInteressado',counts.interessado);
+}
+function filteredAdminProfiles(){
+ const q=(document.getElementById('adminSearch')?.value||'').trim().toLocaleLowerCase('pt-BR');
+ return adminProfilesCache.filter(p=>{
+  const categoryOk=adminRelationshipFilter==='todos'||p.relationship===adminRelationshipFilter;
+  const hay=[p.full_name,p.email,p.phone,p.address].filter(Boolean).join(' ').toLocaleLowerCase('pt-BR');
+  return categoryOk&&(!q||hay.includes(q));
+ });
+}
+function renderAdminProfiles(){
+ const list=document.getElementById('adminProfiles');if(!list)return;list.replaceChildren();
+ const rows=filteredAdminProfiles();
+ const title=document.getElementById('adminListTitle');
+ const label=adminRelationshipFilter==='todos'?'Todos os cadastros':(adminRelationshipLabels[adminRelationshipFilter]||'Cadastros');
+ if(title)title.textContent=label+' ('+rows.length+')';
  rows.forEach(profile=>{
   const card=document.createElement('article');card.className='admin-person';
   const title=document.createElement('h4');title.textContent=profile.full_name||'Nome não informado';card.appendChild(title);
   const details=document.createElement('p');
-  details.textContent=[profile.email,profile.phone,profile.congregation_id?'ID da congregação: '+profile.congregation_id:null].filter(Boolean).join(' · ');
+  details.textContent=[profile.email,profile.phone,profile.address,profile.congregation_id?'ID da congregação: '+profile.congregation_id:null].filter(Boolean).join(' · ');
   card.appendChild(details);
-  const labels={novo_convertido:'Novo convertido',membro:'Membro',visitante:'Visitante',interessado:'Interessado'};
-  const current=document.createElement('p');current.textContent='Classificação atual: '+(labels[profile.relationship]||'Não informada');card.appendChild(current);
+  const current=document.createElement('p');current.textContent='Classificação atual: '+(adminRelationshipLabels[profile.relationship]||'Não informada');card.appendChild(current);
   const actions=document.createElement('div');actions.className='admin-actions';
   const select=document.createElement('select');
-  [['novo_convertido','Novo convertido'],['membro','Membro'],['visitante','Visitante'],['interessado','Interessado']].forEach(([value,label])=>{const option=document.createElement('option');option.value=value;option.textContent=label;select.appendChild(option);});
+  Object.entries(adminRelationshipLabels).forEach(([value,label])=>{const option=document.createElement('option');option.value=value;option.textContent=label;select.appendChild(option);});
   select.value=profile.relationship||'interessado';
   const save=document.createElement('button');save.type='button';save.className='primary';save.textContent='Salvar classificação';
   save.addEventListener('click',async()=>{
    save.disabled=true;save.textContent='Salvando...';
-   // Normaliza o valor selecionado para corresponder exatamente ao CHECK do banco.
-   const relationshipMap={
-    'Novo convertido':'novo_convertido',
-    'Membro':'membro',
-    'Visitante':'visitante',
-    'Interessado':'interessado'
-   };
-   const relationship=relationshipMap[select.options[select.selectedIndex]?.text] || String(select.value||'').trim().toLowerCase();
-   const allowedRelationships=['visitante','novo_convertido','membro','interessado'];
-   if(!allowedRelationships.includes(relationship)){
-    save.disabled=false;save.textContent='Salvar classificação';
-    setAdminStatus('Classificação inválida. Selecione uma das opções disponíveis.');
-    return;
-   }
+   const relationship=String(select.value||'').trim().toLowerCase();
+   if(!Object.keys(adminRelationshipLabels).includes(relationship)){save.disabled=false;save.textContent='Salvar classificação';setAdminStatus('Classificação inválida.');return;}
    try{
-    const {data:updatedProfile,error:updateError}=await supabaseClient
-     .from('profiles')
-     .update({relationship,updated_at:new Date().toISOString()})
-     .eq('user_id',profile.user_id)
-     .select('relationship')
-     .single();
-    save.disabled=false;save.textContent='Salvar classificação';
-    if(updateError){setAdminStatus('Não foi possível salvar a classificação: '+updateError.message);return;}
-    current.textContent='Classificação atual: '+({novo_convertido:'Novo convertido',membro:'Membro',visitante:'Visitante',interessado:'Interessado'}[updatedProfile.relationship]||updatedProfile.relationship);
-    setAdminStatus('Classificação atualizada com sucesso.');
-    await loadAdminProfiles();
-   }catch(error){
-    save.disabled=false;save.textContent='Salvar classificação';
-    setAdminStatus('Ocorreu um erro ao salvar: '+(error?.message||'tente novamente.'));
-   }
+    const {data:updatedProfile,error:updateError}=await supabaseClient.from('profiles').update({relationship,updated_at:new Date().toISOString()}).eq('user_id',profile.user_id).select('relationship').single();
+    if(updateError)throw updateError;
+    profile.relationship=updatedProfile.relationship;
+    updateAdminCategoryCounts(adminProfilesCache);renderAdminProfiles();setAdminStatus('Classificação atualizada com sucesso.');
+   }catch(error){setAdminStatus('Não foi possível salvar a classificação: '+(error.message||'tente novamente.'));}
+   finally{save.disabled=false;save.textContent='Salvar classificação';}
   });
   actions.append(select,save);card.appendChild(actions);list.appendChild(card);
  });
+ if(!rows.length){const empty=document.createElement('p');empty.className='notice';empty.textContent=adminProfilesCache.length?'Nenhum cadastro corresponde a esta classificação ou pesquisa.':'Nenhum perfil encontrado na tabela profiles.';list.appendChild(empty);}
 }
+function exportAdminProfiles(rows,filename,sheetName){
+ const msg=document.getElementById('adminExportMessage');
+ const show=(text,isError=false)=>{if(msg){msg.hidden=false;msg.textContent=text;msg.style.borderColor=isError?'#b94a48':'';}};
+ if(!rows.length){show('Não há cadastros disponíveis para exportar nesta seleção.',true);return;}
+ if(!window.XLSX){show('A ferramenta de planilhas não carregou. Verifique a conexão e tente novamente.',true);return;}
+ const columns=[
+  ['Nome completo','full_name'],['Data de nascimento','birth_date'],['Telefone / WhatsApp','phone'],['E-mail','email'],['Endereço','address'],
+  ['Classificação','relationship'],['ID da congregação','congregation_id'],['Batizado','baptized'],['Interesse em batismo','wants_baptism'],
+  ['Participa de célula','attends_cell'],['Deseja participar de célula','wants_cell'],['Interesse em ministérios','ministry_interest'],['Data do cadastro','created_at']
+ ];
+ const data=rows.map(p=>{const out={};columns.forEach(([label,key])=>{let v=p[key];if(key==='relationship')v=adminRelationshipLabels[v]||v||'';if(typeof v==='boolean')v=v?'Sim':'Não';if(v==null)v='';out[label]=v;});return out;});
+ const ws=XLSX.utils.json_to_sheet(data);
+ ws['!cols']=columns.map(([label])=>({wch:Math.min(34,Math.max(16,label.length+4))}));
+ const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,(sheetName||'Cadastros').slice(0,31));
+ XLSX.writeFile(wb,filename);
+ show(rows.length+' cadastro(s) exportado(s) para Excel.');
+}
+async function loadAdminProfiles(){
+ if(!currentAdminRole){setAdminStatus('Acesso não autorizado. Entre com uma conta administrativa.');return;}
+ setAdminStatus('Consultando cadastros autorizados...');
+ const list=document.getElementById('adminProfiles');if(list)list.replaceChildren();
+ const {data,error}=await supabaseClient.from('profiles')
+  .select('user_id,full_name,birth_date,phone,email,address,congregation_id,relationship,baptized,wants_baptism,attends_cell,wants_cell,ministry_interest,created_at')
+  .order('created_at',{ascending:false});
+ if(error){adminProfilesCache=[];setAdminStatus('Não foi possível consultar os cadastros: '+error.message);return;}
+ adminProfilesCache=data||[];
+ const rows=adminProfilesCache;
+ document.getElementById('adminTotal').textContent=rows.length;
+ document.getElementById('adminVisitors').textContent=rows.filter(r=>r.relationship==='visitante').length;
+ document.getElementById('adminNew').textContent=rows.filter(r=>r.relationship==='novo_convertido').length;
+ document.getElementById('adminMembers').textContent=rows.filter(r=>r.relationship==='membro').length;
+ updateAdminCategoryCounts(rows);renderAdminProfiles();
+ if(!rows.length){setAdminStatus('Nenhum perfil encontrado na tabela profiles. A autenticação já está ativa, mas a sincronização dos dados do formulário público para essa tabela ainda precisa ser implantada. Nenhum cadastro foi apagado.');return;}
+ setAdminStatus(rows.length+' perfil(is) encontrado(s). A lista e as exportações respeitam as regras de acesso do Supabase.');
+}
+document.getElementById('adminCategoryFilters')?.addEventListener('click',event=>{
+ const button=event.target.closest('[data-relationship]');if(!button)return;
+ adminRelationshipFilter=button.dataset.relationship;
+ document.querySelectorAll('#adminCategoryFilters .admin-category').forEach(el=>el.classList.toggle('active',el===button));
+ renderAdminProfiles();
+});
+document.getElementById('adminSearch')?.addEventListener('input',renderAdminProfiles);
+document.getElementById('exportFiltered')?.addEventListener('click',()=>{
+ const suffix=adminRelationshipFilter==='todos'?'todos':adminRelationshipFilter;
+ exportAdminProfiles(filteredAdminProfiles(),'cadastros-'+suffix+'-'+new Date().toISOString().slice(0,10)+'.xlsx',suffix);
+});
+document.getElementById('exportAll')?.addEventListener('click',()=>{
+ exportAdminProfiles(adminProfilesCache,'todos-os-cadastros-'+new Date().toISOString().slice(0,10)+'.xlsx','Todos');
+});
 document.getElementById('openAdminPanel')?.addEventListener('click',async()=>{if(await checkAdminAccess()){go('painel-admin');await loadAdminProfiles();}});
 document.getElementById('refreshAdmin')?.addEventListener('click',loadAdminProfiles);
 document.getElementById('backToMembers')?.addEventListener('click',()=>go('membros'));

@@ -74,3 +74,11 @@ Para publicar, extraia o ZIP e substitua na raiz do repositório os arquivos `in
 - Inclui alteração de senha com validação de força e confirmação.
 - Inclui orientação para solicitação de exclusão, mas não executa exclusão: a exclusão definitiva exige função segura no servidor (Edge Function) e política de retenção/remoção dos dados relacionados.
 - A classificação de relacionamento e os papéis administrativos não podem ser editados pela pessoa na página Minha conta.
+
+
+## Versão 41 — Gestão e exportação de cadastros
+- Adiciona filtros por classificação: todos, membros, visitantes, novos convertidos e interessados.
+- Permite pesquisar os cadastros visíveis por nome, e-mail, telefone e endereço.
+- Permite exportar a classificação selecionada ou todos os cadastros visíveis em arquivo Excel (.xlsx), com dados cadastrais e de participação disponíveis.
+- As consultas e exportações utilizam exclusivamente os registros retornados pelo Supabase sob as políticas RLS da conta autenticada.
+- Não exporta senhas, tokens, dados de autenticação nem solicitações de oração.
