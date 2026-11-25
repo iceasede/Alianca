@@ -82,3 +82,10 @@ Para publicar, extraia o ZIP e substitua na raiz do repositório os arquivos `in
 - Permite exportar a classificação selecionada ou todos os cadastros visíveis em arquivo Excel (.xlsx), com dados cadastrais e de participação disponíveis.
 - As consultas e exportações utilizam exclusivamente os registros retornados pelo Supabase sob as políticas RLS da conta autenticada.
 - Não exporta senhas, tokens, dados de autenticação nem solicitações de oração.
+
+
+## Versão 43 — formulário de interesse em células
+- Adiciona formulário público com nome, telefone/WhatsApp, região escolhida e consentimento para contato.
+- O envio grava uma solicitação na tabela `public.cell_contact_requests`; o aplicativo não mostra telefones dos líderes.
+- **Configuração obrigatória:** antes de testar o envio, execute `CONFIGURAR-SOLICITACOES-CELULAS.sql` no SQL Editor do Supabase. A tabela tem RLS e permite apenas inserir pedidos; não libera leitura pública.
+- A consulta/triagem administrativa das solicitações ainda deverá ser implementada em uma etapa própria, com acesso restrito. Até lá, não afirmar que o pedido foi encaminhado ao líder: o formulário confirma apenas o recebimento no banco.
