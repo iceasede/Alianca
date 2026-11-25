@@ -609,7 +609,7 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
   <div id="mediaLightbox" class="media-lightbox" role="dialog" aria-modal="true" aria-label="Visualização da fotografia">
     <div class="media-lightbox-inner"><button type="button" class="media-lightbox-close" id="mediaLightboxClose">Fechar ✕</button><img id="mediaLightboxImage" alt="Fotografia da Igreja Comunidade Evangélica da Aliança"><div id="mediaLightboxCaption" class="media-lightbox-caption"></div></div>
   </div>
-  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 50</footer>
+  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 51</footer>
 </main>
 <nav>
   <button class="active" data-go="home"><span>⌂</span>Início</button>
@@ -1175,4 +1175,35 @@ document.getElementById('exportCellRequestsPdf')?.addEventListener('click',()=>{
  if(!popup){msg.textContent='O navegador bloqueou a nova janela. Permita pop-ups para preparar o PDF.';return;}
  const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
  const headers=Object.keys(rows[0]);
- popup.document.write('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Solicitações de células</title><style>body{font:14px Arial,sans-serif;color:#222;padding:24px}h1{font-size:20px;color:#681d28}p{color:#555}.meta{margin-bottom:18px}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #bbb;padding:7px;text-align:left;vertical-align:top}th{background:#f4ebdd;color:#681d28}@media print{body{padding:0}button{display:none}thead{display:table-header-group}tr{break-inside:avoid}}</style></head><body><h1>Igreja Comunidade Evangélica da Aliança</h1><h2>Solicitações de interesse em células</h2><p class="meta">Gerado em '+esc(new Date().toLocaleString('pt-BR'))+' · '+rows.length+' solicitação(ões)</p><table><thead><tr>'+headers.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+headers.map(h=>'<td>'+esc(r[h])+'</td>').join('')+'</tr>').join('')+'</tbody></table><p>Use a opção Imprimir do navegador e escolha Salvar como PDF.</p><button onclick="window.print()">Imprimir / Salvar como PDF</button></body></html>
+ popup.document.write('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Solicitações de células</title><style>body{font:14px Arial,sans-serif;color:#222;padding:24px}h1{font-size:20px;color:#681d28}p{color:#555}.meta{margin-bottom:18px}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #bbb;padding:7px;text-align:left;vertical-align:top}th{background:#f4ebdd;color:#681d28}@media print{body{padding:0}button{display:none}thead{display:table-header-group}tr{break-inside:avoid}}</style></head><body><h1>Igreja Comunidade Evangélica da Aliança</h1><h2>Solicitações de interesse em células</h2><p class="meta">Gerado em '+esc(new Date().toLocaleString('pt-BR'))+' · '+rows.length+' solicitação(ões)</p><table><thead><tr>'+headers.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+headers.map(h=>'<td>'+esc(r[h])+'</td>').join('')+'</tr>').join('')+'</tbody></table><p>Use a opção Imprimir do navegador e escolha Salvar como PDF.</p><button onclick="window.print()">Imprimir / Salvar como PDF</button></body></html>');
+ popup.document.close();msg.textContent='Relatório preparado. Na nova aba, escolha Imprimir e depois Salvar como PDF.';
+});
+// Solicitações de contato para células: gravação segura no Supabase (sem leitura pública).
+document.getElementById('cellInterestForm')?.addEventListener('submit',async event=>{
+ event.preventDefault();
+ const form=event.currentTarget, button=document.getElementById('cellInterestSubmit'), message=document.getElementById('cellInterestMessage');
+ const show=(text,isError=false)=>{message.hidden=false;message.textContent=text;message.style.borderColor=isError?'#b94a48':'';};
+ if(!supabaseClient){show('Não foi possível conectar ao serviço. Tente novamente mais tarde.',true);return;}
+ const full_name=document.getElementById('cellInterestName').value.trim();
+ const phone=document.getElementById('cellInterestPhone').value.trim();
+ const cell_region=document.getElementById('cellInterestRegion').value.trim();
+ const congregation_name=document.getElementById('cellInterestCongregation').value;
+ if(!full_name||!phone||!cell_region||!congregation_name||!document.getElementById('cellInterestConsent').checked){show('Preencha os campos e autorize o contato para enviar seu pedido.',true);return;}
+ button.disabled=true;button.textContent='Enviando...';
+ try{
+  const payload={full_name,phone,cell_region,congregation_name,status:'pendente'};
+  const {error}=await supabaseClient.from('cell_contact_requests').insert(payload);
+  if(error)throw error;
+  form.reset();show('Pedido enviado! Sua solicitação foi recebida pela igreja. A equipe administrativa fará o direcionamento à liderança da congregação escolhida.');
+ }catch(error){
+  const detail=String(error?.message||'');
+  if(detail.includes('cell_contact_requests')||detail.includes('schema cache')) show('O formulário está pronto, mas falta configurar a tabela segura de solicitações no Supabase. Siga o arquivo CONFIGURAR-SOLICITACOES-CELULAS.sql incluído neste pacote.',true);
+  else show('Não foi possível enviar agora. Tente novamente mais tarde ou procure a equipe da igreja. ('+detail+')',true);
+ }finally{button.disabled=false;button.textContent='Enviar pedido de contato';}
+});
+document.getElementById('backToMembers')?.addEventListener('click',()=>go('membros'));
+showRegistrationStep(1);
+updateRestrictedAreas();
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
