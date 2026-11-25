@@ -187,7 +187,7 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
 .cell-list .admin-person{margin:0;background:#fffdfa}
 .cell-list .admin-person p{margin:6px 0 0}
 
-.media-admin-form{display:grid;gap:10px}.media-gallery-group{margin:18px 0}.media-gallery-group h3{font-family:Georgia,serif;color:var(--navy);margin:0 0 10px}.media-photo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.media-photo{background:#fff;border:1px solid var(--line);border-radius:13px;overflow:hidden}.media-photo img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#eee}.media-photo .media-photo-info{padding:9px}.media-photo .media-photo-info p{font-size:12px;margin:3px 0 8px}.media-photo button{width:100%;margin-top:4px}.media-photo .delete-media{background:#fff;color:#8d2935;border:1px solid #8d2935}@media(min-width:650px){.media-photo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.media-admin-form{display:grid;gap:10px}.media-gallery-group{margin:14px 0}.media-folder{background:#fffdf8;border:1px solid var(--line);border-radius:15px;margin:12px 0;overflow:hidden;box-shadow:0 2px 8px rgba(40,30,20,.04)}.media-folder summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:15px}.media-folder summary::-webkit-details-marker{display:none}.media-folder-icon{font-size:25px;flex:none}.media-folder-heading{min-width:0;flex:1}.media-folder-heading strong{display:block;color:var(--navy);font-size:14px}.media-folder-heading small{display:block;color:var(--muted);font-size:12px;margin-top:3px}.media-folder-count{font-size:11px;color:var(--muted);white-space:nowrap}.media-folder-content{padding:0 12px 12px;border-top:1px solid var(--line)}.media-photo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-top:12px}.media-photo{background:#fff;border:1px solid var(--line);border-radius:13px;overflow:hidden}.media-photo img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#eee}.media-photo .media-photo-info{padding:9px}.media-photo .media-photo-info p{font-size:12px;margin:3px 0 8px}.media-photo button{width:100%;margin-top:4px}.media-photo .view-media{background:#fff;color:var(--navy);border:1px solid var(--line)}.media-photo .delete-media{background:#fff;color:#8d2935;border:1px solid #8d2935}.media-lightbox{position:fixed;inset:0;z-index:10000;background:rgba(12,12,12,.94);display:none;align-items:center;justify-content:center;padding:18px}.media-lightbox.open{display:flex}.media-lightbox-inner{width:min(100%,1000px);max-height:100%;display:flex;flex-direction:column;align-items:center;gap:10px}.media-lightbox img{max-width:100%;max-height:78vh;object-fit:contain;border-radius:8px}.media-lightbox-caption{color:#fff;text-align:center;font-size:13px}.media-lightbox-close{align-self:flex-end;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.55);border-radius:30px;padding:8px 14px}@media(min-width:650px){.media-photo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 </head>
 <body>
@@ -606,7 +606,10 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
     <div id="mediaGalleryList"></div>
     <div class="notice" style="margin-top:12px">A galeria é privada e acessível somente a membros autenticados. A publicação é restrita à administração autorizada. Fotos de crianças e pessoas identificáveis exigem as autorizações necessárias.</div>
   </section>
-  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 47</footer>
+  <div id="mediaLightbox" class="media-lightbox" role="dialog" aria-modal="true" aria-label="Visualização da fotografia">
+    <div class="media-lightbox-inner"><button type="button" class="media-lightbox-close" id="mediaLightboxClose">Fechar ✕</button><img id="mediaLightboxImage" alt="Fotografia da Igreja Comunidade Evangélica da Aliança"><div id="mediaLightboxCaption" class="media-lightbox-caption"></div></div>
+  </div>
+  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 48</footer>
 </main>
 <nav>
   <button class="active" data-go="home"><span>⌂</span>Início</button>
@@ -1050,6 +1053,14 @@ async function watermarkImage(file){
  ctx.shadowColor='rgba(0,0,0,.55)';ctx.shadowBlur=3;ctx.fillStyle='rgba(255,255,255,.92)';ctx.fillText(text,x,y);ctx.restore();
  const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.90));if(!blob)throw new Error('Não foi possível preparar a foto.');return blob;
 }
+function openMediaLightbox(src,caption){
+ const box=document.getElementById('mediaLightbox'),img=document.getElementById('mediaLightboxImage'),cap=document.getElementById('mediaLightboxCaption');
+ if(!box||!img)return;img.src=src;img.alt=caption||'Fotografia da Igreja Comunidade Evangélica da Aliança';cap.textContent=caption||'';box.classList.add('open');document.body.style.overflow='hidden';
+}
+function closeMediaLightbox(){const box=document.getElementById('mediaLightbox');if(!box)return;box.classList.remove('open');document.getElementById('mediaLightboxImage').src='';document.body.style.overflow='';}
+document.getElementById('mediaLightboxClose')?.addEventListener('click',closeMediaLightbox);
+document.getElementById('mediaLightbox')?.addEventListener('click',e=>{if(e.target.id==='mediaLightbox')closeMediaLightbox();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMediaLightbox();});
 async function loadMediaGallery(){
  const list=document.getElementById('mediaGalleryList');if(!list)return;
  if(!authenticatedUser){mediaStatus('Entre com sua conta para visualizar as fotos.',true);return;}
@@ -1057,14 +1068,24 @@ async function loadMediaGallery(){
  const {data,error}=await supabaseClient.from('church_media_photos').select('id,event_date,event_title,object_path,created_at').order('event_date',{ascending:false}).order('created_at',{ascending:false});
  if(error){mediaStatus('Não foi possível carregar a galeria. Confirme a configuração de mídia no Supabase: '+error.message,true);return;}
  mediaGalleryCache=data||[];if(!mediaGalleryCache.length){mediaStatus('Ainda não há fotos publicadas.');return;}
- mediaStatus(mediaGalleryCache.length+' foto(s) disponível(is).');
- const grouped=new Map();mediaGalleryCache.forEach(photo=>{const key=photo.event_date||'Data não informada';if(!grouped.has(key))grouped.set(key,[]);grouped.get(key).push(photo);});
- for(const [date,photos] of grouped){const group=document.createElement('section');group.className='media-gallery-group';const title=document.createElement('h3');const d=new Date(date+'T12:00:00');title.textContent=d.toLocaleDateString('pt-BR')+' — '+(photos[0].event_title||'Culto');group.appendChild(title);const grid=document.createElement('div');grid.className='media-photo-grid';
-  for(const photo of photos){const card=document.createElement('article');card.className='media-photo';const img=document.createElement('img');img.alt=photo.event_title||'Foto da Igreja Comunidade Evangélica da Aliança';img.loading='lazy';const {data:link,error:linkError}=await supabaseClient.storage.from(MEDIA_BUCKET).createSignedUrl(photo.object_path,3600);if(!linkError&&link?.signedUrl)img.src=link.signedUrl;else img.alt='Imagem indisponível';
-   const info=document.createElement('div');info.className='media-photo-info';const p=document.createElement('p');p.textContent=photo.event_title||'Registro do culto';const download=document.createElement('button');download.type='button';download.className='primary';download.textContent='Baixar foto';download.addEventListener('click',async()=>{const {data:dl,error}=await supabaseClient.storage.from(MEDIA_BUCKET).download(photo.object_path);if(error){mediaStatus('Não foi possível baixar a foto: '+error.message,true);return;}const url=URL.createObjectURL(dl);const a=document.createElement('a');a.href=url;a.download=(photo.event_date||'culto')+'-igreja-alianca.jpg';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);});info.append(p,download);
+ mediaStatus(mediaGalleryCache.length+' foto(s) disponível(is), organizadas por culto.');
+ const grouped=new Map();mediaGalleryCache.forEach(photo=>{const key=(photo.event_date||'sem-data')+'|'+(photo.event_title||'Culto');if(!grouped.has(key))grouped.set(key,[]);grouped.get(key).push(photo);});
+ for(const [key,photos] of grouped){
+  const [date,titleText]=key.split('|');const folder=document.createElement('details');folder.className='media-folder';
+  const summary=document.createElement('summary');const icon=document.createElement('span');icon.className='media-folder-icon';icon.textContent='📁';
+  const heading=document.createElement('span');heading.className='media-folder-heading';const strong=document.createElement('strong');strong.textContent=titleText+' — '+(date==='sem-data'?'Data não informada':new Date(date+'T12:00:00').toLocaleDateString('pt-BR'));const small=document.createElement('small');small.textContent='Toque para abrir a pasta e visualizar as fotos';heading.append(strong,small);
+  const count=document.createElement('span');count.className='media-folder-count';count.textContent=photos.length+' foto(s)';summary.append(icon,heading,count);folder.append(summary);
+  const content=document.createElement('div');content.className='media-folder-content';const grid=document.createElement('div');grid.className='media-photo-grid';
+  for(const photo of photos){
+   const card=document.createElement('article');card.className='media-photo';const img=document.createElement('img');img.alt=photo.event_title||'Foto da Igreja Comunidade Evangélica da Aliança';img.loading='lazy';
+   const {data:link,error:linkError}=await supabaseClient.storage.from(MEDIA_BUCKET).createSignedUrl(photo.object_path,3600);const signedUrl=!linkError&&link?.signedUrl?link.signedUrl:'';if(signedUrl)img.src=signedUrl;else img.alt='Imagem indisponível';
+   const info=document.createElement('div');info.className='media-photo-info';const p=document.createElement('p');p.textContent=photo.event_title||'Registro do culto';
+   const view=document.createElement('button');view.type='button';view.className='view-media';view.textContent='Visualizar';view.disabled=!signedUrl;view.addEventListener('click',()=>openMediaLightbox(signedUrl,p.textContent+' — '+new Date(date+'T12:00:00').toLocaleDateString('pt-BR')));
+   const download=document.createElement('button');download.type='button';download.className='primary';download.textContent='Baixar foto';download.disabled=!signedUrl;download.addEventListener('click',async()=>{const {data:dl,error:downloadError}=await supabaseClient.storage.from(MEDIA_BUCKET).download(photo.object_path);if(downloadError){mediaStatus('Não foi possível baixar a foto: '+downloadError.message,true);return;}const url=URL.createObjectURL(dl);const a=document.createElement('a');a.href=url;a.download=(date||'culto')+'-igreja-alianca.jpg';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);});info.append(p,view,download);
    if(currentAdminRole){const del=document.createElement('button');del.type='button';del.className='delete-media';del.textContent='Excluir foto';del.addEventListener('click',async()=>{if(!confirm('Deseja excluir esta foto da galeria?'))return;del.disabled=true;const {error:storageError}=await supabaseClient.storage.from(MEDIA_BUCKET).remove([photo.object_path]);if(storageError){mediaStatus('Não foi possível excluir o arquivo: '+storageError.message,true);del.disabled=false;return;}const {error:rowError}=await supabaseClient.from('church_media_photos').delete().eq('id',photo.id);if(rowError){mediaStatus('Arquivo removido, mas não foi possível remover o registro: '+rowError.message,true);return;}loadMediaGallery();});info.append(del);}
    card.append(img,info);grid.append(card);
-  }group.append(grid);list.append(group);
+  }
+  content.append(grid);folder.append(content);list.append(folder);
  }
 }
 async function publishMediaPhotos(event){
