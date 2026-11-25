@@ -539,6 +539,21 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
       <div id="adminStatus" class="notice" role="status" aria-live="polite">Carregando painel...</div>
       <div id="adminProfiles" class="stack"></div>
     </div>
+    <div class="panel" style="margin-top:18px">
+      <div class="section-head"><div><div class="eyebrow">Fotos e registros</div><h3>Administração da galeria</h3></div></div>
+      <p>Gerencie as fotos dos cultos nesta área restrita. Os membros verão apenas a galeria publicada na seção Mídia.</p>
+    </div>
+    <div class="panel" id="mediaAdminPanel" hidden style="margin-top:18px">
+      <div class="eyebrow">Administração de mídia</div><h3>Publicar fotos dos cultos</h3>
+      <p>Selecione as fotos, informe a data do culto e publique. A marca-d’água será aplicada ao arquivo antes do envio.</p>
+      <form id="mediaUploadForm" class="media-admin-form">
+        <div><label for="mediaEventDate">Data do culto</label><input id="mediaEventDate" type="date" required></div>
+        <div><label for="mediaEventTitle">Título / identificação</label><input id="mediaEventTitle" maxlength="100" placeholder="Ex.: Culto da Família" required></div>
+        <div><label for="mediaPhotoFiles">Selecionar fotos (JPG, PNG ou WebP)</label><input id="mediaPhotoFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple required><small class="field-help">Envie somente imagens autorizadas para divulgação. Até 15 MB por foto.</small></div>
+        <div id="mediaUploadStatus" class="notice" hidden role="status" aria-live="polite"></div>
+        <button class="primary" id="mediaUploadButton" type="submit">Aplicar marca-d’água e publicar fotos</button>
+      </form>
+    </div>
     <div class="panel" id="cellRequestsAdminPanel" style="margin-top:18px">
       <div class="section-head"><div><div class="eyebrow">Acompanhamento pastoral</div><h3>Interesses em células</h3></div><button type="button" class="ghost" id="refreshCellRequests">Atualizar solicitações</button></div>
       <p>Solicitações recebidas pelo formulário público. Use os filtros para localizar a congregação e acompanhe o encaminhamento à liderança.</p>
@@ -589,20 +604,9 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
     <div class="panel"><h3>Fotos dos cultos</h3><p>Reviva os momentos especiais da família da Igreja Comunidade Evangélica da Aliança. As fotografias são exclusivas para membros cadastrados e autenticados. As imagens publicadas recebem marca-d’água permanente.</p></div>
     <div id="mediaGalleryStatus" class="notice" role="status" aria-live="polite">Carregando galeria...</div>
     <div id="mediaGalleryList"></div>
-    <div class="panel" id="mediaAdminPanel" hidden style="margin-top:18px">
-      <div class="eyebrow">Administração de mídia</div><h3>Publicar fotos dos cultos</h3>
-      <p>Selecione as fotos, informe a data do culto e publique. A marca-d’água será aplicada ao arquivo antes do envio.</p>
-      <form id="mediaUploadForm" class="media-admin-form">
-        <div><label for="mediaEventDate">Data do culto</label><input id="mediaEventDate" type="date" required></div>
-        <div><label for="mediaEventTitle">Título / identificação</label><input id="mediaEventTitle" maxlength="100" placeholder="Ex.: Culto da Família" required></div>
-        <div><label for="mediaPhotoFiles">Selecionar fotos (JPG, PNG ou WebP)</label><input id="mediaPhotoFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple required><small class="field-help">Envie somente imagens autorizadas para divulgação. Até 15 MB por foto.</small></div>
-        <div id="mediaUploadStatus" class="notice" hidden role="status" aria-live="polite"></div>
-        <button class="primary" id="mediaUploadButton" type="submit">Aplicar marca-d’água e publicar fotos</button>
-      </form>
-    </div>
     <div class="notice" style="margin-top:12px">A galeria é privada e acessível somente a membros autenticados. A publicação é restrita à administração autorizada. Fotos de crianças e pessoas identificáveis exigem as autorizações necessárias.</div>
   </section>
-  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 46</footer>
+  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 47</footer>
 </main>
 <nav>
   <button class="active" data-go="home"><span>⌂</span>Início</button>
