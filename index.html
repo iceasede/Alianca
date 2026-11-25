@@ -219,7 +219,7 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
       <button class="tile" data-go="ministerios" data-auth-only hidden><span class="ico">♧</span><b>Ministérios</b><small>Servir e participar</small></button>
       <button class="tile" data-go="kids" data-auth-only hidden><span class="ico">♡</span><b>Espaço Kids</b><small>Atividades e novidades das crianças</small></button>
       <button class="tile" data-go="celulas"><span class="ico">⌂</span><b>Nossas células</b><small>Encontre uma célula e fale com o líder</small></button>
-      <button class="tile" data-go="estudos" data-auth-only hidden><span class="ico">▤</span><b>Estudos para líderes</b><small>Biblioteca bíblica reservada</small></button>
+      <button class="tile" data-go="estudos"><span class="ico">▤</span><b>Estudos para líderes</b><small>Materiais disponíveis para baixar</small></button>
       <button class="tile" data-go="oracao"><span class="ico">♡</span><b>Pedidos de oração</b><small>Conte com nossa oração</small></button>
       <button class="tile" data-go="devocional"><span class="ico">✧</span><b>Palavra e devocional</b><small>Um momento com Deus</small></button>
       <button class="tile" data-go="cadastro"><span class="ico">✚</span><b>Faça seu cadastro</b><small>Conecte-se à nossa família</small></button>
@@ -416,12 +416,11 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
     </div>
   </section>
 
-  <section id="estudos" class="view" data-requires-auth>
-    <div class="section-head"><div><div class="eyebrow">Material oficial para líderes</div><h2>Biblioteca de estudos</h2></div></div>
-    <div class="notice"><strong>Área restrita a líderes de células autorizados.</strong> O login e a verificação de permissões ainda serão implantados. Não publique estudos confidenciais nesta versão estática.</div>
-    <div class="panel"><h3>Estudos oficiais</h3><p>Os Apóstolos serão responsáveis pela publicação dos estudos. Os líderes autorizados poderão consultar os materiais, ler no aplicativo e baixar os PDFs.</p></div>
-    <div class="panel"><h3>Biblioteca de estudos anteriores</h3><p>O histórico será organizado por tema, data e referência bíblica. Os líderes poderão consultar materiais anteriores quando a biblioteca estiver conectada ao sistema seguro.</p></div>
-    <div class="notice" style="margin-top:12px">A publicação será exclusiva dos Apóstolos. Líderes poderão consultar os materiais, mas não publicar nem alterar estudos.</div>
+  <section id="estudos" class="view">
+    <div class="section-head"><div><div class="eyebrow">Formação e crescimento</div><h2>Estudos para Líderes</h2></div></div>
+    <div class="notice">Consulte e baixe os estudos publicados pela administração da Igreja Comunidade Evangélica da Aliança.</div>
+    <div id="leaderStudiesStatus" class="notice" role="status" aria-live="polite">Carregando estudos...</div>
+    <div id="leaderStudiesList" class="stack"></div>
   </section>
 
   <section id="oracao" class="view">
@@ -554,6 +553,21 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
         <button class="primary" id="mediaUploadButton" type="submit">Aplicar marca-d’água e publicar fotos</button>
       </form>
     </div>
+    <div class="panel" id="leaderStudiesAdminPanel" hidden style="margin-top:18px">
+      <div class="section-head"><div><div class="eyebrow">Materiais de formação</div><h3>Gerenciar estudos para líderes</h3></div><button type="button" class="ghost" id="refreshLeaderStudies">Atualizar</button></div>
+      <p>Publique arquivos PDF com título, data e descrição. Os estudos publicados ficarão disponíveis para download na página principal.</p>
+      <form id="leaderStudyUploadForm" class="media-admin-form">
+        <div><label for="leaderStudyDate">Data do estudo</label><input id="leaderStudyDate" type="date" required></div>
+        <div><label for="leaderStudyTitle">Título do estudo</label><input id="leaderStudyTitle" maxlength="140" required placeholder="Ex.: O caráter do líder cristão"></div>
+        <div><label for="leaderStudyDescription">Breve descrição (opcional)</label><textarea id="leaderStudyDescription" maxlength="500" rows="3" placeholder="Resumo ou referência bíblica"></textarea></div>
+        <div><label for="leaderStudyFile">Arquivo do estudo (PDF)</label><input id="leaderStudyFile" type="file" accept="application/pdf,.pdf" required><small class="field-help">Arquivo PDF de até 20 MB.</small></div>
+        <div id="leaderStudyUploadStatus" class="notice" hidden role="status" aria-live="polite"></div>
+        <button class="primary" id="leaderStudyUploadButton" type="submit">Publicar estudo</button>
+      </form>
+      <div class="section-head" style="margin-top:18px"><h4>Estudos publicados</h4></div>
+      <div id="leaderStudiesAdminList" class="stack"></div>
+      <div id="leaderStudiesAdminStatus" class="notice" role="status" aria-live="polite">Os estudos publicados aparecerão aqui.</div>
+    </div>
     <div class="panel" id="cellRequestsAdminPanel" style="margin-top:18px">
       <div class="section-head"><div><div class="eyebrow">Acompanhamento pastoral</div><h3>Interesses em células</h3></div><button type="button" class="ghost" id="refreshCellRequests">Atualizar solicitações</button></div>
       <p>Solicitações recebidas pelo formulário público. Use os filtros para localizar a congregação e acompanhe o encaminhamento à liderança.</p>
@@ -626,7 +640,7 @@ const SUPABASE_URL="https://joztddhvrgawcoldmaqe.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_XjjIJ8noOKsVmGA5Z_ssEw_AzmYuMpa";
 const supabaseClient=window.supabase?.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const views=[...document.querySelectorAll('.view')], nav=[...document.querySelectorAll('nav button')];
-const protectedViews=new Set(['ministerios','kids','estudos','aniversariantes','galeria','minha-conta']);
+const protectedViews=new Set(['ministerios','kids','aniversariantes','galeria','minha-conta']);
 let authenticatedUser=null;
 let authReady=false;
 function updateRestrictedAreas(){
@@ -645,6 +659,7 @@ function go(id){
  nav.forEach(b=>b.classList.toggle('active',b.dataset.go===id));
  window.scrollTo({top:0,behavior:'smooth'});
  if(id==='galeria')loadMediaGallery();
+ if(id==='estudos')loadLeaderStudies();
 }
 function showHomeAfterAuthentication(user){
  authenticatedUser=user||authenticatedUser;
@@ -917,7 +932,7 @@ let currentAdminRole=false;
 let currentSuperAdmin=false;
 async function checkAdminAccess(){
  const entry=document.getElementById('adminEntryPanel');
- if(!supabaseClient || !authenticatedUser){currentAdminRole=false;currentSuperAdmin=false;if(entry)entry.hidden=true;const mediaAdmin=document.getElementById('mediaAdminPanel');if(mediaAdmin)mediaAdmin.hidden=true;return false;}
+ if(!supabaseClient || !authenticatedUser){currentAdminRole=false;currentSuperAdmin=false;if(entry)entry.hidden=true;const mediaAdmin=document.getElementById('mediaAdminPanel');if(mediaAdmin)mediaAdmin.hidden=true;const studiesAdmin=document.getElementById('leaderStudiesAdminPanel');if(studiesAdmin)studiesAdmin.hidden=true;return false;}
  try{
   // A função é SECURITY DEFINER e consulta o papel do usuário autenticado.
   const {data,error}=await supabaseClient.rpc('can_manage_registration',{target_congregation:null});
@@ -931,7 +946,7 @@ async function checkAdminAccess(){
   console.warn('Não foi possível verificar o acesso administrativo:',error.message);
  }
  if(entry)entry.hidden=!currentAdminRole;
- const mediaAdmin=document.getElementById('mediaAdminPanel');if(mediaAdmin)mediaAdmin.hidden=!currentAdminRole;
+ const mediaAdmin=document.getElementById('mediaAdminPanel');if(mediaAdmin)mediaAdmin.hidden=!currentAdminRole;const studiesAdmin=document.getElementById('leaderStudiesAdminPanel');if(studiesAdmin)studiesAdmin.hidden=!currentAdminRole;
  return currentAdminRole;
 }
 function setAdminStatus(message){const el=document.getElementById('adminStatus');if(el)el.textContent=message;}
@@ -1036,8 +1051,110 @@ document.getElementById('exportFiltered')?.addEventListener('click',()=>{
 document.getElementById('exportAll')?.addEventListener('click',()=>{
  exportAdminProfiles(adminProfilesCache,'todos-os-cadastros-'+new Date().toISOString().slice(0,10)+'.xlsx','Todos');
 });
-document.getElementById('openAdminPanel')?.addEventListener('click',async()=>{if(await checkAdminAccess()){go('painel-admin');await loadAdminProfiles();await loadCellRequests();}});
+document.getElementById('openAdminPanel')?.addEventListener('click',async()=>{if(await checkAdminAccess()){go('painel-admin');await loadAdminProfiles();await loadCellRequests();await loadLeaderStudiesAdmin();}});
 document.getElementById('refreshAdmin')?.addEventListener('click',loadAdminProfiles);
+
+
+// Biblioteca pública de estudos para líderes; publicação e gestão restritas à administração.
+const LEADER_STUDIES_BUCKET='leader-studies';
+let leaderStudiesCache=[];
+function studyStatus(id,message,isError=false){
+ const el=document.getElementById(id);if(!el)return;
+ el.hidden=false;el.textContent=message;el.style.borderColor=isError?'#b94a48':'';
+}
+function formatStudyDate(value){
+ if(!value)return '';
+ const [y,m,d]=String(value).split('-');return d+'/'+m+'/'+y;
+}
+async function loadLeaderStudies(){
+ const list=document.getElementById('leaderStudiesList');if(!list)return;
+ studyStatus('leaderStudiesStatus','Carregando estudos...');
+ list.replaceChildren();
+ if(!supabaseClient){studyStatus('leaderStudiesStatus','Não foi possível conectar ao serviço.',true);return;}
+ try{
+  const {data,error}=await supabaseClient.from('church_leader_studies')
+   .select('id,title,description,study_date,object_path,created_at')
+   .eq('published',true).order('study_date',{ascending:false}).order('created_at',{ascending:false});
+  if(error)throw error;
+  leaderStudiesCache=data||[];
+  if(!leaderStudiesCache.length){studyStatus('leaderStudiesStatus','Ainda não há estudos publicados.');return;}
+  studyStatus('leaderStudiesStatus',leaderStudiesCache.length+' estudo(s) disponível(is).');
+  leaderStudiesCache.forEach(study=>{
+   const card=document.createElement('article');card.className='admin-person';
+   const heading=document.createElement('h3');heading.textContent=study.title;card.appendChild(heading);
+   const date=document.createElement('p');date.textContent='Data: '+formatStudyDate(study.study_date);card.appendChild(date);
+   if(study.description){const desc=document.createElement('p');desc.textContent=study.description;card.appendChild(desc);}
+   const actions=document.createElement('div');actions.className='admin-actions';
+   const link=document.createElement('a');link.className='primary';link.textContent='Baixar estudo (PDF)';
+   link.href=supabaseClient.storage.from(LEADER_STUDIES_BUCKET).getPublicUrl(study.object_path).data.publicUrl;
+   link.target='_blank';link.rel='noopener';link.download=(study.title||'estudo')+'.pdf';
+   actions.appendChild(link);card.appendChild(actions);list.appendChild(card);
+  });
+ }catch(error){studyStatus('leaderStudiesStatus','Não foi possível carregar os estudos: '+(error.message||'verifique a configuração do Supabase.'),true);}
+}
+async function loadLeaderStudiesAdmin(){
+ const list=document.getElementById('leaderStudiesAdminList');if(!list)return;
+ if(!currentAdminRole){list.replaceChildren();studyStatus('leaderStudiesAdminStatus','Acesso restrito à administração.',true);return;}
+ list.replaceChildren();studyStatus('leaderStudiesAdminStatus','Consultando estudos publicados...');
+ try{
+  const {data,error}=await supabaseClient.from('church_leader_studies')
+   .select('id,title,description,study_date,object_path,published,created_at')
+   .order('study_date',{ascending:false}).order('created_at',{ascending:false});
+  if(error)throw error;
+  const rows=data||[];
+  if(!rows.length){studyStatus('leaderStudiesAdminStatus','Nenhum estudo cadastrado ainda.');return;}
+  studyStatus('leaderStudiesAdminStatus',rows.length+' estudo(s) cadastrado(s).');
+  rows.forEach(study=>{
+   const card=document.createElement('article');card.className='admin-person';
+   const heading=document.createElement('h4');heading.textContent=study.title;card.appendChild(heading);
+   const detail=document.createElement('p');detail.textContent=formatStudyDate(study.study_date)+' · '+(study.published?'Publicado':'Não publicado');card.appendChild(detail);
+   const actions=document.createElement('div');actions.className='admin-actions';
+   const toggle=document.createElement('button');toggle.type='button';toggle.className='ghost';toggle.textContent=study.published?'Retirar da página':'Publicar';
+   toggle.addEventListener('click',async()=>{
+    toggle.disabled=true;
+    try{const {error}=await supabaseClient.from('church_leader_studies').update({published:!study.published}).eq('id',study.id);if(error)throw error;await loadLeaderStudiesAdmin();}
+    catch(error){studyStatus('leaderStudiesAdminStatus','Não foi possível alterar a publicação: '+error.message,true);toggle.disabled=false;}
+   });
+   const remove=document.createElement('button');remove.type='button';remove.className='ghost';remove.textContent='Excluir';
+   remove.addEventListener('click',async()=>{
+    if(!window.confirm('Deseja excluir este estudo permanentemente?'))return;
+    remove.disabled=true;
+    try{
+     const {error:storageError}=await supabaseClient.storage.from(LEADER_STUDIES_BUCKET).remove([study.object_path]);if(storageError)throw storageError;
+     const {error}=await supabaseClient.from('church_leader_studies').delete().eq('id',study.id);if(error)throw error;
+     await loadLeaderStudiesAdmin();
+    }catch(error){studyStatus('leaderStudiesAdminStatus','Não foi possível excluir o estudo: '+error.message,true);remove.disabled=false;}
+   });
+   actions.append(toggle,remove);card.appendChild(actions);list.appendChild(card);
+  });
+ }catch(error){studyStatus('leaderStudiesAdminStatus','Não foi possível consultar os estudos: '+(error.message||''),true);}
+}
+document.getElementById('refreshLeaderStudies')?.addEventListener('click',loadLeaderStudiesAdmin);
+document.getElementById('leaderStudyUploadForm')?.addEventListener('submit',async event=>{
+ event.preventDefault();
+ if(!currentAdminRole){studyStatus('leaderStudyUploadStatus','Somente a administração pode publicar estudos.',true);return;}
+ const date=document.getElementById('leaderStudyDate').value;
+ const title=document.getElementById('leaderStudyTitle').value.trim();
+ const description=document.getElementById('leaderStudyDescription').value.trim();
+ const file=document.getElementById('leaderStudyFile').files?.[0];
+ const button=document.getElementById('leaderStudyUploadButton');
+ if(!date||!title||!file){studyStatus('leaderStudyUploadStatus','Informe a data, o título e selecione um PDF.',true);return;}
+ if(file.type!=='application/pdf' && !file.name.toLowerCase().endsWith('.pdf')){studyStatus('leaderStudyUploadStatus','Selecione um arquivo PDF.',true);return;}
+ if(file.size>20*1024*1024){studyStatus('leaderStudyUploadStatus','O arquivo deve ter até 20 MB.',true);return;}
+ button.disabled=true;button.textContent='Publicando...';
+ const objectPath=authenticatedUser.id+'/'+crypto.randomUUID()+'.pdf';
+ try{
+  const {error:uploadError}=await supabaseClient.storage.from(LEADER_STUDIES_BUCKET).upload(objectPath,file,{contentType:'application/pdf',upsert:false});
+  if(uploadError)throw uploadError;
+  const {error}=await supabaseClient.from('church_leader_studies').insert({
+   title,description,study_date:date,object_path:objectPath,uploaded_by:authenticatedUser.id,published:true
+  });
+  if(error){await supabaseClient.storage.from(LEADER_STUDIES_BUCKET).remove([objectPath]);throw error;}
+  event.target.reset();studyStatus('leaderStudyUploadStatus','Estudo publicado com sucesso.');
+  await loadLeaderStudiesAdmin();await loadLeaderStudies();
+ }catch(error){studyStatus('leaderStudyUploadStatus','Não foi possível publicar: '+(error.message||'verifique a configuração do Supabase.'),true);}
+ finally{button.disabled=false;button.textContent='Publicar estudo';}
+});
 
 // Galeria privada de fotos dos cultos, com marca-d’água gravada no arquivo.
 const MEDIA_BUCKET='cultos-fotos';

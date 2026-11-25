@@ -1,0 +1,22 @@
+VERSÃO 52 — ESTUDOS PARA LÍDERES
+
+Novidades:
+- Atalho público "Estudos para líderes" na página inicial.
+- Listagem dos PDFs publicados, organizada por data.
+- Download dos estudos sem exigir login.
+- Painel administrativo com formulário para cadastrar data, título, descrição e PDF.
+- Administração pode publicar, retirar da página e excluir estudos.
+- Arquivos no bucket público leader-studies; escrita protegida por RLS e pela função can_manage_registration(null).
+
+INSTALAÇÃO:
+1. Publique os arquivos desta pasta no GitHub Pages, substituindo os arquivos anteriores.
+2. No Supabase, abra SQL Editor.
+3. Copie e execute o conteúdo de CONFIGURAR-ESTUDOS-LIDERES.sql.
+4. Após a execução, entre no aplicativo com uma conta administradora.
+5. Abra Área de Membros > Painel Administrativo > Gerenciar estudos para líderes.
+6. Cadastre um PDF de teste com título, data e descrição.
+
+IMPORTANTE:
+- Os PDFs publicados ficam acessíveis para download a qualquer visitante, conforme solicitado para a área principal.
+- Somente contas autorizadas pela função can_manage_registration(null) podem inserir, alterar ou excluir estudos.
+- Não é necessário compartilhar senhas ou chaves secretas.
