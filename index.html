@@ -542,7 +542,11 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
       <p>Solicitações recebidas pelo formulário público. Use os filtros para localizar a congregação e acompanhe o encaminhamento à liderança.</p>
       <div class="admin-tools">
         <div><label for="cellRequestCongregationFilter">Filtrar por congregação</label><select id="cellRequestCongregationFilter"><option value="todas">Todas as congregações</option><option>Sede — Brazlândia/DF</option><option>Jardim Botânico/DF</option><option>Vendinha/GO</option></select></div>
-        <div><label for="cellRequestStatusFilter">Filtrar por situação</label><select id="cellRequestStatusFilter"><option value="todos">Todas as situações</option><option value="pendente">Pendente</option><option value="encaminhada">Encaminhada à liderança</option><option value="concluido">Concluída</option></select></div>
+        <div><label for="cellRequestStatusFilter">Filtrar por situação</label><select id="cellRequestStatusFilter"><option value="pendente" selected>Pendentes</option><option value="todos">Todas as situações</option><option value="encaminhada">Encaminhada à liderança</option><option value="concluido">Concluída</option></select></div>
+      </div>
+      <div class="admin-export-row" style="margin:12px 0">
+        <button type="button" class="primary" id="exportCellRequestsXlsx">Baixar Excel (.xlsx)</button>
+        <button type="button" class="ghost" id="exportCellRequestsPdf">Preparar PDF</button>
       </div>
       <div id="cellRequestsAdminStatus" class="notice" role="status" aria-live="polite">As solicitações aparecerão aqui para administradores autorizados.</div>
       <div id="cellRequestsAdminList" class="stack"></div>
@@ -1035,7 +1039,7 @@ function renderCellRequests(){
   const actions=document.createElement('div');actions.className='admin-actions';
   const select=document.createElement('select');[['pendente','Pendente'],['encaminhada','Encaminhada à liderança'],['concluido','Concluída']].forEach(([v,l])=>{const o=document.createElement('option');o.value=v;o.textContent=l;select.appendChild(o);});select.value=request.status||'pendente';
   const save=document.createElement('button');save.type='button';save.className='primary';save.textContent='Atualizar situação';
-  save.addEventListener('click',async()=>{save.disabled=true;save.textContent='Salvando...';try{const {error}=await supabaseClient.from('cell_contact_requests').update({status:select.value}).eq('id',request.id);if(error)throw error;request.status=select.value;renderCellRequests();document.getElementById('cellRequestsAdminStatus').textContent='Situação atualizada. Para encaminhar, contate a liderança responsável pelos canais internos da igreja.';}catch(e){document.getElementById('cellRequestsAdminStatus').textContent='Não foi possível atualizar: '+e.message;save.disabled=false;save.textContent='Atualizar situação';}});
+  save.addEventListener('click',async()=>{save.disabled=true;save.textContent='Salvando...';try{const {error}=await supabaseClient.from('cell_contact_requests').update({status:select.value}).eq('id',request.id);if(error)throw error;request.status=select.value;const statusFilter=document.getElementById('cellRequestStatusFilter');if(statusFilter)statusFilter.value='pendente';renderCellRequests();document.getElementById('cellRequestsAdminStatus').textContent=select.value==='encaminhada'?'Solicitação movida para o filtro “Encaminhadas à liderança”.':'Situação atualizada com sucesso.';}catch(e){document.getElementById('cellRequestsAdminStatus').textContent='Não foi possível atualizar: '+e.message;save.disabled=false;save.textContent='Atualizar situação';}});
   actions.append(select,save);card.appendChild(actions);list.appendChild(card);
  });
  if(!rows.length)list.innerHTML='<p class="muted">Nenhuma solicitação encontrada com esses filtros.</p>';
@@ -1050,6 +1054,38 @@ async function loadCellRequests(){
 document.getElementById('refreshCellRequests')?.addEventListener('click',loadCellRequests);
 document.getElementById('cellRequestCongregationFilter')?.addEventListener('change',renderCellRequests);
 document.getElementById('cellRequestStatusFilter')?.addEventListener('change',renderCellRequests);
+function filteredCellRequests(){
+ const congregation=document.getElementById('cellRequestCongregationFilter')?.value||'todas';
+ const status=document.getElementById('cellRequestStatusFilter')?.value||'pendente';
+ return cellRequestsCache.filter(r=>(congregation==='todas'||r.congregation_name===congregation)&&(status==='todos'||r.status===status));
+}
+function cellRequestExportRows(){
+ return filteredCellRequests().map(r=>({
+  'Nome completo':r.full_name||'', 'Telefone / WhatsApp':r.phone||'', 'Região de preferência':r.cell_region||'',
+  'Congregação':r.congregation_name||'', 'Liderança responsável':cellLeadership[r.congregation_name]||'A definir',
+  'Situação':r.status==='encaminhada'?'Encaminhada à liderança':r.status==='concluido'?'Concluída':'Pendente',
+  'Recebida em':r.created_at?new Date(r.created_at).toLocaleString('pt-BR'):''
+ }));
+}
+document.getElementById('exportCellRequestsXlsx')?.addEventListener('click',()=>{
+ const rows=cellRequestExportRows(),msg=document.getElementById('cellRequestsAdminStatus');
+ if(!rows.length){msg.textContent='Não há solicitações nesta seleção para exportar.';return;}
+ if(!window.XLSX){msg.textContent='A ferramenta de Excel não carregou. Verifique a conexão e tente novamente.';return;}
+ const ws=XLSX.utils.json_to_sheet(rows);ws['!cols']=[{wch:28},{wch:22},{wch:24},{wch:26},{wch:30},{wch:24},{wch:22}];
+ const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Solicitações');
+ XLSX.writeFile(wb,'solicitacoes-celulas-'+new Date().toISOString().slice(0,10)+'.xlsx');
+ msg.textContent=rows.length+' solicitação(ões) exportada(s) para Excel.';
+});
+document.getElementById('exportCellRequestsPdf')?.addEventListener('click',()=>{
+ const rows=cellRequestExportRows(),msg=document.getElementById('cellRequestsAdminStatus');
+ if(!rows.length){msg.textContent='Não há solicitações nesta seleção para preparar o PDF.';return;}
+ const popup=window.open('','_blank');
+ if(!popup){msg.textContent='O navegador bloqueou a nova janela. Permita pop-ups para preparar o PDF.';return;}
+ const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
+ const headers=Object.keys(rows[0]);
+ popup.document.write('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Solicitações de células</title><style>body{font:14px Arial,sans-serif;color:#222;padding:24px}h1{font-size:20px;color:#681d28}p{color:#555}.meta{margin-bottom:18px}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #bbb;padding:7px;text-align:left;vertical-align:top}th{background:#f4ebdd;color:#681d28}@media print{body{padding:0}button{display:none}thead{display:table-header-group}tr{break-inside:avoid}}</style></head><body><h1>Igreja Comunidade Evangélica da Aliança</h1><h2>Solicitações de interesse em células</h2><p class="meta">Gerado em '+esc(new Date().toLocaleString('pt-BR'))+' · '+rows.length+' solicitação(ões)</p><table><thead><tr>'+headers.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+headers.map(h=>'<td>'+esc(r[h])+'</td>').join('')+'</tr>').join('')+'</tbody></table><p>Use a opção Imprimir do navegador e escolha Salvar como PDF.</p><button onclick="window.print()">Imprimir / Salvar como PDF</button></body></html>');
+ popup.document.close();msg.textContent='Relatório preparado. Na nova aba, escolha Imprimir e depois Salvar como PDF.';
+});
 // Solicitações de contato para células: gravação segura no Supabase (sem leitura pública).
 document.getElementById('cellInterestForm')?.addEventListener('submit',async event=>{
  event.preventDefault();

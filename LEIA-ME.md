@@ -98,3 +98,13 @@ Para publicar, extraia o ZIP e substitua na raiz do repositório os arquivos `in
 - A administração pode atualizar a situação para Pendente, Encaminhada à liderança ou Concluída. A marcação como encaminhada é um registro administrativo; o aplicativo não envia mensagens automáticas nem possui os telefones privados dos líderes. O contato com a liderança deve ocorrer pelos canais internos da igreja.
 - **Configuração obrigatória:** execute o arquivo `CONFIGURAR-SOLICITACOES-CELULAS.sql` no SQL Editor do Supabase. Ele atualiza a estrutura e cria políticas RLS para que apenas administradores autorizados consultem e atualizem solicitações. O público pode somente inserir.
 - A tabela contém dados pessoais. Não crie políticas de leitura pública nem compartilhe exportações com pessoas não autorizadas.
+
+
+## Versão 45 — fila de solicitações e exportação
+- O painel de interesses em células abre por padrão no filtro de solicitações pendentes.
+- Ao alterar uma solicitação para “Encaminhada à liderança”, ela sai da lista padrão de pendentes e permanece disponível no filtro de encaminhadas ou em todas as situações.
+- Inclui exportação da seleção atual para Excel (.xlsx).
+- Inclui relatório pronto para impressão e salvamento como PDF, respeitando os filtros selecionados.
+- O encaminhamento continua sendo registrado manualmente pelo administrador; o sistema não envia notificações automáticas aos líderes.
+
+Para publicar, substitua os arquivos do ZIP na raiz do repositório GitHub e aguarde a atualização do GitHub Pages. O banco Supabase configurado na versão 44 permanece o mesmo; não é necessário executar SQL adicional para estas melhorias.
