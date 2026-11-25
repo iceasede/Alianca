@@ -914,16 +914,20 @@ document.getElementById('accountDeleteRequest')?.addEventListener('click',()=>{
 document.getElementById('accountBackHome')?.addEventListener('click',()=>go('home'));
 
 let currentAdminRole=false;
+let currentSuperAdmin=false;
 async function checkAdminAccess(){
  const entry=document.getElementById('adminEntryPanel');
- if(!supabaseClient || !authenticatedUser){currentAdminRole=false;if(entry)entry.hidden=true;const mediaAdmin=document.getElementById('mediaAdminPanel');if(mediaAdmin)mediaAdmin.hidden=true;return false;}
+ if(!supabaseClient || !authenticatedUser){currentAdminRole=false;currentSuperAdmin=false;if(entry)entry.hidden=true;const mediaAdmin=document.getElementById('mediaAdminPanel');if(mediaAdmin)mediaAdmin.hidden=true;return false;}
  try{
   // A função é SECURITY DEFINER e consulta o papel do usuário autenticado.
   const {data,error}=await supabaseClient.rpc('can_manage_registration',{target_congregation:null});
   if(error)throw error;
   currentAdminRole=data===true;
+  const {data:roleRow,error:roleError}=await supabaseClient.from('admin_roles').select('role').eq('user_id',authenticatedUser.id).maybeSingle();
+  currentSuperAdmin=!roleError && roleRow?.role==='super_admin';
  }catch(error){
   currentAdminRole=false;
+  currentSuperAdmin=false;
   console.warn('Não foi possível verificar o acesso administrativo:',error.message);
  }
  if(entry)entry.hidden=!currentAdminRole;
@@ -1082,7 +1086,7 @@ async function loadMediaGallery(){
    const info=document.createElement('div');info.className='media-photo-info';const p=document.createElement('p');p.textContent=photo.event_title||'Registro do culto';
    const view=document.createElement('button');view.type='button';view.className='view-media';view.textContent='Visualizar';view.disabled=!signedUrl;view.addEventListener('click',()=>openMediaLightbox(signedUrl,p.textContent+' — '+new Date(date+'T12:00:00').toLocaleDateString('pt-BR')));
    const download=document.createElement('button');download.type='button';download.className='primary';download.textContent='Baixar foto';download.disabled=!signedUrl;download.addEventListener('click',async()=>{const {data:dl,error:downloadError}=await supabaseClient.storage.from(MEDIA_BUCKET).download(photo.object_path);if(downloadError){mediaStatus('Não foi possível baixar a foto: '+downloadError.message,true);return;}const url=URL.createObjectURL(dl);const a=document.createElement('a');a.href=url;a.download=(date||'culto')+'-igreja-alianca.jpg';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);});info.append(p,view,download);
-   if(currentAdminRole){const del=document.createElement('button');del.type='button';del.className='delete-media';del.textContent='Excluir foto';del.addEventListener('click',async()=>{if(!confirm('Deseja excluir esta foto da galeria?'))return;del.disabled=true;const {error:storageError}=await supabaseClient.storage.from(MEDIA_BUCKET).remove([photo.object_path]);if(storageError){mediaStatus('Não foi possível excluir o arquivo: '+storageError.message,true);del.disabled=false;return;}const {error:rowError}=await supabaseClient.from('church_media_photos').delete().eq('id',photo.id);if(rowError){mediaStatus('Arquivo removido, mas não foi possível remover o registro: '+rowError.message,true);return;}loadMediaGallery();});info.append(del);}
+   if(currentSuperAdmin){const del=document.createElement('button');del.type='button';del.className='delete-media';del.textContent='Excluir foto';del.addEventListener('click',async()=>{if(!confirm('Deseja excluir esta foto da galeria?'))return;del.disabled=true;const {error:storageError}=await supabaseClient.storage.from(MEDIA_BUCKET).remove([photo.object_path]);if(storageError){mediaStatus('Não foi possível excluir o arquivo: '+storageError.message,true);del.disabled=false;return;}const {error:rowError}=await supabaseClient.from('church_media_photos').delete().eq('id',photo.id);if(rowError){mediaStatus('Arquivo removido, mas não foi possível remover o registro: '+rowError.message,true);return;}loadMediaGallery();});info.append(del);}
    card.append(img,info);grid.append(card);
   }
   content.append(grid);folder.append(content);list.append(folder);
