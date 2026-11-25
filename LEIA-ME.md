@@ -89,3 +89,12 @@ Para publicar, extraia o ZIP e substitua na raiz do repositório os arquivos `in
 - O envio grava uma solicitação na tabela `public.cell_contact_requests`; o aplicativo não mostra telefones dos líderes.
 - **Configuração obrigatória:** antes de testar o envio, execute `CONFIGURAR-SOLICITACOES-CELULAS.sql` no SQL Editor do Supabase. A tabela tem RLS e permite apenas inserir pedidos; não libera leitura pública.
 - A consulta/triagem administrativa das solicitações ainda deverá ser implementada em uma etapa própria, com acesso restrito. Até lá, não afirmar que o pedido foi encaminhado ao líder: o formulário confirma apenas o recebimento no banco.
+
+
+## Versão 44 — gestão administrativa de interesse em células
+- O formulário público permite escolher uma das três congregações e informar a região/bairro de preferência.
+- O painel administrativo ganhou uma área de solicitações, com filtros por congregação e situação.
+- Cada solicitação mostra nome, telefone, região, congregação e a liderança responsável conforme a relação oficial cadastrada.
+- A administração pode atualizar a situação para Pendente, Encaminhada à liderança ou Concluída. A marcação como encaminhada é um registro administrativo; o aplicativo não envia mensagens automáticas nem possui os telefones privados dos líderes. O contato com a liderança deve ocorrer pelos canais internos da igreja.
+- **Configuração obrigatória:** execute o arquivo `CONFIGURAR-SOLICITACOES-CELULAS.sql` no SQL Editor do Supabase. Ele atualiza a estrutura e cria políticas RLS para que apenas administradores autorizados consultem e atualizem solicitações. O público pode somente inserir.
+- A tabela contém dados pessoais. Não crie políticas de leitura pública nem compartilhe exportações com pessoas não autorizadas.
