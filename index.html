@@ -186,6 +186,8 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
 .cell-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:10px}
 .cell-list .admin-person{margin:0;background:#fffdfa}
 .cell-list .admin-person p{margin:6px 0 0}
+
+.media-admin-form{display:grid;gap:10px}.media-gallery-group{margin:18px 0}.media-gallery-group h3{font-family:Georgia,serif;color:var(--navy);margin:0 0 10px}.media-photo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.media-photo{background:#fff;border:1px solid var(--line);border-radius:13px;overflow:hidden}.media-photo img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#eee}.media-photo .media-photo-info{padding:9px}.media-photo .media-photo-info p{font-size:12px;margin:3px 0 8px}.media-photo button{width:100%;margin-top:4px}.media-photo .delete-media{background:#fff;color:#8d2935;border:1px solid #8d2935}@media(min-width:650px){.media-photo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 </head>
 <body>
@@ -584,16 +586,23 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
 
   <section id="galeria" class="view" data-requires-auth>
     <div class="section-head"><div><div class="eyebrow">Registros da nossa caminhada</div><h2>Mídia</h2></div></div>
-    <div class="panel"><h3>Encontre suas fotos</h3><p>Reviva os momentos especiais da família da Igreja Comunidade Evangélica da Aliança. A galeria será exclusiva para membros cadastrados e autenticados.</p></div>
-    <div class="grid">
-      <div class="tile" style="text-align:left"><span class="ico">✧</span><b>Fotos dos cultos</b><small>Registros das celebrações e reuniões</small></div>
-      <div class="tile" style="text-align:left"><span class="ico">♡</span><b>Eventos da Igreja</b><small>Encontros, congressos e comemorações</small></div>
-      <div class="tile" style="text-align:left"><span class="ico">♧</span><b>Ministérios e departamentos</b><small>Momentos das equipes e atividades</small></div>
-      <div class="tile" style="text-align:left"><span class="ico">▣</span><b>Eventos especiais</b><small>Datas comemorativas e programações</small></div>
+    <div class="panel"><h3>Fotos dos cultos</h3><p>Reviva os momentos especiais da família da Igreja Comunidade Evangélica da Aliança. As fotografias são exclusivas para membros cadastrados e autenticados. As imagens publicadas recebem marca-d’água permanente.</p></div>
+    <div id="mediaGalleryStatus" class="notice" role="status" aria-live="polite">Carregando galeria...</div>
+    <div id="mediaGalleryList"></div>
+    <div class="panel" id="mediaAdminPanel" hidden style="margin-top:18px">
+      <div class="eyebrow">Administração de mídia</div><h3>Publicar fotos dos cultos</h3>
+      <p>Selecione as fotos, informe a data do culto e publique. A marca-d’água será aplicada ao arquivo antes do envio.</p>
+      <form id="mediaUploadForm" class="media-admin-form">
+        <div><label for="mediaEventDate">Data do culto</label><input id="mediaEventDate" type="date" required></div>
+        <div><label for="mediaEventTitle">Título / identificação</label><input id="mediaEventTitle" maxlength="100" placeholder="Ex.: Culto da Família" required></div>
+        <div><label for="mediaPhotoFiles">Selecionar fotos (JPG, PNG ou WebP)</label><input id="mediaPhotoFiles" type="file" accept="image/jpeg,image/png,image/webp" multiple required><small class="field-help">Envie somente imagens autorizadas para divulgação. Até 15 MB por foto.</small></div>
+        <div id="mediaUploadStatus" class="notice" hidden role="status" aria-live="polite"></div>
+        <button class="primary" id="mediaUploadButton" type="submit">Aplicar marca-d’água e publicar fotos</button>
+      </form>
     </div>
-    <div class="notice" style="margin-top:12px">A equipe de Mídia enviará fotos e vídeos para aprovação da administração antes da publicação. A galeria será restrita a membros autenticados. Imagens de crianças e pessoas identificáveis dependerão das autorizações necessárias. O envio, a aprovação e o controle de acesso ainda serão conectados ao sistema seguro.</div>
+    <div class="notice" style="margin-top:12px">A galeria é privada e acessível somente a membros autenticados. A publicação é restrita à administração autorizada. Fotos de crianças e pessoas identificáveis exigem as autorizações necessárias.</div>
   </section>
-  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 43</footer>
+  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 46</footer>
 </main>
 <nav>
   <button class="active" data-go="home"><span>⌂</span>Início</button>
@@ -628,6 +637,7 @@ function go(id){
  views.forEach(v=>v.classList.toggle('active',v.id===id));
  nav.forEach(b=>b.classList.toggle('active',b.dataset.go===id));
  window.scrollTo({top:0,behavior:'smooth'});
+ if(id==='galeria')loadMediaGallery();
 }
 function showHomeAfterAuthentication(user){
  authenticatedUser=user||authenticatedUser;
@@ -899,7 +909,7 @@ document.getElementById('accountBackHome')?.addEventListener('click',()=>go('hom
 let currentAdminRole=false;
 async function checkAdminAccess(){
  const entry=document.getElementById('adminEntryPanel');
- if(!supabaseClient || !authenticatedUser){currentAdminRole=false;if(entry)entry.hidden=true;return false;}
+ if(!supabaseClient || !authenticatedUser){currentAdminRole=false;if(entry)entry.hidden=true;const mediaAdmin=document.getElementById('mediaAdminPanel');if(mediaAdmin)mediaAdmin.hidden=true;return false;}
  try{
   // A função é SECURITY DEFINER e consulta o papel do usuário autenticado.
   const {data,error}=await supabaseClient.rpc('can_manage_registration',{target_congregation:null});
@@ -910,6 +920,7 @@ async function checkAdminAccess(){
   console.warn('Não foi possível verificar o acesso administrativo:',error.message);
  }
  if(entry)entry.hidden=!currentAdminRole;
+ const mediaAdmin=document.getElementById('mediaAdminPanel');if(mediaAdmin)mediaAdmin.hidden=!currentAdminRole;
  return currentAdminRole;
 }
 function setAdminStatus(message){const el=document.getElementById('adminStatus');if(el)el.textContent=message;}
@@ -1016,6 +1027,58 @@ document.getElementById('exportAll')?.addEventListener('click',()=>{
 });
 document.getElementById('openAdminPanel')?.addEventListener('click',async()=>{if(await checkAdminAccess()){go('painel-admin');await loadAdminProfiles();await loadCellRequests();}});
 document.getElementById('refreshAdmin')?.addEventListener('click',loadAdminProfiles);
+
+// Galeria privada de fotos dos cultos, com marca-d’água gravada no arquivo.
+const MEDIA_BUCKET='cultos-fotos';
+let mediaGalleryCache=[];
+function mediaStatus(message,error=false){const el=document.getElementById('mediaGalleryStatus');if(el){el.hidden=false;el.textContent=message;el.style.borderColor=error?'#b94a48':'';}}
+function mediaUploadStatus(message,error=false){const el=document.getElementById('mediaUploadStatus');if(el){el.hidden=false;el.textContent=message;el.style.borderColor=error?'#b94a48':'';}}
+async function watermarkImage(file){
+ if(!file.type.startsWith('image/'))throw new Error('Selecione somente arquivos de imagem.');
+ if(file.size>15*1024*1024)throw new Error('Cada foto deve ter no máximo 15 MB.');
+ const bitmap=await createImageBitmap(file);const max=2400,scale=Math.min(1,max/Math.max(bitmap.width,bitmap.height));
+ const canvas=document.createElement('canvas');canvas.width=Math.round(bitmap.width*scale);canvas.height=Math.round(bitmap.height*scale);
+ const ctx=canvas.getContext('2d');ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close?.();
+ const text='IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA';const fontSize=Math.max(14,Math.round(canvas.width*0.025));
+ ctx.save();ctx.font=`600 ${fontSize}px Arial, sans-serif`;ctx.textAlign='center';ctx.textBaseline='bottom';
+ const x=canvas.width/2,y=canvas.height-Math.max(16,canvas.height*0.025);const pad=Math.max(10,fontSize*.55);
+ const metrics=ctx.measureText(text);ctx.fillStyle='rgba(0,0,0,.34)';ctx.fillRect(x-metrics.width/2-pad,y-fontSize-pad*.55,metrics.width+pad*2,fontSize+pad);
+ ctx.shadowColor='rgba(0,0,0,.55)';ctx.shadowBlur=3;ctx.fillStyle='rgba(255,255,255,.92)';ctx.fillText(text,x,y);ctx.restore();
+ const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.90));if(!blob)throw new Error('Não foi possível preparar a foto.');return blob;
+}
+async function loadMediaGallery(){
+ const list=document.getElementById('mediaGalleryList');if(!list)return;
+ if(!authenticatedUser){mediaStatus('Entre com sua conta para visualizar as fotos.',true);return;}
+ mediaStatus('Carregando fotografias...');list.replaceChildren();
+ const {data,error}=await supabaseClient.from('church_media_photos').select('id,event_date,event_title,object_path,created_at').order('event_date',{ascending:false}).order('created_at',{ascending:false});
+ if(error){mediaStatus('Não foi possível carregar a galeria. Confirme a configuração de mídia no Supabase: '+error.message,true);return;}
+ mediaGalleryCache=data||[];if(!mediaGalleryCache.length){mediaStatus('Ainda não há fotos publicadas.');return;}
+ mediaStatus(mediaGalleryCache.length+' foto(s) disponível(is).');
+ const grouped=new Map();mediaGalleryCache.forEach(photo=>{const key=photo.event_date||'Data não informada';if(!grouped.has(key))grouped.set(key,[]);grouped.get(key).push(photo);});
+ for(const [date,photos] of grouped){const group=document.createElement('section');group.className='media-gallery-group';const title=document.createElement('h3');const d=new Date(date+'T12:00:00');title.textContent=d.toLocaleDateString('pt-BR')+' — '+(photos[0].event_title||'Culto');group.appendChild(title);const grid=document.createElement('div');grid.className='media-photo-grid';
+  for(const photo of photos){const card=document.createElement('article');card.className='media-photo';const img=document.createElement('img');img.alt=photo.event_title||'Foto da Igreja Comunidade Evangélica da Aliança';img.loading='lazy';const {data:link,error:linkError}=await supabaseClient.storage.from(MEDIA_BUCKET).createSignedUrl(photo.object_path,3600);if(!linkError&&link?.signedUrl)img.src=link.signedUrl;else img.alt='Imagem indisponível';
+   const info=document.createElement('div');info.className='media-photo-info';const p=document.createElement('p');p.textContent=photo.event_title||'Registro do culto';const download=document.createElement('button');download.type='button';download.className='primary';download.textContent='Baixar foto';download.addEventListener('click',async()=>{const {data:dl,error}=await supabaseClient.storage.from(MEDIA_BUCKET).download(photo.object_path);if(error){mediaStatus('Não foi possível baixar a foto: '+error.message,true);return;}const url=URL.createObjectURL(dl);const a=document.createElement('a');a.href=url;a.download=(photo.event_date||'culto')+'-igreja-alianca.jpg';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);});info.append(p,download);
+   if(currentAdminRole){const del=document.createElement('button');del.type='button';del.className='delete-media';del.textContent='Excluir foto';del.addEventListener('click',async()=>{if(!confirm('Deseja excluir esta foto da galeria?'))return;del.disabled=true;const {error:storageError}=await supabaseClient.storage.from(MEDIA_BUCKET).remove([photo.object_path]);if(storageError){mediaStatus('Não foi possível excluir o arquivo: '+storageError.message,true);del.disabled=false;return;}const {error:rowError}=await supabaseClient.from('church_media_photos').delete().eq('id',photo.id);if(rowError){mediaStatus('Arquivo removido, mas não foi possível remover o registro: '+rowError.message,true);return;}loadMediaGallery();});info.append(del);}
+   card.append(img,info);grid.append(card);
+  }group.append(grid);list.append(group);
+ }
+}
+async function publishMediaPhotos(event){
+ event.preventDefault();if(!currentAdminRole){mediaUploadStatus('Acesso não autorizado.',true);return;}
+ const date=document.getElementById('mediaEventDate').value,title=document.getElementById('mediaEventTitle').value.trim(),files=[...document.getElementById('mediaPhotoFiles').files],button=document.getElementById('mediaUploadButton');
+ if(!date||!title||!files.length){mediaUploadStatus('Informe a data, o título e selecione pelo menos uma foto.',true);return;}
+ button.disabled=true;let published=0;
+ try{for(let i=0;i<files.length;i++){
+  mediaUploadStatus(`Preparando e publicando foto ${i+1} de ${files.length}...`);
+  const blob=await watermarkImage(files[i]);const path=`${date}/${crypto.randomUUID()}.jpg`;
+  const {error:uploadError}=await supabaseClient.storage.from(MEDIA_BUCKET).upload(path,blob,{contentType:'image/jpeg',upsert:false});if(uploadError)throw uploadError;
+  const {error:insertError}=await supabaseClient.from('church_media_photos').insert({event_date:date,event_title:title,object_path:path,uploaded_by:authenticatedUser.id});
+  if(insertError){await supabaseClient.storage.from(MEDIA_BUCKET).remove([path]);throw insertError;}published++;
+ }
+ mediaUploadStatus(published+' foto(s) publicada(s) com marca-d’água.');document.getElementById('mediaUploadForm').reset();await loadMediaGallery();
+ }catch(error){mediaUploadStatus('A publicação foi interrompida após '+published+' foto(s). '+(error.message||'Verifique a configuração do Supabase.'),true);}finally{button.disabled=false;}
+}
+document.getElementById('mediaUploadForm')?.addEventListener('submit',publishMediaPhotos);
 
 // Gestão administrativa das solicitações de interesse em células.
 let cellRequestsCache=[];

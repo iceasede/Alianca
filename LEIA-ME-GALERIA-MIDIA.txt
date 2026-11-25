@@ -1,0 +1,15 @@
+VERSÃO 46 - GALERIA PRIVADA DE FOTOS DOS CULTOS
+
+1. Publique os arquivos desta pasta no GitHub Pages, substituindo a versão anterior.
+2. No Supabase, abra SQL Editor, copie e execute todo o conteúdo de CONFIGURAR-GALERIA-MIDIA.sql.
+3. A galeria exige login de membro confirmado. A visualização e o download são permitidos a usuários autenticados.
+4. O formulário de envio aparece somente para administradores autorizados pelo RPC can_manage_registration(null).
+5. Ao enviar, o navegador aplica a marca-d'água na imagem e grava o arquivo resultante como JPEG no bucket privado cultos-fotos.
+6. Cadastre a data do culto e o título; várias fotos podem ser enviadas em um único envio.
+7. A marca-d'água é gravada no arquivo, portanto aparece tanto na visualização quanto no download.
+
+IMPORTANTE:
+- A galeria é privada, mas qualquer membro autenticado pode visualizar/baixar as fotos publicadas.
+- Publique somente imagens para as quais a igreja tenha autorização de uso, especialmente quando houver crianças ou pessoas identificáveis.
+- O script cria políticas de acesso e não apaga fotos nem registros existentes. As instruções DROP POLICY removem somente políticas com os mesmos nomes para recriá-las.
+- O script usa a função administrativa existente public.can_manage_registration(null).
