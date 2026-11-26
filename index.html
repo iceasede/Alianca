@@ -511,7 +511,7 @@ header.app-header-hidden{display:none!important}
         </div>
         <div class="registration-step" data-step="2" hidden>
           <div class="step-heading"><div class="eyebrow">Etapa 2 de 3</div><h3>Sua caminhada com a igreja</h3><p>Essas informações ajudam nossa equipe a acolher você.</p></div>
-          <div><label for="regChurchRole">Qual é sua função na igreja?</label><select id="regChurchRole" name="church_role" required><option value="">Selecione</option><option value="membro">Membro</option><option value="lider_celula">Líder de célula</option><option value="pastor">Pastor(a)</option><option value="apostolo">Apóstolo(a)</option></select><small class="field-help">Se escolher uma função de liderança, o acesso aos conteúdos correspondentes dependerá da aprovação da administração.</small></div>
+          <div><label for="regChurchRole">Qual é sua função na igreja?</label><select id="regChurchRole" name="church_role" required><option value="">Selecione</option><option value="membro">Membro</option><option value="lider_celula">Líder de célula</option><option value="pastor">Pastor(a)</option><option value="apostolo">Apóstolo(a)</option><option value="diacono">Diácono(a)</option></select><small class="field-help">Se escolher uma função de liderança, o acesso aos conteúdos correspondentes dependerá da aprovação da administração.</small></div>
           <div><label for="regRelation">Como você se identifica em relação à igreja?</label><select id="regRelation" name="relation" required><option value="">Selecione</option><option value="novo_convertido">Novo convertido</option><option value="membro">Membro</option><option value="visitante">Visitante</option></select><small class="field-help">A equipe administrativa autorizada poderá ajustar essa classificação, se necessário.</small></div>
           <div><label for="regCongregation">Qual congregação deseja frequentar?</label><select id="regCongregation" name="congregation" required><option value="">Selecione</option><option>Sede — Brazlândia/DF</option><option>Jardim Botânico/DF</option><option>Vendinha — Padre Bernardo/GO</option></select></div>
           <div><label for="regBaptism">Batismo nas águas</label><select id="regBaptism" name="baptism"><option value="">Selecione</option><option>Já sou batizado(a)</option><option>Desejo me batizar</option><option>Ainda não</option></select></div>
@@ -638,7 +638,7 @@ header.app-header-hidden{display:none!important}
       <p>Pesquise uma pessoa e abra somente o cadastro que deseja consultar ou alterar. A função ministerial é independente da classificação de vínculo.</p>
       <div class="admin-role-tools">
         <div><label for="churchRoleSearch">Buscar pessoa</label><input id="churchRoleSearch" type="search" placeholder="Digite o nome"></div>
-        <div><label for="churchRoleFunctionFilter">Função</label><select id="churchRoleFunctionFilter"><option value="todos">Todas as funções</option><option value="membro">Membro</option><option value="lider_celula">Líder de célula</option><option value="pastor">Pastor(a)</option><option value="apostolo">Apóstolo(a)</option></select></div>
+        <div><label for="churchRoleFunctionFilter">Função</label><select id="churchRoleFunctionFilter"><option value="todos">Todas as funções</option><option value="membro">Membro</option><option value="lider_celula">Líder de célula</option><option value="pastor">Pastor(a)</option><option value="apostolo">Apóstolo(a)</option><option value="diacono">Diácono(a)</option></select></div>
         <div><label for="churchRoleStatusFilter">Situação</label><select id="churchRoleStatusFilter"><option value="todos">Todas as situações</option><option value="pendente">Pendentes</option><option value="aprovado">Aprovadas</option><option value="recusado">Recusadas</option></select></div>
       </div>
       <div id="churchRoleRequestsStatus" class="notice" role="status" aria-live="polite">Carregando solicitações...</div>
@@ -805,19 +805,30 @@ let authenticatedUser=null;
 let authReady=false;
 function updateRestrictedAreas(){
  document.querySelectorAll('[data-auth-only]').forEach(el=>{el.hidden=!authenticatedUser;});
+ const visitorTile=document.querySelector('[data-go="cadastro"][data-auth-only]');if(visitorTile)visitorTile.hidden=true;
  document.querySelectorAll('[data-guest-only]').forEach(el=>{el.hidden=!!authenticatedUser;});
  const selfReg=document.getElementById('selfRegistrationContent');if(selfReg)selfReg.hidden=!!authenticatedUser;
  const visitorReg=document.getElementById('visitorRegistrationContent');if(visitorReg)visitorReg.hidden=!authenticatedUser;
  const regTitle=document.getElementById('registrationPageTitle');if(regTitle)regTitle.textContent=authenticatedUser?'Cadastrar visitante':'Faça seu cadastro';
  const studyTile=document.getElementById('leaderStudiesHomeTile');if(studyTile)studyTile.hidden=true;
- if(authenticatedUser)refreshApprovedStudyEntry();
+ if(authenticatedUser){refreshApprovedStudyEntry();refreshVisitorCaptureAccess();}
 }
 async function refreshApprovedStudyEntry(){
  const studyTile=document.getElementById('leaderStudiesHomeTile');if(!studyTile)return;
  try{const role=await getApprovedChurchRole();approvedChurchRole=role;studyTile.hidden=!['lider_celula','pastor','apostolo'].includes(role);}
  catch(_){studyTile.hidden=true;}
 }
+async function refreshVisitorCaptureAccess(){
+ const tile=document.querySelector('[data-go="cadastro"][data-auth-only]');
+ if(!tile)return;
+ try{const role=await getApprovedChurchRole();approvedChurchRole=role;tile.hidden=!['apostolo','pastor','diacono'].includes(role);}
+ catch(_){tile.hidden=true;}
+}
 function go(id){
+ if(id==='cadastro' && authenticatedUser && !['apostolo','pastor','diacono'].includes(approvedChurchRole)){
+   const msg=document.getElementById('visitorCaptureMessage');if(msg){msg.hidden=false;msg.textContent='O cadastro de visitantes é exclusivo para apóstolos, pastores e diáconos autorizados.';}
+   id='home';
+ }
  const appHeader=document.querySelector('body > header');
  if(appHeader)appHeader.classList.toggle('app-header-hidden',id!=='home');
  if((protectedViews.has(id) && !authenticatedUser) || (id==='painel-admin' && !currentAdminRole) || (id==='estudos' && !authenticatedUser)){
@@ -946,6 +957,8 @@ if(visitorCaptureForm){
  visitorCaptureForm.addEventListener('submit',async e=>{
   e.preventDefault();const message=document.getElementById('visitorCaptureMessage');const submit=document.getElementById('visitorCaptureSubmit');
   if(!authenticatedUser){message.hidden=false;message.textContent='Entre com uma conta autorizada da equipe para cadastrar visitantes.';return;}
+  let visitorRole=null;try{visitorRole=await getApprovedChurchRole();}catch(_){}
+  if(!['apostolo','pastor','diacono'].includes(visitorRole)){message.hidden=false;message.textContent='Somente apóstolos, pastores e diáconos com função aprovada podem cadastrar visitantes.';return;}
   if(!visitorCaptureForm.reportValidity())return;
   if(!supabaseClient){message.hidden=false;message.textContent='Conexão indisponível. Tente novamente.';return;}
   submit.disabled=true;submit.textContent='Salvando...';message.hidden=true;
@@ -1294,7 +1307,7 @@ document.getElementById('refreshAdmin')?.addEventListener('click',loadAdminProfi
 // Estudos protegidos por função aprovada; arquivos privados com URL assinada.
 const LEADER_STUDIES_BUCKET='leader-studies';
 let leaderStudiesCache=[];
-const churchRoleLabels={lider_celula:'Líder de célula',pastor:'Pastor(a)',apostolo:'Apóstolo(a)'};
+const churchRoleLabels={lider_celula:'Líder de célula',pastor:'Pastor(a)',apostolo:'Apóstolo(a)',diacono:'Diácono(a)'};
 function studyStatus(id,message,isError=false){const el=document.getElementById(id);if(!el)return;el.hidden=false;el.textContent=message;el.style.borderColor=isError?'#b94a48':'';}
 function formatStudyDate(value){if(!value)return '';const [y,m,d]=String(value).split('-');return d+'/'+m+'/'+y;}
 async function getApprovedChurchRole(){
@@ -1354,7 +1367,7 @@ function renderChurchRoleRequests(){
   const label=document.createElement('label');label.textContent='Função ministerial';content.appendChild(label);
   const edit=document.createElement('div');edit.className='admin-actions';
   const select=document.createElement('select');select.setAttribute('aria-label','Alterar função de '+(req.full_name||'usuário'));
-  [['membro','Membro'],['lider_celula','Líder de célula'],['pastor','Pastor(a)'],['apostolo','Apóstolo(a)']].forEach(([value,text])=>{const option=document.createElement('option');option.value=value;option.textContent=text;if(value===current)option.selected=true;select.appendChild(option);});
+  [['membro','Membro'],['lider_celula','Líder de célula'],['pastor','Pastor(a)'],['apostolo','Apóstolo(a)'],['diacono','Diácono(a)']].forEach(([value,text])=>{const option=document.createElement('option');option.value=value;option.textContent=text;if(value===current)option.selected=true;select.appendChild(option);});
   const save=document.createElement('button');save.type='button';save.className='primary';save.textContent='Salvar função';
   save.addEventListener('click',async()=>{save.disabled=true;try{const chosen=select.value;const payload={requested_role:chosen,approved_role:chosen==='membro'?null:chosen,status:'aprovado',reviewed_by:authenticatedUser.id,reviewed_at:new Date().toISOString()};const {error}=await supabaseClient.from('church_role_requests').update(payload).eq('user_id',req.user_id);if(error)throw error;await loadChurchRoleRequests();}catch(e){if(status)status.textContent='Não foi possível alterar a função: '+e.message;save.disabled=false;}});
   edit.append(select,save);content.appendChild(edit);

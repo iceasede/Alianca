@@ -1,0 +1,12 @@
+IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA — VERSÃO 62
+
+Novidade: Diácono(a) foi incluído(a) no cadastro e na gestão de funções.
+O atalho Cadastrar visitante fica disponível somente para usuários autenticados com função aprovada de Apóstolo(a), Pastor(a) ou Diácono(a). A permissão também é aplicada no Supabase (RLS), não apenas na interface.
+
+ATUALIZAÇÃO:
+1. Substitua os arquivos do GitHub pelos arquivos desta pasta.
+2. No Supabase > SQL Editor, execute CONFIGURAR-ACESSO-RECEPCAO-DIACONOS.sql.
+3. Na administração, altere/aprove a função dos diáconos como Diácono(a).
+4. Faça sair e entrar novamente na conta para atualizar as permissões.
+
+Apenas usuários com função aprovada podem cadastrar visitantes. Membros comuns e líderes de célula não recebem esse acesso.
