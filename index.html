@@ -556,6 +556,7 @@ header.app-header-hidden{display:none!important}
     <div class="section-head"><div><div class="eyebrow">Comunidade</div><h2>Área de membros</h2></div></div>
     <div class="notice" id="memberLoginIntro">Entre com o e-mail e a senha usados no cadastro. Cada pessoa terá acesso individual; não haverá diretório público de membros. A confirmação do e-mail poderá ser solicitada antes do primeiro acesso.</div>
     <div class="panel"><div class="eyebrow">Meu perfil</div><h3>Seus dados, sob seu controle</h3><p>Quando o acesso individual estiver ativo, você poderá corrigir seus dados pessoais e atualizar telefone, e-mail, endereço, congregação e informações de participação. A categoria de vínculo com a igreja será ajustada somente pela equipe administrativa autorizada.</p></div>
+    <div class="notice" id="adminNewItemsNotice" role="status" aria-live="polite" style="margin:12px 0">Verificando novas solicitações e visitantes...</div>
     <div class="panel" id="adminEntryPanel" hidden>
       <div class="eyebrow">Acesso administrativo</div>
       <h3>Painel da administração</h3>
@@ -737,7 +738,7 @@ header.app-header-hidden{display:none!important}
       <summary class="admin-module-summary"><span class="admin-module-icon" aria-hidden="true">＋</span><span class="admin-module-copy"><strong>Visitantes cadastrados na recepção</strong><small>Consultar contatos e autorizações de acompanhamento.</small></span><span class="admin-module-action">Abrir</span></summary>
       <div class="admin-module-content"><div class="panel">
         <div class="section-head"><div><div class="eyebrow">Acolhimento</div><h3>Visitantes cadastrados</h3></div><button type="button" class="ghost" id="refreshVisitorContacts">Atualizar</button></div>
-        <div><label for="visitorAdminSearch">Buscar visitante</label><input id="visitorAdminSearch" type="search" placeholder="Nome, telefone ou congregação"></div>
+        <div class="admin-tools"><div><label for="visitorAdminSearch">Buscar visitante</label><input id="visitorAdminSearch" type="search" placeholder="Nome, telefone ou congregação"></div><div><label for="visitorAdminStatusFilter">Situação do acompanhamento</label><select id="visitorAdminStatusFilter"><option value="todos">Todas</option><option value="pendente">Pendente</option><option value="encaminhado">Encaminhado</option><option value="concluido">Concluído</option></select></div></div>
         <div id="visitorAdminStatus" class="notice" role="status" aria-live="polite">Os cadastros aparecerão aqui para administradores.</div>
         <div id="visitorAdminList" class="admin-compact-list"></div>
       </div></div>
@@ -821,11 +822,11 @@ async function refreshApprovedStudyEntry(){
 async function refreshVisitorCaptureAccess(){
  const tile=document.querySelector('[data-go="cadastro"][data-auth-only]');
  if(!tile)return;
- try{const role=await getApprovedChurchRole();approvedChurchRole=role;tile.hidden=!['apostolo','pastor','diacono'].includes(role);}
- catch(_){tile.hidden=true;}
+ try{const role=await getApprovedChurchRole();approvedChurchRole=role;tile.hidden=!(currentAdminRole || ['apostolo','pastor','diacono'].includes(role));}
+ catch(_){tile.hidden=!currentAdminRole;}
 }
 function go(id){
- if(id==='cadastro' && authenticatedUser && !['apostolo','pastor','diacono'].includes(approvedChurchRole)){
+ if(id==='cadastro' && authenticatedUser && !currentAdminRole && !['apostolo','pastor','diacono'].includes(approvedChurchRole)){
    const msg=document.getElementById('visitorCaptureMessage');if(msg){msg.hidden=false;msg.textContent='O cadastro de visitantes é exclusivo para apóstolos, pastores e diáconos autorizados.';}
    id='home';
  }
@@ -958,7 +959,7 @@ if(visitorCaptureForm){
   e.preventDefault();const message=document.getElementById('visitorCaptureMessage');const submit=document.getElementById('visitorCaptureSubmit');
   if(!authenticatedUser){message.hidden=false;message.textContent='Entre com uma conta autorizada da equipe para cadastrar visitantes.';return;}
   let visitorRole=null;try{visitorRole=await getApprovedChurchRole();}catch(_){}
-  if(!['apostolo','pastor','diacono'].includes(visitorRole)){message.hidden=false;message.textContent='Somente apóstolos, pastores e diáconos com função aprovada podem cadastrar visitantes.';return;}
+  if(!currentAdminRole && !['apostolo','pastor','diacono'].includes(visitorRole)){message.hidden=false;message.textContent='Somente apóstolos, pastores e diáconos com função aprovada podem cadastrar visitantes.';return;}
   if(!visitorCaptureForm.reportValidity())return;
   if(!supabaseClient){message.hidden=false;message.textContent='Conexão indisponível. Tente novamente.';return;}
   submit.disabled=true;submit.textContent='Salvando...';message.hidden=true;
@@ -1151,21 +1152,45 @@ let currentSuperAdmin=false;
 let approvedChurchRole=null;
 let visitorContactsCache=[];
 function renderVisitorContacts(){
- const list=document.getElementById('visitorAdminList');if(!list)return;list.innerHTML='';
+ const list=document.getElementById('visitorAdminList');if(!list)return;list.replaceChildren();
  const term=(document.getElementById('visitorAdminSearch')?.value||'').trim().toLocaleLowerCase('pt-BR');
- const rows=visitorContactsCache.filter(r=>[r.full_name,r.phone,r.congregation_name].some(v=>(v||'').toLocaleLowerCase('pt-BR').includes(term)));
- rows.forEach(r=>{const card=document.createElement('div');card.className='admin-person-row';const info=document.createElement('div');info.className='admin-person-main';const name=document.createElement('strong');name.textContent=r.full_name;const detail=document.createElement('small');detail.textContent=[r.phone,r.email,r.congregation_name,r.visit_date?new Date(r.visit_date+'T12:00:00').toLocaleDateString('pt-BR'):null,r.visit_type==='primeira'?'Primeira visita':'Já visitou antes'].filter(Boolean).join(' · ');info.append(name,detail);const consent=document.createElement('span');consent.className='admin-person-meta';consent.textContent=r.contact_consent?'Autorizou contato':'Sem autorização';card.append(info,consent);list.appendChild(card);});
- if(!rows.length)list.innerHTML='<p class="muted">Nenhum visitante encontrado.</p>';
+ const filter=document.getElementById('visitorAdminStatusFilter')?.value||'todos';
+ const rows=visitorContactsCache.filter(r=>(filter==='todos'||(r.followup_status||'pendente')===filter)&&[r.full_name,r.phone,r.congregation_name].some(v=>(v||'').toLocaleLowerCase('pt-BR').includes(term)));
+ rows.forEach(r=>{
+  const card=document.createElement('article');card.className='admin-person';
+  const heading=document.createElement('h4');heading.textContent=r.full_name;card.appendChild(heading);
+  const detail=document.createElement('p');detail.textContent=[r.phone,r.email,r.congregation_name,r.visit_date?new Date(r.visit_date+'T12:00:00').toLocaleDateString('pt-BR'):null,r.visit_type==='primeira'?'Primeira visita':'Já visitou antes',r.contact_consent?'Autorizou contato':'Sem autorização'].filter(Boolean).join(' · ');card.appendChild(detail);
+  const state=document.createElement('p');state.textContent='Acompanhamento: '+({pendente:'Pendente',encaminhado:'Encaminhado',concluido:'Concluído'}[r.followup_status||'pendente']);card.appendChild(state);
+  const tools=document.createElement('div');tools.className='admin-actions';
+  const sel=document.createElement('select');[['pendente','Pendente'],['encaminhado','Encaminhado'],['concluido','Concluído']].forEach(([v,l])=>{const o=document.createElement('option');o.value=v;o.textContent=l;sel.appendChild(o)});sel.value=r.followup_status||'pendente';
+  const note=document.createElement('input');note.type='text';note.maxLength=500;note.placeholder='Encaminhamento / observação';note.value=r.followup_notes||'';note.setAttribute('aria-label','Observação do encaminhamento');
+  const save=document.createElement('button');save.type='button';save.className='primary';save.textContent='Salvar acompanhamento';
+  save.addEventListener('click',async()=>{save.disabled=true;try{const patch={followup_status:sel.value,followup_notes:note.value.trim(),updated_at:new Date().toISOString(),completed_at:sel.value==='concluido'?new Date().toISOString():null};const {error}=await supabaseClient.from('church_visitor_contacts').update(patch).eq('id',r.id);if(error)throw error;Object.assign(r,patch);renderVisitorContacts();const st=document.getElementById('visitorAdminStatus');if(st)st.textContent='Acompanhamento atualizado.';}catch(e){alert('Não foi possível atualizar: '+e.message);save.disabled=false;}});
+  const del=document.createElement('button');del.type='button';del.className='ghost';del.textContent='Excluir cadastro';del.addEventListener('click',async()=>{if(!confirm('Excluir definitivamente o cadastro de '+r.full_name+'?'))return;del.disabled=true;try{const {error}=await supabaseClient.from('church_visitor_contacts').delete().eq('id',r.id);if(error)throw error;visitorContactsCache=visitorContactsCache.filter(x=>x.id!==r.id);renderVisitorContacts();const st=document.getElementById('visitorAdminStatus');if(st)st.textContent='Cadastro excluído.';}catch(e){alert('Não foi possível excluir: '+e.message);del.disabled=false;}});
+  tools.append(sel,note,save,del);card.appendChild(tools);list.appendChild(card);
+ });
+ if(!rows.length)list.innerHTML='<p class="muted">Nenhum visitante encontrado com esse filtro.</p>';
 }
 async function loadVisitorContacts(){
  const status=document.getElementById('visitorAdminStatus');if(!currentAdminRole){if(status)status.textContent='Acesso não autorizado.';return;}
  if(status)status.textContent='Consultando visitantes...';
- const {data,error}=await supabaseClient.from('church_visitor_contacts').select('id,full_name,phone,email,congregation_name,visit_date,visit_type,contact_consent,created_at').order('created_at',{ascending:false});
- if(error){visitorContactsCache=[];if(status)status.textContent='Não foi possível consultar visitantes. Confirme o SQL de visitantes no Supabase: '+error.message;return;}
- visitorContactsCache=data||[];if(status)status.textContent=visitorContactsCache.length+' visitante(s) cadastrado(s).';renderVisitorContacts();
+ const {data,error}=await supabaseClient.from('church_visitor_contacts').select('id,full_name,phone,email,congregation_name,visit_date,visit_type,contact_consent,created_at,followup_status,followup_notes,completed_at').order('created_at',{ascending:false});
+ if(error){visitorContactsCache=[];if(status)status.textContent='Não foi possível consultar visitantes: '+error.message;return;}
+ visitorContactsCache=data||[];if(status)status.textContent=visitorContactsCache.length+' visitante(s) cadastrado(s).';renderVisitorContacts();updateAdminNewItemsNotice();
 }
 document.getElementById('refreshVisitorContacts')?.addEventListener('click',loadVisitorContacts);
 document.getElementById('visitorAdminSearch')?.addEventListener('input',renderVisitorContacts);
+document.getElementById('visitorAdminStatusFilter')?.addEventListener('change',renderVisitorContacts);
+async function updateAdminNewItemsNotice(){
+ const el=document.getElementById('adminNewItemsNotice');if(!el||!currentAdminRole)return;
+ const pendingVisitors=visitorContactsCache.filter(x=>(x.followup_status||'pendente')==='pendente').length;
+ const pendingCells=cellRequestsCache.filter(x=>(x.status||'pendente')==='pendente').length;
+ let pendingRoles=0;try{const {count,error}=await supabaseClient.from('church_role_requests').select('user_id',{count:'exact',head:true}).eq('status','pendente');if(!error)pendingRoles=count||0;}catch(_){}
+ const total=pendingVisitors+pendingCells+pendingRoles;
+ el.textContent=total?`Você tem ${total} novo(s) item(ns): ${pendingVisitors} visitante(s) aguardando acompanhamento, ${pendingCells} interesse(s) em células e ${pendingRoles} solicitação(ões) de função.`:'Tudo em dia! Não há novos itens pendentes no momento.';
+}
+if(!window.__aliancaAdminNoticeRefresh){window.__aliancaAdminNoticeRefresh=setInterval(()=>{if(currentAdminRole && document.visibilityState==='visible'){loadVisitorContacts();loadCellRequests();}},60000);document.addEventListener('visibilitychange',()=>{if(currentAdminRole && document.visibilityState==='visible'){loadVisitorContacts();loadCellRequests();}});}
+
 
 async function checkAdminAccess(){
  const entry=document.getElementById('adminEntryPanel');
@@ -1184,7 +1209,7 @@ async function checkAdminAccess(){
  }
  if(entry)entry.hidden=!currentAdminRole;
  const mediaAdmin=document.getElementById('mediaAdminPanel');if(mediaAdmin)mediaAdmin.hidden=!currentAdminRole;const studiesAdmin=document.getElementById('leaderStudiesAdminPanel');if(studiesAdmin)studiesAdmin.hidden=!currentAdminRole;const rolePanel=document.getElementById('churchRoleRequestsPanel');if(rolePanel)rolePanel.hidden=!currentAdminRole;
- if(currentAdminRole){loadChurchRoleRequests();loadVisitorContacts();}
+ if(currentAdminRole){loadChurchRoleRequests();loadVisitorContacts();loadCellRequests();refreshVisitorCaptureAccess();}
  return currentAdminRole;
 }
 function setAdminStatus(message){const el=document.getElementById('adminStatus');if(el)el.textContent=message;}
@@ -1524,7 +1549,7 @@ async function loadCellRequests(){
  if(status)status.textContent='Consultando solicitações...';
  const {data,error}=await supabaseClient.from('cell_contact_requests').select('id,full_name,phone,cell_region,congregation_name,status,created_at').order('created_at',{ascending:false});
  if(error){cellRequestsCache=[];if(status)status.textContent='Não foi possível consultar as solicitações. Confirme se o SQL da versão 44 foi executado no Supabase: '+error.message;return;}
- cellRequestsCache=data||[];if(status)status.textContent=cellRequestsCache.length+' solicitação(ões) recebida(s). Os dados são visíveis somente à administração autorizada.';renderCellRequests();
+ cellRequestsCache=data||[];if(status)status.textContent=cellRequestsCache.length+' solicitação(ões) recebida(s). Os dados são visíveis somente à administração autorizada.';renderCellRequests();updateAdminNewItemsNotice();
 }
 document.getElementById('refreshCellRequests')?.addEventListener('click',loadCellRequests);
 document.getElementById('cellRequestCongregationFilter')?.addEventListener('change',renderCellRequests);

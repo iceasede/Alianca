@@ -1,0 +1,17 @@
+VERSÃO 63 — GESTÃO DE VISITANTES E AVISOS ADMINISTRATIVOS
+
+Atualizações:
+- Administração autorizada também pode cadastrar visitantes, mesmo sem função ministerial.
+- Apóstolos, pastores e diáconos com função aprovada continuam autorizados.
+- Painel de visitantes permite atualizar acompanhamento: Pendente, Encaminhado ou Concluído.
+- Campo de observações para registrar o encaminhamento.
+- Exclusão de cadastros incorretos pela administração.
+- Aviso no painel com contagem de visitantes pendentes, interesses em células pendentes e solicitações de função pendentes.
+- O painel atualiza os avisos periodicamente (a cada 60 segundos enquanto estiver aberto) e quando o administrador retorna à página.
+
+INSTALAÇÃO:
+1. Publique os arquivos desta pasta no GitHub Pages, substituindo os arquivos atuais.
+2. No Supabase > SQL Editor, execute o arquivo CONFIGURAR-ACESSO-RECEPCAO-DIACONOS.sql atualizado.
+3. Atualize o aplicativo no navegador.
+
+Observação: os avisos são exibidos dentro do painel enquanto o aplicativo está aberto. Notificações push ou WhatsApp com o aplicativo fechado exigem integração adicional.
