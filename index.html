@@ -530,7 +530,7 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
 
   <section id="membros" class="view">
     <div class="section-head"><div><div class="eyebrow">Comunidade</div><h2>Área de membros</h2></div></div>
-    <div class="notice">Entre com o e-mail e a senha usados no cadastro. Cada pessoa terá acesso individual; não haverá diretório público de membros. A confirmação do e-mail poderá ser solicitada antes do primeiro acesso.</div>
+    <div class="notice" id="memberLoginIntro">Entre com o e-mail e a senha usados no cadastro. Cada pessoa terá acesso individual; não haverá diretório público de membros. A confirmação do e-mail poderá ser solicitada antes do primeiro acesso.</div>
     <div class="panel"><div class="eyebrow">Meu perfil</div><h3>Seus dados, sob seu controle</h3><p>Quando o acesso individual estiver ativo, você poderá corrigir seus dados pessoais e atualizar telefone, e-mail, endereço, congregação e informações de participação. A categoria de vínculo com a igreja será ajustada somente pela equipe administrativa autorizada.</p></div>
     <div class="panel" id="adminEntryPanel" hidden>
       <div class="eyebrow">Acesso administrativo</div>
@@ -538,7 +538,8 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
       <p>Área restrita para pessoas autorizadas, com visão dos cadastros e classificação de vínculo.</p>
       <button type="button" class="primary" id="openAdminPanel">Abrir painel administrativo</button>
     </div>
-    <div class="panel"><form id="memberForm">
+    <div class="panel" id="memberSignedInPanel" hidden><div class="eyebrow">Acesso ativo</div><h3>Você já está conectado!</h3><p>Sua sessão está ativa. Não é necessário entrar novamente nem fazer outro cadastro.</p><button type="button" class="primary" id="memberOpenAccount">Acessar minha conta</button></div>
+    <div class="panel" id="memberAuthPanel"><form id="memberForm">
       <div><label for="memberEmail">E-mail</label><input id="memberEmail" type="email" autocomplete="email" required placeholder="seuemail@exemplo.com"></div>
       <div><label for="memberPass">Senha</label><input id="memberPass" type="password" autocomplete="current-password" required placeholder="Sua senha"></div>
       <button type="submit" class="primary">Entrar</button>
@@ -942,12 +943,23 @@ if(supabaseClient){
  refreshAccountControl();
  updateRestrictedAreas();
 }
+document.getElementById('memberOpenAccount')?.addEventListener('click',async()=>{go('minha-conta');await loadMyAccount();});
 document.getElementById('memberSignupBtn').addEventListener('click',event=>{event.preventDefault();go('cadastro');showRegistrationStep(1);history.replaceState(null,'','#cadastro');document.getElementById('regName').focus({preventScroll:true});window.scrollTo({top:0,behavior:'smooth'});});
 document.getElementById('memberForgotBtn').addEventListener('click',async()=>{const email=document.getElementById('memberEmail').value.trim();const box=document.getElementById('memberAuthMessage');box.hidden=false;if(!email){box.textContent='Informe seu e-mail acima para receber o link de redefinição de senha.';document.getElementById('memberEmail').focus();return;}try{const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;box.textContent='Se houver uma conta para esse e-mail, enviaremos as instruções para redefinir a senha.';}catch(error){box.textContent=error.message||'Não foi possível solicitar a redefinição agora.';}});
 
 
 // Controle de sessão no cabeçalho: entrar ou trocar de usuário sem apagar o cadastro.
+function updateMemberAuthPanel(){
+ const signedIn=!!authenticatedUser;
+ const authPanel=document.getElementById('memberAuthPanel');
+ const signedPanel=document.getElementById('memberSignedInPanel');
+ const intro=document.getElementById('memberLoginIntro');
+ if(authPanel)authPanel.hidden=signedIn;
+ if(signedPanel)signedPanel.hidden=!signedIn;
+ if(intro)intro.hidden=signedIn;
+}
 function refreshAccountControl(){
+ updateMemberAuthPanel();
  const trigger=document.getElementById('accountTrigger');
  const label=document.getElementById('accountTriggerLabel');
  const email=document.getElementById('accountEmail');
