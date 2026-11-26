@@ -37,7 +37,7 @@ nav .nav-instagram span{display:block;font-size:19px;margin-bottom:3px}
 nav .nav-instagram:active{color:var(--navy)}
 nav .nav-cultos{color:var(--muted)} nav .nav-cultos:focus,nav .nav-cultos:active{color:var(--navy)}
 @media(max-width:430px){nav button,nav .nav-instagram{font-size:9px;padding:4px 0;letter-spacing:-.2px}nav button span,nav .nav-instagram span{font-size:17px;margin-bottom:3px}}
-.brand strong{display:block;max-width:270px;font-size:clamp(13px,3.3vw,18px);line-height:1.25;letter-spacing:.035em;text-transform:uppercase}.view{display:none}.view.active{display:block}body:not(.home-view)>header{display:none}
+.brand strong{display:block;max-width:270px;font-size:clamp(13px,3.3vw,18px);line-height:1.25;letter-spacing:.035em;text-transform:uppercase}.view{display:none}.view.active{display:block}
 form{display:grid;gap:10px}label{font-size:12px;font-weight:650;color:var(--navy)}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit;background:#fff}textarea{min-height:100px;resize:vertical}
 .notice{background:#f7efe2;border:1px solid #e6d5b8;border-radius:13px;padding:13px;color:#684b35;font-size:12px;line-height:1.5}
 footer{text-align:center;color:#8a8a87;font-size:10px;padding:22px 0}
@@ -230,9 +230,10 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
 #painel-admin>#adminStats{margin-bottom:18px}
 @media(max-width:600px){.admin-module-summary{padding:14px 12px;gap:9px}.admin-module-content{padding:0 8px 10px}.admin-module-copy strong{font-size:14px}.admin-module-copy small{font-size:11px}}
 
+header.app-header-hidden{display:none!important}
 </style>
 </head>
-<body class="home-view">
+<body>
 <header>
   <div class="top">
     <div class="brand"><div class="mark"><img src="logo-alianca.png" alt="Logo oficial da Igreja Comunidade Evangélica da Aliança"></div><div><strong>IGREJA<br>COMUNIDADE EVANGÉLICA DA ALIANÇA</strong><small class="anniversary">31 ANOS DE HISTÓRIA</small></div></div>
@@ -781,8 +782,9 @@ async function refreshApprovedStudyEntry(){
  catch(_){studyTile.hidden=true;}
 }
 function go(id){
+ const appHeader=document.querySelector('body > header');
+ if(appHeader)appHeader.classList.toggle('app-header-hidden',id!=='home');
  if((protectedViews.has(id) && !authenticatedUser) || (id==='painel-admin' && !currentAdminRole) || (id==='estudos' && !authenticatedUser)){
-  document.body.classList.toggle('home-view',false);
   views.forEach(v=>v.classList.toggle('active',v.id==='membros'));
   nav.forEach(b=>b.classList.toggle('active',b.dataset.go==='membros'));
   const box=document.getElementById('memberAuthMessage');
@@ -790,7 +792,6 @@ function go(id){
   window.scrollTo({top:0,behavior:'smooth'});
   return;
  }
- document.body.classList.toggle('home-view',id==='home');
  views.forEach(v=>v.classList.toggle('active',v.id===id));
  nav.forEach(b=>b.classList.toggle('active',b.dataset.go===id));
  window.scrollTo({top:0,behavior:'smooth'});
