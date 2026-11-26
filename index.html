@@ -1110,7 +1110,7 @@ async function loadChurchRoleRequests(){
  const list=document.getElementById('churchRoleRequestsList');if(!list||!currentAdminRole)return;list.replaceChildren();
  const status=document.getElementById('churchRoleRequestsStatus');if(status)status.textContent='Consultando solicitações...';
  try{
-  const {data,error}=await supabaseClient.from('church_role_requests').select('user_id,requested_role,approved_role,status,created_at').order('created_at',{ascending:false});if(error)throw error;
+  const {data,error}=await supabaseClient.from('church_role_requests').select('user_id,full_name,requested_role,approved_role,status,created_at').order('created_at',{ascending:false});if(error)throw error;
   if(!data?.length){if(status)status.textContent='Nenhuma solicitação de função encontrada.';return;}
   if(status)status.textContent=data.length+' solicitação(ões)/registro(s) de função.';
   for(const req of data){
