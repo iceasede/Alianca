@@ -1,0 +1,22 @@
+VERSÃO 61 — CADASTRO DE VISITANTES PELA RECEPÇÃO
+
+O QUE MUDOU
+- Quando a pessoa está desconectada, a página inicial mostra “Faça seu cadastro” e a área de cadastro individual continua disponível.
+- Quando a pessoa está conectada, “Faça seu cadastro” desaparece e aparece “Cadastrar visitante”.
+- A equipe de recepção, usando uma conta autenticada no aplicativo, pode registrar nome, WhatsApp, e-mail opcional, congregação, data e tipo de visita.
+- O formulário exige confirmação de que o visitante autorizou receber comunicações da Igreja.
+- Os visitantes registrados ficam em um módulo próprio no Painel Administrativo, visível somente para administradores autorizados.
+- O visitante não precisa criar senha nem conta no aplicativo.
+
+ATUALIZAÇÃO
+1. Substitua no GitHub os arquivos pelos arquivos desta pasta Alianca-main.
+2. No Supabase, abra SQL Editor e execute uma única vez o arquivo CONFIGURAR-CADASTRO-VISITANTES.sql.
+3. Aguarde o GitHub Pages publicar e abra o aplicativo novamente. Se necessário, feche e reabra o Safari.
+
+IMPORTANTE SOBRE MENSAGENS
+Esta versão registra o consentimento e os contatos. Ela NÃO envia mensagens automaticamente. Para avisos de culto e convites para células por WhatsApp/e-mail, será necessária uma integração posterior com um provedor de envio e uma rotina de comunicação que respeite o consentimento e pedidos de descadastro.
+
+SEGURANÇA
+- Somente usuários autenticados podem inserir cadastros de visitantes.
+- Somente administradores autorizados podem consultar os registros no painel.
+- Nenhum segredo ou chave administrativa foi incluído no aplicativo.

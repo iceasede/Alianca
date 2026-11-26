@@ -231,6 +231,10 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
 @media(max-width:600px){.admin-module-summary{padding:14px 12px;gap:9px}.admin-module-content{padding:0 8px 10px}.admin-module-copy strong{font-size:14px}.admin-module-copy small{font-size:11px}}
 
 header.app-header-hidden{display:none!important}
+.admin-person-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+.admin-person-main{display:flex;flex-direction:column;gap:4px;min-width:0}
+.admin-person-main small{color:var(--muted);line-height:1.45;overflow-wrap:anywhere}
+.admin-person-meta{font-size:12px;color:var(--wine);font-weight:700;text-align:right;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -265,7 +269,8 @@ header.app-header-hidden{display:none!important}
       <button class="tile" data-go="estudos" id="leaderStudiesHomeTile" hidden><span class="ico">▤</span><b>Estudos para líderes</b><small>Materiais disponíveis para baixar</small></button>
       <button class="tile" data-go="oracao"><span class="ico">♡</span><b>Pedidos de oração</b><small>Conte com nossa oração</small></button>
       <button class="tile" data-go="devocional"><span class="ico">✧</span><b>Palavra e devocional</b><small>Um momento com Deus</small></button>
-      <button class="tile" data-go="cadastro"><span class="ico">✚</span><b>Faça seu cadastro</b><small>Conecte-se à nossa família</small></button>
+      <button class="tile" data-go="cadastro" data-guest-only><span class="ico">✚</span><b>Faça seu cadastro</b><small>Conecte-se à nossa família</small></button>
+      <button class="tile" data-go="cadastro" data-auth-only hidden><span class="ico">♡</span><b>Cadastrar visitante</b><small>Recepção e acolhimento</small></button>
       <button class="tile" data-go="membros"><span class="ico">♙</span><b>Área de membros</b><small>Acesso reservado</small></button>
       <button class="tile" data-go="aniversariantes" data-auth-only hidden><span class="ico">✧</span><b>Aniversariantes</b><small>Celebrando vidas da nossa família</small></button>
       <button class="tile" data-go="galeria" data-auth-only hidden><span class="ico">▧</span><b>Mídia</b><small>Galeria exclusiva para membros</small></button>
@@ -483,7 +488,8 @@ header.app-header-hidden{display:none!important}
   </section>
 
   <section id="cadastro" class="view">
-    <div class="section-head"><div><div class="eyebrow">Seja bem-vindo</div><h2>Faça seu cadastro</h2></div></div>
+    <div class="section-head"><div><div class="eyebrow">Seja bem-vindo</div><h2 id="registrationPageTitle">Faça seu cadastro</h2></div></div>
+    <div id="selfRegistrationContent">
     <div class="panel"><h3>Seja bem-vindo à nossa família!</h3><p>Queremos conhecer você e caminhar juntos na fé. Preencha seus dados para que nossa equipe possa entrar em contato.</p></div>
     <div class="panel registration-panel">
       <div class="step-progress" aria-label="Etapas do cadastro">
@@ -527,6 +533,23 @@ header.app-header-hidden{display:none!important}
     <div id="registrationConfirmation" class="notice confirmation" hidden role="status" aria-live="polite"></div>
     <div class="panel permissions-panel"><div class="eyebrow">Organização e segurança</div><h3>Atualização dos seus dados</h3><p>Depois que o acesso individual estiver ativo, cada pessoa poderá corrigir e atualizar seus próprios dados pessoais, contatos, endereço, congregação e informações de participação.</p><p>A classificação de vínculo com a igreja — visitante, novo convertido ou membro — ficará disponível somente para alteração pela equipe administrativa autorizada.</p><div class="notice">A conta será criada com acesso individual. A classificação de vínculo e as permissões administrativas continuarão sob controle da liderança autorizada.</div></div>
     <p class="notice">Após o cadastro, confira seu e-mail para confirmar a conta, caso receba a mensagem de confirmação. O acesso à área de membros será liberado após a confirmação.</p>
+    </div>
+    <div id="visitorRegistrationContent" hidden>
+      <div class="panel"><div class="eyebrow">Recepção e acolhimento</div><h3>Cadastro de visitante</h3><p>Use este formulário durante a recepção para registrar quem está nos visitando. O visitante não precisa criar uma conta no aplicativo.</p>
+        <form id="visitorCaptureForm" class="account-grid">
+          <div><label for="visitorFullName">Nome completo</label><input id="visitorFullName" required maxlength="140" autocomplete="name" placeholder="Nome do visitante"></div>
+          <div><label for="visitorPhone">WhatsApp / telefone</label><input id="visitorPhone" required type="tel" maxlength="30" autocomplete="tel" placeholder="(00) 00000-0000"></div>
+          <div><label for="visitorEmail">E-mail (opcional)</label><input id="visitorEmail" type="email" maxlength="180" autocomplete="email" placeholder="nome@exemplo.com"></div>
+          <div><label for="visitorCongregation">Congregação visitada</label><select id="visitorCongregation" required><option value="">Selecione</option><option>Sede — Brazlândia/DF</option><option>Jardim Botânico/DF</option><option>Vendinha — Padre Bernardo/GO</option></select></div>
+          <div><label for="visitorVisitDate">Data da visita</label><input id="visitorVisitDate" type="date" required></div>
+          <div><label for="visitorVisitType">É a primeira visita?</label><select id="visitorVisitType" required><option value="">Selecione</option><option value="primeira">Sim, primeira visita</option><option value="retorno">Já visitou antes</option></select></div>
+          <label class="consent-label" style="grid-column:1/-1"><input id="visitorContactConsent" type="checkbox" required> O visitante autorizou receber contato da Igreja por WhatsApp ou e-mail, com avisos de cultos, convites para células e informações sobre atividades. A autorização foi confirmada diretamente com ele.</label>
+          <div id="visitorCaptureMessage" class="notice" hidden role="status" aria-live="polite" style="grid-column:1/-1"></div>
+          <button type="submit" class="primary" id="visitorCaptureSubmit" style="grid-column:1/-1">Salvar visitante</button>
+        </form>
+      </div>
+      <div class="notice">Importante: este cadastro registra os dados e a autorização de contato. O envio automático de mensagens exige integração com um serviço de WhatsApp ou e-mail.</div>
+    </div>
   </section>
 
   <section id="membros" class="view">
@@ -710,6 +733,15 @@ header.app-header-hidden{display:none!important}
 
       </div>
     </details>
+    <details class="admin-module">
+      <summary class="admin-module-summary"><span class="admin-module-icon" aria-hidden="true">＋</span><span class="admin-module-copy"><strong>Visitantes cadastrados na recepção</strong><small>Consultar contatos e autorizações de acompanhamento.</small></span><span class="admin-module-action">Abrir</span></summary>
+      <div class="admin-module-content"><div class="panel">
+        <div class="section-head"><div><div class="eyebrow">Acolhimento</div><h3>Visitantes cadastrados</h3></div><button type="button" class="ghost" id="refreshVisitorContacts">Atualizar</button></div>
+        <div><label for="visitorAdminSearch">Buscar visitante</label><input id="visitorAdminSearch" type="search" placeholder="Nome, telefone ou congregação"></div>
+        <div id="visitorAdminStatus" class="notice" role="status" aria-live="polite">Os cadastros aparecerão aqui para administradores.</div>
+        <div id="visitorAdminList" class="admin-compact-list"></div>
+      </div></div>
+    </details>
     <button type="button" class="ghost" id="backToMembers">Voltar à Área de Membros</button>
   </section>
 
@@ -773,6 +805,10 @@ let authenticatedUser=null;
 let authReady=false;
 function updateRestrictedAreas(){
  document.querySelectorAll('[data-auth-only]').forEach(el=>{el.hidden=!authenticatedUser;});
+ document.querySelectorAll('[data-guest-only]').forEach(el=>{el.hidden=!!authenticatedUser;});
+ const selfReg=document.getElementById('selfRegistrationContent');if(selfReg)selfReg.hidden=!!authenticatedUser;
+ const visitorReg=document.getElementById('visitorRegistrationContent');if(visitorReg)visitorReg.hidden=!authenticatedUser;
+ const regTitle=document.getElementById('registrationPageTitle');if(regTitle)regTitle.textContent=authenticatedUser?'Cadastrar visitante':'Faça seu cadastro';
  const studyTile=document.getElementById('leaderStudiesHomeTile');if(studyTile)studyTile.hidden=true;
  if(authenticatedUser)refreshApprovedStudyEntry();
 }
@@ -903,6 +939,27 @@ registrationForm.addEventListener('submit',async e=>{
  }catch(error){msg.hidden=false;msg.textContent=error.message||'Não foi possível concluir o cadastro. Verifique os dados e tente novamente.';msg.scrollIntoView({behavior:'smooth',block:'center'});}
  finally{submit.disabled=false;submit.textContent='Enviar cadastro';}
 });
+// Cadastro rápido de visitantes pela equipe de recepção (usuários autenticados).
+const visitorCaptureForm=document.getElementById('visitorCaptureForm');
+if(visitorCaptureForm){
+ const dateField=document.getElementById('visitorVisitDate');if(dateField)dateField.value=new Date().toISOString().slice(0,10);
+ visitorCaptureForm.addEventListener('submit',async e=>{
+  e.preventDefault();const message=document.getElementById('visitorCaptureMessage');const submit=document.getElementById('visitorCaptureSubmit');
+  if(!authenticatedUser){message.hidden=false;message.textContent='Entre com uma conta autorizada da equipe para cadastrar visitantes.';return;}
+  if(!visitorCaptureForm.reportValidity())return;
+  if(!supabaseClient){message.hidden=false;message.textContent='Conexão indisponível. Tente novamente.';return;}
+  submit.disabled=true;submit.textContent='Salvando...';message.hidden=true;
+  const value=id=>document.getElementById(id).value.trim();
+  try{
+   const payload={full_name:value('visitorFullName'),phone:value('visitorPhone'),email:value('visitorEmail')||null,congregation_name:value('visitorCongregation'),visit_date:value('visitorVisitDate'),visit_type:value('visitorVisitType'),contact_consent:true,consent_at:new Date().toISOString(),registered_by:authenticatedUser.id};
+   const {error}=await supabaseClient.from('church_visitor_contacts').insert(payload);if(error)throw error;
+   message.hidden=false;message.textContent='Visitante cadastrado com sucesso! A autorização de contato foi registrada.';
+   visitorCaptureForm.reset();document.getElementById('visitorVisitDate').value=new Date().toISOString().slice(0,10);
+  }catch(error){message.hidden=false;message.textContent='Não foi possível salvar. Confirme se o SQL de cadastro de visitantes foi executado no Supabase. '+(error.message||'');}
+  finally{submit.disabled=false;submit.textContent='Salvar visitante';}
+ });
+}
+
 const memberForm=document.getElementById('memberForm');
 memberForm.addEventListener('submit',async e=>{
  e.preventDefault();
@@ -1079,6 +1136,24 @@ document.getElementById('accountBackHome')?.addEventListener('click',()=>go('hom
 let currentAdminRole=false;
 let currentSuperAdmin=false;
 let approvedChurchRole=null;
+let visitorContactsCache=[];
+function renderVisitorContacts(){
+ const list=document.getElementById('visitorAdminList');if(!list)return;list.innerHTML='';
+ const term=(document.getElementById('visitorAdminSearch')?.value||'').trim().toLocaleLowerCase('pt-BR');
+ const rows=visitorContactsCache.filter(r=>[r.full_name,r.phone,r.congregation_name].some(v=>(v||'').toLocaleLowerCase('pt-BR').includes(term)));
+ rows.forEach(r=>{const card=document.createElement('div');card.className='admin-person-row';const info=document.createElement('div');info.className='admin-person-main';const name=document.createElement('strong');name.textContent=r.full_name;const detail=document.createElement('small');detail.textContent=[r.phone,r.email,r.congregation_name,r.visit_date?new Date(r.visit_date+'T12:00:00').toLocaleDateString('pt-BR'):null,r.visit_type==='primeira'?'Primeira visita':'Já visitou antes'].filter(Boolean).join(' · ');info.append(name,detail);const consent=document.createElement('span');consent.className='admin-person-meta';consent.textContent=r.contact_consent?'Autorizou contato':'Sem autorização';card.append(info,consent);list.appendChild(card);});
+ if(!rows.length)list.innerHTML='<p class="muted">Nenhum visitante encontrado.</p>';
+}
+async function loadVisitorContacts(){
+ const status=document.getElementById('visitorAdminStatus');if(!currentAdminRole){if(status)status.textContent='Acesso não autorizado.';return;}
+ if(status)status.textContent='Consultando visitantes...';
+ const {data,error}=await supabaseClient.from('church_visitor_contacts').select('id,full_name,phone,email,congregation_name,visit_date,visit_type,contact_consent,created_at').order('created_at',{ascending:false});
+ if(error){visitorContactsCache=[];if(status)status.textContent='Não foi possível consultar visitantes. Confirme o SQL de visitantes no Supabase: '+error.message;return;}
+ visitorContactsCache=data||[];if(status)status.textContent=visitorContactsCache.length+' visitante(s) cadastrado(s).';renderVisitorContacts();
+}
+document.getElementById('refreshVisitorContacts')?.addEventListener('click',loadVisitorContacts);
+document.getElementById('visitorAdminSearch')?.addEventListener('input',renderVisitorContacts);
+
 async function checkAdminAccess(){
  const entry=document.getElementById('adminEntryPanel');
  if(!supabaseClient || !authenticatedUser){currentAdminRole=false;currentSuperAdmin=false;if(entry)entry.hidden=true;const mediaAdmin=document.getElementById('mediaAdminPanel');if(mediaAdmin)mediaAdmin.hidden=true;const studiesAdmin=document.getElementById('leaderStudiesAdminPanel');if(studiesAdmin)studiesAdmin.hidden=true;return false;}
@@ -1096,7 +1171,7 @@ async function checkAdminAccess(){
  }
  if(entry)entry.hidden=!currentAdminRole;
  const mediaAdmin=document.getElementById('mediaAdminPanel');if(mediaAdmin)mediaAdmin.hidden=!currentAdminRole;const studiesAdmin=document.getElementById('leaderStudiesAdminPanel');if(studiesAdmin)studiesAdmin.hidden=!currentAdminRole;const rolePanel=document.getElementById('churchRoleRequestsPanel');if(rolePanel)rolePanel.hidden=!currentAdminRole;
- if(currentAdminRole)loadChurchRoleRequests();
+ if(currentAdminRole){loadChurchRoleRequests();loadVisitorContacts();}
  return currentAdminRole;
 }
 function setAdminStatus(message){const el=document.getElementById('adminStatus');if(el)el.textContent=message;}
@@ -1212,7 +1287,7 @@ document.getElementById('exportFiltered')?.addEventListener('click',()=>{
 document.getElementById('exportAll')?.addEventListener('click',()=>{
  exportAdminProfiles(adminProfilesCache,'todos-os-cadastros-'+new Date().toISOString().slice(0,10)+'.xlsx','Todos');
 });
-document.getElementById('openAdminPanel')?.addEventListener('click',async()=>{if(await checkAdminAccess()){go('painel-admin');await loadAdminProfiles();await loadCellRequests();await loadLeaderStudiesAdmin();}});
+document.getElementById('openAdminPanel')?.addEventListener('click',async()=>{if(await checkAdminAccess()){go('painel-admin');await loadAdminProfiles();await loadCellRequests();await loadLeaderStudiesAdmin();await loadVisitorContacts();}});
 document.getElementById('refreshAdmin')?.addEventListener('click',loadAdminProfiles);
 
 
