@@ -1108,24 +1108,42 @@ async function loadLeaderStudies(){
 }
 async function loadChurchRoleRequests(){
  const list=document.getElementById('churchRoleRequestsList');if(!list||!currentAdminRole)return;list.replaceChildren();
- const status=document.getElementById('churchRoleRequestsStatus');if(status)status.textContent='Consultando solicitações...';
+ const status=document.getElementById('churchRoleRequestsStatus');if(status)status.textContent='Consultando funções e solicitações...';
  try{
-  const {data,error}=await supabaseClient.from('church_role_requests').select('user_id,full_name,requested_role,approved_role,status,created_at').order('created_at',{ascending:false});if(error)throw error;
-  if(!data?.length){if(status)status.textContent='Nenhuma solicitação de função encontrada.';return;}
-  if(status)status.textContent=data.length+' solicitação(ões)/registro(s) de função.';
+  const {data,error}=await supabaseClient.from('church_role_requests').select('user_id,full_name,requested_role,approved_role,status,created_at').order('created_at',{ascending:false});
+  if(error)throw error;
+  if(!data?.length){if(status)status.textContent='Nenhum cadastro de função encontrado.';return;}
+  if(status)status.textContent=data.length+' cadastro(s)/solicitação(ões).';
   for(const req of data){
-   const card=document.createElement('article');card.className='admin-person';const h=document.createElement('h4');h.textContent=req.full_name||'Nome não informado';card.appendChild(h);
-   const p=document.createElement('p');p.textContent='Solicitou: '+(churchRoleLabels[req.requested_role]||req.requested_role)+' · Situação: '+req.status;card.appendChild(p);
+   const card=document.createElement('article');card.className='admin-person';
+   const h=document.createElement('h4');h.textContent=req.full_name||'Nome não informado';card.appendChild(h);
+   const current=req.status==='aprovado'?(req.approved_role||'membro'):(req.requested_role||'membro');
+   const p=document.createElement('p');p.textContent='Função solicitada: '+(churchRoleLabels[req.requested_role]||'Membro')+' · Função atual: '+(churchRoleLabels[current]||'Membro')+' · Situação: '+req.status;card.appendChild(p);
+   const edit=document.createElement('div');edit.className='admin-actions';
+   const select=document.createElement('select');select.setAttribute('aria-label','Alterar função de '+(req.full_name||'usuário'));
+   [['membro','Membro'],['lider_celula','Líder de célula'],['pastor','Pastor(a)'],['apostolo','Apóstolo(a)']].forEach(([value,label])=>{const option=document.createElement('option');option.value=value;option.textContent=label;if(value===current)option.selected=true;select.appendChild(option);});
+   const save=document.createElement('button');save.type='button';save.className='primary';save.textContent='Salvar função';
+   save.addEventListener('click',async()=>{
+    save.disabled=true;
+    try{
+     const chosen=select.value;
+     const payload={requested_role:chosen,approved_role:chosen==='membro'?null:chosen,status:'aprovado',reviewed_by:authenticatedUser.id,reviewed_at:new Date().toISOString()};
+     const {error}=await supabaseClient.from('church_role_requests').update(payload).eq('user_id',req.user_id);
+     if(error)throw error;
+     await loadChurchRoleRequests();
+    }catch(e){if(status)status.textContent='Não foi possível alterar a função: '+e.message;save.disabled=false;}
+   });
+   edit.append(select,save);card.appendChild(edit);
    if(req.status==='pendente'){
     const actions=document.createElement('div');actions.className='admin-actions';
-    const approve=document.createElement('button');approve.type='button';approve.className='primary';approve.textContent='Aprovar função';
-    approve.addEventListener('click',async()=>{approve.disabled=true;try{const {error}=await supabaseClient.from('church_role_requests').update({approved_role:req.requested_role,status:'aprovado',reviewed_by:authenticatedUser.id,reviewed_at:new Date().toISOString()}).eq('user_id',req.user_id);if(error)throw error;await loadChurchRoleRequests();}catch(e){if(status)status.textContent='Não foi possível aprovar: '+e.message;approve.disabled=false;}});
+    const approve=document.createElement('button');approve.type='button';approve.className='primary';approve.textContent='Aprovar função solicitada';
+    approve.addEventListener('click',async()=>{approve.disabled=true;try{const chosen=req.requested_role;const {error}=await supabaseClient.from('church_role_requests').update({approved_role:chosen==='membro'?null:chosen,status:'aprovado',reviewed_by:authenticatedUser.id,reviewed_at:new Date().toISOString()}).eq('user_id',req.user_id);if(error)throw error;await loadChurchRoleRequests();}catch(e){if(status)status.textContent='Não foi possível aprovar: '+e.message;approve.disabled=false;}});
     const reject=document.createElement('button');reject.type='button';reject.className='ghost';reject.textContent='Recusar';reject.addEventListener('click',async()=>{reject.disabled=true;try{const {error}=await supabaseClient.from('church_role_requests').update({approved_role:null,status:'recusado',reviewed_by:authenticatedUser.id,reviewed_at:new Date().toISOString()}).eq('user_id',req.user_id);if(error)throw error;await loadChurchRoleRequests();}catch(e){if(status)status.textContent='Não foi possível recusar: '+e.message;reject.disabled=false;}});
     actions.append(approve,reject);card.appendChild(actions);
    }
    list.appendChild(card);
   }
- }catch(e){if(status){status.hidden=false;status.textContent='Não foi possível carregar solicitações: '+e.message;}}
+ }catch(e){if(status){status.hidden=false;status.textContent='Não foi possível carregar funções: '+e.message;}}
 }
 document.getElementById('refreshChurchRoleRequests')?.addEventListener('click',loadChurchRoleRequests);
 async function loadLeaderStudiesAdmin(){
