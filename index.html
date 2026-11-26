@@ -210,6 +210,26 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
 .cell-list .admin-person p{margin:6px 0 0}
 
 .media-admin-form{display:grid;gap:10px}.media-gallery-group{margin:14px 0}.media-folder{background:#fffdf8;border:1px solid var(--line);border-radius:15px;margin:12px 0;overflow:hidden;box-shadow:0 2px 8px rgba(40,30,20,.04)}.media-folder summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:15px}.media-folder summary::-webkit-details-marker{display:none}.media-folder-icon{font-size:25px;flex:none}.media-folder-heading{min-width:0;flex:1}.media-folder-heading strong{display:block;color:var(--navy);font-size:14px}.media-folder-heading small{display:block;color:var(--muted);font-size:12px;margin-top:3px}.media-folder-count{font-size:11px;color:var(--muted);white-space:nowrap}.media-folder-content{padding:0 12px 12px;border-top:1px solid var(--line)}.media-photo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-top:12px}.media-photo{background:#fff;border:1px solid var(--line);border-radius:13px;overflow:hidden}.media-photo img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#eee}.media-photo .media-photo-info{padding:9px}.media-photo .media-photo-info p{font-size:12px;margin:3px 0 8px}.media-photo button{width:100%;margin-top:4px}.media-photo .view-media{background:#fff;color:var(--navy);border:1px solid var(--line)}.media-photo .delete-media{background:#fff;color:#8d2935;border:1px solid #8d2935}.media-lightbox{position:fixed;inset:0;z-index:10000;background:rgba(12,12,12,.94);display:none;align-items:center;justify-content:center;padding:18px}.media-lightbox.open{display:flex}.media-lightbox-inner{width:min(100%,1000px);max-height:100%;display:flex;flex-direction:column;align-items:center;gap:10px}.media-lightbox img{max-width:100%;max-height:78vh;object-fit:contain;border-radius:8px}.media-lightbox-caption{color:#fff;text-align:center;font-size:13px}.media-lightbox-close{align-self:flex-end;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.55);border-radius:30px;padding:8px 14px}@media(min-width:650px){.media-photo-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* Painel administrativo em módulos recolhíveis */
+.admin-module{margin:12px 0;border:1px solid rgba(104,29,40,.18);border-radius:16px;background:#fffdf9;overflow:hidden;box-shadow:0 3px 12px rgba(40,25,18,.045)}
+.admin-module-summary{list-style:none;display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer;min-height:68px}
+.admin-module-summary::-webkit-details-marker{display:none}
+.admin-module-summary::marker{content:""}
+.admin-module-summary:hover{background:#fbf6ee}
+.admin-module-icon{width:34px;height:34px;display:grid;place-items:center;flex:0 0 34px;border-radius:11px;background:#f4ebdd;color:#681d28;font-size:22px;font-weight:500;transition:transform .2s}
+.admin-module[open] .admin-module-icon{transform:rotate(45deg)}
+.admin-module-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}
+.admin-module-copy strong{font-size:15px;color:#43252a}
+.admin-module-copy small{font-size:12px;color:#776d68;line-height:1.35}
+.admin-module-action{font-size:12px;font-weight:700;color:#681d28;white-space:nowrap}
+.admin-module[open] .admin-module-action{font-size:0}
+.admin-module[open] .admin-module-action::after{content:"Fechar";font-size:12px}
+.admin-module-content{padding:0 14px 14px;border-top:1px solid rgba(104,29,40,.10)}
+.admin-module-content>.panel{margin:12px 0 0!important;box-shadow:none}
+#painel-admin>#adminStats{margin-bottom:18px}
+@media(max-width:600px){.admin-module-summary{padding:14px 12px;gap:9px}.admin-module-content{padding:0 8px 10px}.admin-module-copy strong{font-size:14px}.admin-module-copy small{font-size:11px}}
+
 </style>
 </head>
 <body>
@@ -537,6 +557,13 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
       <div class="tile"><span class="ico">♡</span><b id="adminNew">—</b><small>Novos convertidos</small></div>
       <div class="tile"><span class="ico">⌂</span><b id="adminMembers">—</b><small>Membros</small></div>
     </div>
+<details class="admin-module">
+      <summary class="admin-module-summary">
+        <span class="admin-module-icon" aria-hidden="true">＋</span>
+        <span class="admin-module-copy"><strong>Consulta por classificação</strong><small>Pesquisar, filtrar e exportar cadastros.</small></span>
+        <span class="admin-module-action">Abrir</span>
+      </summary>
+      <div class="admin-module-content">
     <div class="panel">
       <div class="section-head"><div><div class="eyebrow">Relatórios e exportação</div><h3>Consultar por classificação</h3></div></div>
       <div class="admin-category-grid" id="adminCategoryFilters">
@@ -554,6 +581,16 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
       </div>
       <div id="adminExportMessage" class="notice" hidden role="status" aria-live="polite"></div>
     </div>
+
+      </div>
+    </details>
+<details class="admin-module">
+      <summary class="admin-module-summary">
+        <span class="admin-module-icon" aria-hidden="true">＋</span>
+        <span class="admin-module-copy"><strong>Gestão de cadastro</strong><small>Localizar pessoas e atualizar a classificação de vínculo.</small></span>
+        <span class="admin-module-action">Abrir</span>
+      </summary>
+      <div class="admin-module-content">
     <div class="panel">
       <div class="section-head"><div><div class="eyebrow">Gestão de cadastros</div><h3 id="adminListTitle">Todos os cadastros</h3></div><button type="button" class="ghost" id="refreshAdmin">Atualizar</button></div>
       <p>Você pode ajustar a classificação de vínculo com a igreja. Os demais dados pessoais permanecem sob controle de cada pessoa.</p>
@@ -561,6 +598,16 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
       <div id="adminProfiles" class="admin-compact-list"></div>
       <div id="adminProfilesPagination" class="admin-pagination"></div>
     </div>
+
+      </div>
+    </details>
+<details class="admin-module">
+      <summary class="admin-module-summary">
+        <span class="admin-module-icon" aria-hidden="true">＋</span>
+        <span class="admin-module-copy"><strong>Solicitações de funções</strong><small>Consultar pedidos e alterar funções ministeriais.</small></span>
+        <span class="admin-module-action">Abrir</span>
+      </summary>
+      <div class="admin-module-content">
     <div class="panel" id="churchRoleRequestsPanel" hidden style="margin-top:18px">
       <div class="section-head"><div><div class="eyebrow">Controle de acesso</div><h3>Solicitações de função</h3></div><button type="button" class="ghost" id="refreshChurchRoleRequests">Atualizar</button></div>
       <p>Pesquise uma pessoa e abra somente o cadastro que deseja consultar ou alterar. A função ministerial é independente da classificação de vínculo.</p>
@@ -573,10 +620,30 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
       <div id="churchRoleRequestsList" class="admin-compact-list"></div>
       <div id="churchRolePagination" class="admin-pagination"></div>
     </div>
+
+      </div>
+    </details>
+<details class="admin-module">
+      <summary class="admin-module-summary">
+        <span class="admin-module-icon" aria-hidden="true">＋</span>
+        <span class="admin-module-copy"><strong>Administração da galeria</strong><small>Área de administração da galeria.</small></span>
+        <span class="admin-module-action">Abrir</span>
+      </summary>
+      <div class="admin-module-content">
     <div class="panel" style="margin-top:18px">
       <div class="section-head"><div><div class="eyebrow">Fotos e registros</div><h3>Administração da galeria</h3></div></div>
       <p>Gerencie as fotos dos cultos nesta área restrita. Os membros verão apenas a galeria publicada na seção Mídia.</p>
     </div>
+
+      </div>
+    </details>
+<details class="admin-module">
+      <summary class="admin-module-summary">
+        <span class="admin-module-icon" aria-hidden="true">＋</span>
+        <span class="admin-module-copy"><strong>Publicação de fotos dos cultos</strong><small>Enviar fotos, aplicar marca-d’água e publicar.</small></span>
+        <span class="admin-module-action">Abrir</span>
+      </summary>
+      <div class="admin-module-content">
     <div class="panel" id="mediaAdminPanel" hidden style="margin-top:18px">
       <div class="eyebrow">Administração de mídia</div><h3>Publicar fotos dos cultos</h3>
       <p>Selecione as fotos, informe a data do culto e publique. A marca-d’água será aplicada ao arquivo antes do envio.</p>
@@ -588,6 +655,16 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
         <button class="primary" id="mediaUploadButton" type="submit">Aplicar marca-d’água e publicar fotos</button>
       </form>
     </div>
+
+      </div>
+    </details>
+<details class="admin-module">
+      <summary class="admin-module-summary">
+        <span class="admin-module-icon" aria-hidden="true">＋</span>
+        <span class="admin-module-copy"><strong>Gerenciar estudos para líderes</strong><small>Publicar e organizar materiais de formação.</small></span>
+        <span class="admin-module-action">Abrir</span>
+      </summary>
+      <div class="admin-module-content">
     <div class="panel" id="leaderStudiesAdminPanel" hidden style="margin-top:18px">
       <div class="section-head"><div><div class="eyebrow">Materiais de formação</div><h3>Gerenciar estudos para líderes</h3></div><button type="button" class="ghost" id="refreshLeaderStudies">Atualizar</button></div>
       <p>Publique arquivos PDF com título, data e descrição. Os estudos publicados ficarão disponíveis para download na página principal.</p>
@@ -604,6 +681,16 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
       <div id="leaderStudiesAdminList" class="stack"></div>
       <div id="leaderStudiesAdminStatus" class="notice" role="status" aria-live="polite">Os estudos publicados aparecerão aqui.</div>
     </div>
+
+      </div>
+    </details>
+<details class="admin-module">
+      <summary class="admin-module-summary">
+        <span class="admin-module-icon" aria-hidden="true">＋</span>
+        <span class="admin-module-copy"><strong>Interesses em células</strong><small>Consultar solicitações por congregação e situação.</small></span>
+        <span class="admin-module-action">Abrir</span>
+      </summary>
+      <div class="admin-module-content">
     <div class="panel" id="cellRequestsAdminPanel" style="margin-top:18px">
       <div class="section-head"><div><div class="eyebrow">Acompanhamento pastoral</div><h3>Interesses em células</h3></div><button type="button" class="ghost" id="refreshCellRequests">Atualizar solicitações</button></div>
       <p>Solicitações recebidas pelo formulário público. Use os filtros para localizar a congregação e acompanhe o encaminhamento à liderança.</p>
@@ -618,6 +705,9 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
       <div id="cellRequestsAdminStatus" class="notice" role="status" aria-live="polite">As solicitações aparecerão aqui para administradores autorizados.</div>
       <div id="cellRequestsAdminList" class="stack"></div>
     </div>
+
+      </div>
+    </details>
     <button type="button" class="ghost" id="backToMembers">Voltar à Área de Membros</button>
   </section>
 
