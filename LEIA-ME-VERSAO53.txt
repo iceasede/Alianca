@@ -1,0 +1,23 @@
+IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA
+VERSÃO 53 — FUNÇÕES APROVADAS E ESTUDOS RESTRITOS
+
+O QUE MUDA
+- O cadastro passa a perguntar a função na igreja: membro, líder de célula, pastor(a) ou apóstolo(a).
+- A escolha de líder, pastor ou apóstolo cria uma solicitação pendente. A função só vale após aprovação da administração.
+- Estudos são classificados em: líderes de células e pastoral.
+- Líderes aprovados acessam estudos de líderes. Pastores e apóstolos aprovados acessam ambas as categorias.
+- PDFs passam a usar bucket privado e URLs assinadas temporárias.
+- A opção “Interessado” foi retirada dos novos cadastros e dos filtros visíveis. Registros antigos não são apagados.
+
+INSTALAÇÃO
+1. Publique os arquivos deste ZIP no GitHub, substituindo os arquivos da versão anterior.
+2. No Supabase, abra SQL Editor e execute TODO o conteúdo de CONFIGURAR-ACESSO-ESTUDOS-E-FUNCOES.sql.
+3. Não apague tabelas nem registros existentes.
+4. Teste com uma conta de líder: a solicitação deve ficar pendente até aprovação. Depois de aprovada, a conta acessa estudos para líderes.
+5. Teste com pastor/apóstolo aprovado: deve acessar estudos para líderes e pastorais.
+
+IMPORTANTE
+- O SQL cria automaticamente o pedido de função quando uma conta é criada, usando os metadados do formulário de cadastro.
+- Contas já existentes antes desta versão não ganham função automaticamente. A administração deverá aprovar a função delas por um procedimento administrativo; não atribua função sem conferência.
+- O acesso aos estudos depende da política do Supabase. Execute o SQL antes de testar a nova área.
+- O campo “Interessado” é removido da interface, mas dados antigos permanecem no banco para preservar histórico.

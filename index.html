@@ -219,7 +219,7 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
       <button class="tile" data-go="ministerios" data-auth-only hidden><span class="ico">♧</span><b>Ministérios</b><small>Servir e participar</small></button>
       <button class="tile" data-go="kids" data-auth-only hidden><span class="ico">♡</span><b>Espaço Kids</b><small>Atividades e novidades das crianças</small></button>
       <button class="tile" data-go="celulas"><span class="ico">⌂</span><b>Nossas células</b><small>Encontre uma célula e fale com o líder</small></button>
-      <button class="tile" data-go="estudos"><span class="ico">▤</span><b>Estudos para líderes</b><small>Materiais disponíveis para baixar</small></button>
+      <button class="tile" data-go="estudos" id="leaderStudiesHomeTile" hidden><span class="ico">▤</span><b>Estudos para líderes</b><small>Materiais disponíveis para baixar</small></button>
       <button class="tile" data-go="oracao"><span class="ico">♡</span><b>Pedidos de oração</b><small>Conte com nossa oração</small></button>
       <button class="tile" data-go="devocional"><span class="ico">✧</span><b>Palavra e devocional</b><small>Um momento com Deus</small></button>
       <button class="tile" data-go="cadastro"><span class="ico">✚</span><b>Faça seu cadastro</b><small>Conecte-se à nossa família</small></button>
@@ -462,7 +462,8 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
         </div>
         <div class="registration-step" data-step="2" hidden>
           <div class="step-heading"><div class="eyebrow">Etapa 2 de 3</div><h3>Sua caminhada com a igreja</h3><p>Essas informações ajudam nossa equipe a acolher você.</p></div>
-          <div><label for="regRelation">Como você se identifica em relação à igreja?</label><select id="regRelation" name="relation" required><option value="">Selecione</option><option value="novo_convertido">Novo convertido</option><option value="membro">Membro</option><option value="visitante">Visitante</option><option value="interessado">Interessado</option></select><small class="field-help">A equipe administrativa autorizada poderá ajustar essa classificação, se necessário.</small></div>
+          <div><label for="regChurchRole">Qual é sua função na igreja?</label><select id="regChurchRole" name="church_role" required><option value="">Selecione</option><option value="membro">Membro</option><option value="lider_celula">Líder de célula</option><option value="pastor">Pastor(a)</option><option value="apostolo">Apóstolo(a)</option></select><small class="field-help">Se escolher uma função de liderança, o acesso aos conteúdos correspondentes dependerá da aprovação da administração.</small></div>
+          <div><label for="regRelation">Como você se identifica em relação à igreja?</label><select id="regRelation" name="relation" required><option value="">Selecione</option><option value="novo_convertido">Novo convertido</option><option value="membro">Membro</option><option value="visitante">Visitante</option></select><small class="field-help">A equipe administrativa autorizada poderá ajustar essa classificação, se necessário.</small></div>
           <div><label for="regCongregation">Qual congregação deseja frequentar?</label><select id="regCongregation" name="congregation" required><option value="">Selecione</option><option>Sede — Brazlândia/DF</option><option>Jardim Botânico/DF</option><option>Vendinha — Padre Bernardo/GO</option></select></div>
           <div><label for="regBaptism">Batismo nas águas</label><select id="regBaptism" name="baptism"><option value="">Selecione</option><option>Já sou batizado(a)</option><option>Desejo me batizar</option><option>Ainda não</option></select></div>
           <div class="step-actions"><button class="ghost" type="button" data-prev-step="1">Voltar</button><button class="primary" type="button" data-next-step="3">Continuar</button></div>
@@ -481,7 +482,7 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
       </form>
     </div>
     <div id="registrationConfirmation" class="notice confirmation" hidden role="status" aria-live="polite"></div>
-    <div class="panel permissions-panel"><div class="eyebrow">Organização e segurança</div><h3>Atualização dos seus dados</h3><p>Depois que o acesso individual estiver ativo, cada pessoa poderá corrigir e atualizar seus próprios dados pessoais, contatos, endereço, congregação e informações de participação.</p><p>A classificação de vínculo com a igreja — visitante, novo convertido, membro ou interessado — ficará disponível somente para alteração pela equipe administrativa autorizada.</p><div class="notice">A conta será criada com acesso individual. A classificação de vínculo e as permissões administrativas continuarão sob controle da liderança autorizada.</div></div>
+    <div class="panel permissions-panel"><div class="eyebrow">Organização e segurança</div><h3>Atualização dos seus dados</h3><p>Depois que o acesso individual estiver ativo, cada pessoa poderá corrigir e atualizar seus próprios dados pessoais, contatos, endereço, congregação e informações de participação.</p><p>A classificação de vínculo com a igreja — visitante, novo convertido ou membro — ficará disponível somente para alteração pela equipe administrativa autorizada.</p><div class="notice">A conta será criada com acesso individual. A classificação de vínculo e as permissões administrativas continuarão sob controle da liderança autorizada.</div></div>
     <p class="notice">Após o cadastro, confira seu e-mail para confirmar a conta, caso receba a mensagem de confirmação. O acesso à área de membros será liberado após a confirmação.</p>
   </section>
 
@@ -521,7 +522,6 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
         <button type="button" class="admin-category" data-relationship="membro"><strong>Membros</strong><small id="countMembro">0 cadastros</small></button>
         <button type="button" class="admin-category" data-relationship="visitante"><strong>Visitantes</strong><small id="countVisitante">0 cadastros</small></button>
         <button type="button" class="admin-category" data-relationship="novo_convertido"><strong>Novos convertidos</strong><small id="countNovo">0 cadastros</small></button>
-        <button type="button" class="admin-category" data-relationship="interessado"><strong>Interessados</strong><small id="countInteressado">0 cadastros</small></button>
       </div>
       <div class="admin-tools">
         <div><label for="adminSearch">Pesquisar nesta classificação</label><input id="adminSearch" class="admin-search" type="search" placeholder="Digite um nome, e-mail ou telefone"></div>
@@ -537,6 +537,12 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
       <p>Você pode ajustar a classificação de vínculo com a igreja. Os demais dados pessoais permanecem sob controle de cada pessoa.</p>
       <div id="adminStatus" class="notice" role="status" aria-live="polite">Carregando painel...</div>
       <div id="adminProfiles" class="stack"></div>
+    </div>
+    <div class="panel" id="churchRoleRequestsPanel" hidden style="margin-top:18px">
+      <div class="section-head"><div><div class="eyebrow">Controle de acesso</div><h3>Solicitações de função</h3></div><button type="button" class="ghost" id="refreshChurchRoleRequests">Atualizar</button></div>
+      <p>As funções informadas no cadastro aguardam aprovação. Aprovar uma função libera somente os conteúdos correspondentes.</p>
+      <div id="churchRoleRequestsStatus" class="notice" role="status" aria-live="polite">Carregando solicitações...</div>
+      <div id="churchRoleRequestsList" class="stack"></div>
     </div>
     <div class="panel" style="margin-top:18px">
       <div class="section-head"><div><div class="eyebrow">Fotos e registros</div><h3>Administração da galeria</h3></div></div>
@@ -558,6 +564,7 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
       <p>Publique arquivos PDF com título, data e descrição. Os estudos publicados ficarão disponíveis para download na página principal.</p>
       <form id="leaderStudyUploadForm" class="media-admin-form">
         <div><label for="leaderStudyDate">Data do estudo</label><input id="leaderStudyDate" type="date" required></div>
+        <div><label for="leaderStudyCategory">Categoria de acesso</label><select id="leaderStudyCategory" required><option value="lideres">Estudos para líderes de células</option><option value="pastoral">Estudos pastorais</option></select></div>
         <div><label for="leaderStudyTitle">Título do estudo</label><input id="leaderStudyTitle" maxlength="140" required placeholder="Ex.: O caráter do líder cristão"></div>
         <div><label for="leaderStudyDescription">Breve descrição (opcional)</label><textarea id="leaderStudyDescription" maxlength="500" rows="3" placeholder="Resumo ou referência bíblica"></textarea></div>
         <div><label for="leaderStudyFile">Arquivo do estudo (PDF)</label><input id="leaderStudyFile" type="file" accept="application/pdf,.pdf" required><small class="field-help">Arquivo PDF de até 20 MB.</small></div>
@@ -645,13 +652,20 @@ let authenticatedUser=null;
 let authReady=false;
 function updateRestrictedAreas(){
  document.querySelectorAll('[data-auth-only]').forEach(el=>{el.hidden=!authenticatedUser;});
+ const studyTile=document.getElementById('leaderStudiesHomeTile');if(studyTile)studyTile.hidden=true;
+ if(authenticatedUser)refreshApprovedStudyEntry();
+}
+async function refreshApprovedStudyEntry(){
+ const studyTile=document.getElementById('leaderStudiesHomeTile');if(!studyTile)return;
+ try{const role=await getApprovedChurchRole();approvedChurchRole=role;studyTile.hidden=!['lider_celula','pastor','apostolo'].includes(role);}
+ catch(_){studyTile.hidden=true;}
 }
 function go(id){
- if((protectedViews.has(id) && !authenticatedUser) || (id==='painel-admin' && !currentAdminRole)){
+ if((protectedViews.has(id) && !authenticatedUser) || (id==='painel-admin' && !currentAdminRole) || (id==='estudos' && !authenticatedUser)){
   views.forEach(v=>v.classList.toggle('active',v.id==='membros'));
   nav.forEach(b=>b.classList.toggle('active',b.dataset.go==='membros'));
   const box=document.getElementById('memberAuthMessage');
-  if(box){box.hidden=false;box.textContent=authReady?'Esta área é exclusiva para pessoas cadastradas. Entre com seu e-mail e senha para acessar.':'Verificando seu acesso. Aguarde um instante e tente novamente.';}
+  if(box){box.hidden=false;box.textContent=authReady?'Esta área é exclusiva para pessoas cadastradas e autorizadas. Entre com seu e-mail e senha para acessar.':'Verificando seu acesso. Aguarde um instante e tente novamente.';}
   window.scrollTo({top:0,behavior:'smooth'});
   return;
  }
@@ -755,7 +769,7 @@ registrationForm.addEventListener('submit',async e=>{
  if(!supabaseClient){msg.hidden=false;msg.textContent='Não foi possível iniciar a conexão segura. Atualize a página e tente novamente.';return;}
  const submit=registrationForm.querySelector('button[type="submit"]');submit.disabled=true;submit.textContent='Criando sua conta...';
  const val=id=>document.getElementById(id)?.value?.trim()||null;
- const metadata={full_name:val('regName'),birth_date:val('regBirth'),phone:val('regPhone'),address:val('regAddress'),relationship:val('regRelation'),congregation:val('regCongregation'),baptism:val('regBaptism'),cell_participation:val('regCell'),ministry_interest:val('regMinistry'),registration_source:'public_app',privacy_consent:true};
+ const metadata={full_name:val('regName'),birth_date:val('regBirth'),phone:val('regPhone'),address:val('regAddress'),relationship:val('regRelation'),church_role_requested:val('regChurchRole'),congregation:val('regCongregation'),baptism:val('regBaptism'),cell_participation:val('regCell'),ministry_interest:val('regMinistry'),registration_source:'public_app',privacy_consent:true};
  try{
   const {data,error}=await supabaseClient.auth.signUp({email:val('regEmail'),password,options:{data:metadata,emailRedirectTo:SUPABASE_URL?location.origin+location.pathname:undefined}});
   if(error)throw error;
@@ -930,6 +944,7 @@ document.getElementById('accountBackHome')?.addEventListener('click',()=>go('hom
 
 let currentAdminRole=false;
 let currentSuperAdmin=false;
+let approvedChurchRole=null;
 async function checkAdminAccess(){
  const entry=document.getElementById('adminEntryPanel');
  if(!supabaseClient || !authenticatedUser){currentAdminRole=false;currentSuperAdmin=false;if(entry)entry.hidden=true;const mediaAdmin=document.getElementById('mediaAdminPanel');if(mediaAdmin)mediaAdmin.hidden=true;const studiesAdmin=document.getElementById('leaderStudiesAdminPanel');if(studiesAdmin)studiesAdmin.hidden=true;return false;}
@@ -946,19 +961,20 @@ async function checkAdminAccess(){
   console.warn('Não foi possível verificar o acesso administrativo:',error.message);
  }
  if(entry)entry.hidden=!currentAdminRole;
- const mediaAdmin=document.getElementById('mediaAdminPanel');if(mediaAdmin)mediaAdmin.hidden=!currentAdminRole;const studiesAdmin=document.getElementById('leaderStudiesAdminPanel');if(studiesAdmin)studiesAdmin.hidden=!currentAdminRole;
+ const mediaAdmin=document.getElementById('mediaAdminPanel');if(mediaAdmin)mediaAdmin.hidden=!currentAdminRole;const studiesAdmin=document.getElementById('leaderStudiesAdminPanel');if(studiesAdmin)studiesAdmin.hidden=!currentAdminRole;const rolePanel=document.getElementById('churchRoleRequestsPanel');if(rolePanel)rolePanel.hidden=!currentAdminRole;
+ if(currentAdminRole)loadChurchRoleRequests();
  return currentAdminRole;
 }
 function setAdminStatus(message){const el=document.getElementById('adminStatus');if(el)el.textContent=message;}
 
 let adminProfilesCache=[];
 let adminRelationshipFilter='todos';
-const adminRelationshipLabels={novo_convertido:'Novo convertido',membro:'Membro',visitante:'Visitante',interessado:'Interessado'};
+const adminRelationshipLabels={novo_convertido:'Novo convertido',membro:'Membro',visitante:'Visitante'};
 function updateAdminCategoryCounts(rows){
- const counts={todos:rows.length,membro:0,visitante:0,novo_convertido:0,interessado:0};
+ const counts={todos:rows.length,membro:0,visitante:0,novo_convertido:0};
  rows.forEach(r=>{if(Object.prototype.hasOwnProperty.call(counts,r.relationship))counts[r.relationship]++;});
  const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value+' cadastro(s)';};
- set('countTodos',counts.todos);set('countMembro',counts.membro);set('countVisitante',counts.visitante);set('countNovo',counts.novo_convertido);set('countInteressado',counts.interessado);
+ set('countTodos',counts.todos);set('countMembro',counts.membro);set('countVisitante',counts.visitante);set('countNovo',counts.novo_convertido);
 }
 function filteredAdminProfiles(){
  const q=(document.getElementById('adminSearch')?.value||'').trim().toLocaleLowerCase('pt-BR');
@@ -1055,105 +1071,86 @@ document.getElementById('openAdminPanel')?.addEventListener('click',async()=>{if
 document.getElementById('refreshAdmin')?.addEventListener('click',loadAdminProfiles);
 
 
-// Biblioteca pública de estudos para líderes; publicação e gestão restritas à administração.
+// Estudos protegidos por função aprovada; arquivos privados com URL assinada.
 const LEADER_STUDIES_BUCKET='leader-studies';
 let leaderStudiesCache=[];
-function studyStatus(id,message,isError=false){
- const el=document.getElementById(id);if(!el)return;
- el.hidden=false;el.textContent=message;el.style.borderColor=isError?'#b94a48':'';
+const churchRoleLabels={lider_celula:'Líder de célula',pastor:'Pastor(a)',apostolo:'Apóstolo(a)'};
+function studyStatus(id,message,isError=false){const el=document.getElementById(id);if(!el)return;el.hidden=false;el.textContent=message;el.style.borderColor=isError?'#b94a48':'';}
+function formatStudyDate(value){if(!value)return '';const [y,m,d]=String(value).split('-');return d+'/'+m+'/'+y;}
+async function getApprovedChurchRole(){
+ if(!authenticatedUser||!supabaseClient)return null;
+ const {data,error}=await supabaseClient.from('church_role_requests').select('approved_role,status').eq('user_id',authenticatedUser.id).maybeSingle();
+ if(error)throw error;return data?.status==='aprovado'?data.approved_role:null;
 }
-function formatStudyDate(value){
- if(!value)return '';
- const [y,m,d]=String(value).split('-');return d+'/'+m+'/'+y;
-}
+function canReadStudyCategory(category,role){return category==='lideres'?['lider_celula','pastor','apostolo'].includes(role):category==='pastoral'?['pastor','apostolo'].includes(role):false;}
 async function loadLeaderStudies(){
- const list=document.getElementById('leaderStudiesList');if(!list)return;
- studyStatus('leaderStudiesStatus','Carregando estudos...');
- list.replaceChildren();
- if(!supabaseClient){studyStatus('leaderStudiesStatus','Não foi possível conectar ao serviço.',true);return;}
+ const list=document.getElementById('leaderStudiesList');if(!list)return;list.replaceChildren();
+ if(!authenticatedUser){studyStatus('leaderStudiesStatus','Área exclusiva para líderes, pastores e apóstolos aprovados. Entre com sua conta.');return;}
+ studyStatus('leaderStudiesStatus','Verificando sua autorização...');
  try{
-  const {data,error}=await supabaseClient.from('church_leader_studies')
-   .select('id,title,description,study_date,object_path,created_at')
-   .eq('published',true).order('study_date',{ascending:false}).order('created_at',{ascending:false});
+  approvedChurchRole=await getApprovedChurchRole();
+  if(!approvedChurchRole){studyStatus('leaderStudiesStatus','Sua função ainda não foi aprovada pela administração. Após a aprovação, os estudos correspondentes ficarão disponíveis aqui.');return;}
+  const {data,error}=await supabaseClient.from('church_leader_studies').select('id,title,description,study_date,object_path,category,created_at').eq('published',true).order('study_date',{ascending:false}).order('created_at',{ascending:false});
   if(error)throw error;
-  leaderStudiesCache=data||[];
-  if(!leaderStudiesCache.length){studyStatus('leaderStudiesStatus','Ainda não há estudos publicados.');return;}
-  studyStatus('leaderStudiesStatus',leaderStudiesCache.length+' estudo(s) disponível(is).');
-  leaderStudiesCache.forEach(study=>{
-   const card=document.createElement('article');card.className='admin-person';
-   const heading=document.createElement('h3');heading.textContent=study.title;card.appendChild(heading);
-   const date=document.createElement('p');date.textContent='Data: '+formatStudyDate(study.study_date);card.appendChild(date);
-   if(study.description){const desc=document.createElement('p');desc.textContent=study.description;card.appendChild(desc);}
-   const actions=document.createElement('div');actions.className='admin-actions';
-   const link=document.createElement('a');link.className='primary';link.textContent='Baixar estudo (PDF)';
-   link.href=supabaseClient.storage.from(LEADER_STUDIES_BUCKET).getPublicUrl(study.object_path).data.publicUrl;
-   link.target='_blank';link.rel='noopener';link.download=(study.title||'estudo')+'.pdf';
+  const rows=(data||[]).filter(study=>canReadStudyCategory(study.category,approvedChurchRole));
+  leaderStudiesCache=rows;
+  if(!rows.length){studyStatus('leaderStudiesStatus','Ainda não há estudos publicados para sua função.');return;}
+  studyStatus('leaderStudiesStatus',rows.length+' estudo(s) disponível(is).');
+  rows.forEach(study=>{
+   const card=document.createElement('article');card.className='admin-person';const h=document.createElement('h3');h.textContent=study.title;card.appendChild(h);
+   const date=document.createElement('p');date.textContent=formatStudyDate(study.study_date)+' · '+(study.category==='pastoral'?'Estudo pastoral':'Estudo para líderes');card.appendChild(date);
+   if(study.description){const d=document.createElement('p');d.textContent=study.description;card.appendChild(d);}
+   const actions=document.createElement('div');actions.className='admin-actions';const link=document.createElement('button');link.type='button';link.className='primary';link.textContent='Baixar estudo (PDF)';
+   link.addEventListener('click',async()=>{link.disabled=true;try{const {data: signed,error:signedError}=await supabaseClient.storage.from(LEADER_STUDIES_BUCKET).createSignedUrl(study.object_path,60);if(signedError)throw signedError;window.open(signed.signedUrl,'_blank','noopener');}catch(e){studyStatus('leaderStudiesStatus','Não foi possível abrir o PDF: '+e.message,true);}finally{link.disabled=false;}});
    actions.appendChild(link);card.appendChild(actions);list.appendChild(card);
   });
- }catch(error){studyStatus('leaderStudiesStatus','Não foi possível carregar os estudos: '+(error.message||'verifique a configuração do Supabase.'),true);}
+ }catch(error){studyStatus('leaderStudiesStatus','Não foi possível verificar seu acesso: '+(error.message||''),true);}
 }
-async function loadLeaderStudiesAdmin(){
- const list=document.getElementById('leaderStudiesAdminList');if(!list)return;
- if(!currentAdminRole){list.replaceChildren();studyStatus('leaderStudiesAdminStatus','Acesso restrito à administração.',true);return;}
- list.replaceChildren();studyStatus('leaderStudiesAdminStatus','Consultando estudos publicados...');
+async function loadChurchRoleRequests(){
+ const list=document.getElementById('churchRoleRequestsList');if(!list||!currentAdminRole)return;list.replaceChildren();
+ const status=document.getElementById('churchRoleRequestsStatus');if(status)status.textContent='Consultando solicitações...';
  try{
-  const {data,error}=await supabaseClient.from('church_leader_studies')
-   .select('id,title,description,study_date,object_path,published,created_at')
-   .order('study_date',{ascending:false}).order('created_at',{ascending:false});
-  if(error)throw error;
-  const rows=data||[];
-  if(!rows.length){studyStatus('leaderStudiesAdminStatus','Nenhum estudo cadastrado ainda.');return;}
-  studyStatus('leaderStudiesAdminStatus',rows.length+' estudo(s) cadastrado(s).');
-  rows.forEach(study=>{
-   const card=document.createElement('article');card.className='admin-person';
-   const heading=document.createElement('h4');heading.textContent=study.title;card.appendChild(heading);
-   const detail=document.createElement('p');detail.textContent=formatStudyDate(study.study_date)+' · '+(study.published?'Publicado':'Não publicado');card.appendChild(detail);
-   const actions=document.createElement('div');actions.className='admin-actions';
-   const toggle=document.createElement('button');toggle.type='button';toggle.className='ghost';toggle.textContent=study.published?'Retirar da página':'Publicar';
-   toggle.addEventListener('click',async()=>{
-    toggle.disabled=true;
-    try{const {error}=await supabaseClient.from('church_leader_studies').update({published:!study.published}).eq('id',study.id);if(error)throw error;await loadLeaderStudiesAdmin();}
-    catch(error){studyStatus('leaderStudiesAdminStatus','Não foi possível alterar a publicação: '+error.message,true);toggle.disabled=false;}
-   });
-   const remove=document.createElement('button');remove.type='button';remove.className='ghost';remove.textContent='Excluir';
-   remove.addEventListener('click',async()=>{
-    if(!window.confirm('Deseja excluir este estudo permanentemente?'))return;
-    remove.disabled=true;
-    try{
-     const {error:storageError}=await supabaseClient.storage.from(LEADER_STUDIES_BUCKET).remove([study.object_path]);if(storageError)throw storageError;
-     const {error}=await supabaseClient.from('church_leader_studies').delete().eq('id',study.id);if(error)throw error;
-     await loadLeaderStudiesAdmin();
-    }catch(error){studyStatus('leaderStudiesAdminStatus','Não foi possível excluir o estudo: '+error.message,true);remove.disabled=false;}
-   });
-   actions.append(toggle,remove);card.appendChild(actions);list.appendChild(card);
+  const {data,error}=await supabaseClient.from('church_role_requests').select('user_id,requested_role,approved_role,status,created_at').order('created_at',{ascending:false});if(error)throw error;
+  if(!data?.length){if(status)status.textContent='Nenhuma solicitação de função encontrada.';return;}
+  if(status)status.textContent=data.length+' solicitação(ões)/registro(s) de função.';
+  for(const req of data){
+   const card=document.createElement('article');card.className='admin-person';const h=document.createElement('h4');h.textContent=req.full_name||'Nome não informado';card.appendChild(h);
+   const p=document.createElement('p');p.textContent='Solicitou: '+(churchRoleLabels[req.requested_role]||req.requested_role)+' · Situação: '+req.status;card.appendChild(p);
+   if(req.status==='pendente'){
+    const actions=document.createElement('div');actions.className='admin-actions';
+    const approve=document.createElement('button');approve.type='button';approve.className='primary';approve.textContent='Aprovar função';
+    approve.addEventListener('click',async()=>{approve.disabled=true;try{const {error}=await supabaseClient.from('church_role_requests').update({approved_role:req.requested_role,status:'aprovado',reviewed_by:authenticatedUser.id,reviewed_at:new Date().toISOString()}).eq('user_id',req.user_id);if(error)throw error;await loadChurchRoleRequests();}catch(e){if(status)status.textContent='Não foi possível aprovar: '+e.message;approve.disabled=false;}});
+    const reject=document.createElement('button');reject.type='button';reject.className='ghost';reject.textContent='Recusar';reject.addEventListener('click',async()=>{reject.disabled=true;try{const {error}=await supabaseClient.from('church_role_requests').update({approved_role:null,status:'recusado',reviewed_by:authenticatedUser.id,reviewed_at:new Date().toISOString()}).eq('user_id',req.user_id);if(error)throw error;await loadChurchRoleRequests();}catch(e){if(status)status.textContent='Não foi possível recusar: '+e.message;reject.disabled=false;}});
+    actions.append(approve,reject);card.appendChild(actions);
+   }
+   list.appendChild(card);
+  }
+ }catch(e){if(status){status.hidden=false;status.textContent='Não foi possível carregar solicitações: '+e.message;}}
+}
+document.getElementById('refreshChurchRoleRequests')?.addEventListener('click',loadChurchRoleRequests);
+async function loadLeaderStudiesAdmin(){
+ const list=document.getElementById('leaderStudiesAdminList');if(!list)return;if(!currentAdminRole){list.replaceChildren();studyStatus('leaderStudiesAdminStatus','Acesso restrito à administração.',true);return;}
+ list.replaceChildren();studyStatus('leaderStudiesAdminStatus','Consultando estudos...');
+ try{
+  const {data,error}=await supabaseClient.from('church_leader_studies').select('id,title,description,study_date,object_path,published,category,created_at').order('study_date',{ascending:false});if(error)throw error;
+  if(!data?.length){studyStatus('leaderStudiesAdminStatus','Nenhum estudo cadastrado ainda.');return;}
+  studyStatus('leaderStudiesAdminStatus',data.length+' estudo(s) cadastrado(s).');
+  data.forEach(study=>{const card=document.createElement('article');card.className='admin-person';const h=document.createElement('h4');h.textContent=study.title;card.appendChild(h);const p=document.createElement('p');p.textContent=formatStudyDate(study.study_date)+' · '+(study.category==='pastoral'?'Pastoral':'Líderes')+' · '+(study.published?'Publicado':'Não publicado');card.appendChild(p);
+   const actions=document.createElement('div');actions.className='admin-actions';const toggle=document.createElement('button');toggle.type='button';toggle.className='ghost';toggle.textContent=study.published?'Retirar da página':'Publicar';toggle.addEventListener('click',async()=>{toggle.disabled=true;try{const {error}=await supabaseClient.from('church_leader_studies').update({published:!study.published}).eq('id',study.id);if(error)throw error;await loadLeaderStudiesAdmin();}catch(e){studyStatus('leaderStudiesAdminStatus',e.message,true);toggle.disabled=false;}});
+   const remove=document.createElement('button');remove.type='button';remove.className='ghost';remove.textContent='Excluir';remove.addEventListener('click',async()=>{if(!confirm('Excluir este estudo?'))return;remove.disabled=true;try{const {error:se}=await supabaseClient.storage.from(LEADER_STUDIES_BUCKET).remove([study.object_path]);if(se)throw se;const {error}=await supabaseClient.from('church_leader_studies').delete().eq('id',study.id);if(error)throw error;await loadLeaderStudiesAdmin();}catch(e){studyStatus('leaderStudiesAdminStatus',e.message,true);remove.disabled=false;}});actions.append(toggle,remove);card.appendChild(actions);list.appendChild(card);
   });
- }catch(error){studyStatus('leaderStudiesAdminStatus','Não foi possível consultar os estudos: '+(error.message||''),true);}
+ }catch(e){studyStatus('leaderStudiesAdminStatus','Não foi possível consultar estudos: '+e.message,true);}
 }
 document.getElementById('refreshLeaderStudies')?.addEventListener('click',loadLeaderStudiesAdmin);
 document.getElementById('leaderStudyUploadForm')?.addEventListener('submit',async event=>{
- event.preventDefault();
- if(!currentAdminRole){studyStatus('leaderStudyUploadStatus','Somente a administração pode publicar estudos.',true);return;}
- const date=document.getElementById('leaderStudyDate').value;
- const title=document.getElementById('leaderStudyTitle').value.trim();
- const description=document.getElementById('leaderStudyDescription').value.trim();
- const file=document.getElementById('leaderStudyFile').files?.[0];
- const button=document.getElementById('leaderStudyUploadButton');
- if(!date||!title||!file){studyStatus('leaderStudyUploadStatus','Informe a data, o título e selecione um PDF.',true);return;}
- if(file.type!=='application/pdf' && !file.name.toLowerCase().endsWith('.pdf')){studyStatus('leaderStudyUploadStatus','Selecione um arquivo PDF.',true);return;}
- if(file.size>20*1024*1024){studyStatus('leaderStudyUploadStatus','O arquivo deve ter até 20 MB.',true);return;}
- button.disabled=true;button.textContent='Publicando...';
- const objectPath=authenticatedUser.id+'/'+crypto.randomUUID()+'.pdf';
- try{
-  const {error:uploadError}=await supabaseClient.storage.from(LEADER_STUDIES_BUCKET).upload(objectPath,file,{contentType:'application/pdf',upsert:false});
-  if(uploadError)throw uploadError;
-  const {error}=await supabaseClient.from('church_leader_studies').insert({
-   title,description,study_date:date,object_path:objectPath,uploaded_by:authenticatedUser.id,published:true
-  });
-  if(error){await supabaseClient.storage.from(LEADER_STUDIES_BUCKET).remove([objectPath]);throw error;}
-  event.target.reset();studyStatus('leaderStudyUploadStatus','Estudo publicado com sucesso.');
-  await loadLeaderStudiesAdmin();await loadLeaderStudies();
- }catch(error){studyStatus('leaderStudyUploadStatus','Não foi possível publicar: '+(error.message||'verifique a configuração do Supabase.'),true);}
- finally{button.disabled=false;button.textContent='Publicar estudo';}
+ event.preventDefault();if(!currentAdminRole){studyStatus('leaderStudyUploadStatus','Somente a administração pode publicar estudos.',true);return;}
+ const date=document.getElementById('leaderStudyDate').value,title=document.getElementById('leaderStudyTitle').value.trim(),description=document.getElementById('leaderStudyDescription').value.trim(),category=document.getElementById('leaderStudyCategory').value,file=document.getElementById('leaderStudyFile').files?.[0],button=document.getElementById('leaderStudyUploadButton');
+ if(!date||!title||!file){studyStatus('leaderStudyUploadStatus','Informe data, título e PDF.',true);return;}if(file.size>20*1024*1024){studyStatus('leaderStudyUploadStatus','O PDF deve ter até 20 MB.',true);return;}
+ button.disabled=true;button.textContent='Publicando...';const objectPath=authenticatedUser.id+'/'+crypto.randomUUID()+'.pdf';
+ try{const {error:up}=await supabaseClient.storage.from(LEADER_STUDIES_BUCKET).upload(objectPath,file,{contentType:'application/pdf',upsert:false});if(up)throw up;
+  const {error}=await supabaseClient.from('church_leader_studies').insert({title,description,study_date:date,object_path:objectPath,uploaded_by:authenticatedUser.id,published:true,category});if(error){await supabaseClient.storage.from(LEADER_STUDIES_BUCKET).remove([objectPath]);throw error;}
+  event.target.reset();studyStatus('leaderStudyUploadStatus','Estudo publicado com sucesso.');await loadLeaderStudiesAdmin();await loadLeaderStudies();
+ }catch(e){studyStatus('leaderStudyUploadStatus','Não foi possível publicar: '+e.message,true);}finally{button.disabled=false;button.textContent='Publicar estudo';}
 });
 
 // Galeria privada de fotos dos cultos, com marca-d’água gravada no arquivo.
