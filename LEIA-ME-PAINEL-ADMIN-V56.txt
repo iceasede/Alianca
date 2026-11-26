@@ -1,0 +1,14 @@
+VERSÃO 56 — MELHORIA DO PAINEL ADMINISTRATIVO
+
+O que mudou:
+- Gestão de cadastros em lista compacta, com cada pessoa recolhida até ser aberta.
+- Busca por nome, filtros por classificação e paginação de 25 registros.
+- A classificação de vínculo pode ser alterada dentro do cadastro expandido.
+- Gestão de funções em lista compacta, com busca por nome, filtro por função e situação, e paginação de 25 registros.
+- Aprovação, recusa e alteração posterior de função continuam disponíveis dentro do registro da pessoa.
+- As funções e a classificação de vínculo permanecem independentes.
+
+Não é necessário executar SQL novo para esta atualização. A versão utiliza as tabelas e permissões já existentes.
+
+PUBLICAÇÃO:
+Substitua os arquivos do projeto pelos arquivos desta pasta no repositório GitHub Pages. Aguarde a publicação e atualize o aplicativo no navegador. Se o iPhone mantiver a versão anterior em cache, feche e abra novamente o Safari e recarregue a página.

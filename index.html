@@ -141,6 +141,28 @@ header p{margin:0 auto;color:#756b68;font-size:14px;line-height:1.55;text-align:
 #adminProfiles .admin-actions{display:flex;gap:8px;align-items:end;flex-wrap:wrap;margin-top:10px}
 #adminProfiles .admin-actions select{flex:1;min-width:180px}
 #adminProfiles .admin-actions button{white-space:nowrap}
+/* Gestão administrativa compacta: listas pesquisáveis e edição sob demanda */
+.admin-list-toolbar{display:grid;grid-template-columns:1fr;gap:9px;margin:12px 0}
+.admin-list-toolbar .toolbar-row{display:grid;grid-template-columns:1fr;gap:9px}
+.admin-list-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--muted);font-size:12px;margin:8px 0}
+.admin-compact-list{display:grid;gap:7px}
+.admin-record{border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
+.admin-record summary{list-style:none;display:flex;align-items:center;gap:10px;padding:12px;cursor:pointer;min-height:54px}
+.admin-record summary::-webkit-details-marker{display:none}
+.admin-record summary:after{content:'＋';margin-left:auto;color:var(--gold);font-size:18px;font-weight:700}
+.admin-record[open] summary:after{content:'−'}
+.admin-record-name{font-size:13px;font-weight:700;color:var(--navy);min-width:0;overflow-wrap:anywhere}
+.admin-record-sub{font-size:11px;color:var(--muted);margin-top:3px}
+.admin-record-content{border-top:1px solid var(--line);padding:12px;display:grid;gap:9px}
+.admin-record-content p{font-size:12px;color:var(--muted);margin:0;overflow-wrap:anywhere}
+.admin-record-content .admin-actions{display:flex;gap:8px;align-items:end;flex-wrap:wrap}
+.admin-record-content .admin-actions select{flex:1;min-width:170px}
+.admin-pagination{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:13px}
+.admin-pagination button{min-width:42px}
+.admin-pagination button:disabled{opacity:.4;cursor:not-allowed}
+.admin-role-tools{display:grid;grid-template-columns:1fr;gap:9px;margin:12px 0}
+.admin-role-tools label{display:block;margin-bottom:5px}
+@media(min-width:600px){.admin-list-toolbar .toolbar-row{grid-template-columns:1fr auto}.admin-role-tools{grid-template-columns:2fr 1fr 1fr}.admin-record-content .admin-actions{flex-wrap:nowrap}}
 
 /* Acesso à conta no canto superior direito do cabeçalho */
 header .top{position:relative;justify-content:center;padding:0 4px;min-height:34px}
@@ -536,13 +558,20 @@ header .top{position:relative;justify-content:center;padding:0 4px;min-height:34
       <div class="section-head"><div><div class="eyebrow">Gestão de cadastros</div><h3 id="adminListTitle">Todos os cadastros</h3></div><button type="button" class="ghost" id="refreshAdmin">Atualizar</button></div>
       <p>Você pode ajustar a classificação de vínculo com a igreja. Os demais dados pessoais permanecem sob controle de cada pessoa.</p>
       <div id="adminStatus" class="notice" role="status" aria-live="polite">Carregando painel...</div>
-      <div id="adminProfiles" class="stack"></div>
+      <div id="adminProfiles" class="admin-compact-list"></div>
+      <div id="adminProfilesPagination" class="admin-pagination"></div>
     </div>
     <div class="panel" id="churchRoleRequestsPanel" hidden style="margin-top:18px">
       <div class="section-head"><div><div class="eyebrow">Controle de acesso</div><h3>Solicitações de função</h3></div><button type="button" class="ghost" id="refreshChurchRoleRequests">Atualizar</button></div>
-      <p>As funções informadas no cadastro aguardam aprovação. Aprovar uma função libera somente os conteúdos correspondentes.</p>
+      <p>Pesquise uma pessoa e abra somente o cadastro que deseja consultar ou alterar. A função ministerial é independente da classificação de vínculo.</p>
+      <div class="admin-role-tools">
+        <div><label for="churchRoleSearch">Buscar pessoa</label><input id="churchRoleSearch" type="search" placeholder="Digite o nome"></div>
+        <div><label for="churchRoleFunctionFilter">Função</label><select id="churchRoleFunctionFilter"><option value="todos">Todas as funções</option><option value="membro">Membro</option><option value="lider_celula">Líder de célula</option><option value="pastor">Pastor(a)</option><option value="apostolo">Apóstolo(a)</option></select></div>
+        <div><label for="churchRoleStatusFilter">Situação</label><select id="churchRoleStatusFilter"><option value="todos">Todas as situações</option><option value="pendente">Pendentes</option><option value="aprovado">Aprovadas</option><option value="recusado">Recusadas</option></select></div>
+      </div>
       <div id="churchRoleRequestsStatus" class="notice" role="status" aria-live="polite">Carregando solicitações...</div>
-      <div id="churchRoleRequestsList" class="stack"></div>
+      <div id="churchRoleRequestsList" class="admin-compact-list"></div>
+      <div id="churchRolePagination" class="admin-pagination"></div>
     </div>
     <div class="panel" style="margin-top:18px">
       <div class="section-head"><div><div class="eyebrow">Fotos e registros</div><h3>Administração da galeria</h3></div></div>
@@ -969,6 +998,8 @@ function setAdminStatus(message){const el=document.getElementById('adminStatus')
 
 let adminProfilesCache=[];
 let adminRelationshipFilter='todos';
+let adminProfilesPage=1;
+const ADMIN_PAGE_SIZE=25;
 const adminRelationshipLabels={novo_convertido:'Novo convertido',membro:'Membro',visitante:'Visitante'};
 function updateAdminCategoryCounts(rows){
  const counts={todos:rows.length,membro:0,visitante:0,novo_convertido:0};
@@ -990,17 +1021,21 @@ function renderAdminProfiles(){
  const title=document.getElementById('adminListTitle');
  const label=adminRelationshipFilter==='todos'?'Todos os cadastros':(adminRelationshipLabels[adminRelationshipFilter]||'Cadastros');
  if(title)title.textContent=label+' ('+rows.length+')';
- rows.forEach(profile=>{
-  const card=document.createElement('article');card.className='admin-person';
-  const title=document.createElement('h4');title.textContent=profile.full_name||'Nome não informado';card.appendChild(title);
-  const details=document.createElement('p');
-  details.textContent=[profile.email,profile.phone,profile.address,profile.congregation_id?'ID da congregação: '+profile.congregation_id:null].filter(Boolean).join(' · ');
-  card.appendChild(details);
-  const current=document.createElement('p');current.textContent='Classificação atual: '+(adminRelationshipLabels[profile.relationship]||'Não informada');card.appendChild(current);
+ const pages=Math.max(1,Math.ceil(rows.length/ADMIN_PAGE_SIZE));adminProfilesPage=Math.min(adminProfilesPage,pages);
+ const start=(adminProfilesPage-1)*ADMIN_PAGE_SIZE;
+ rows.slice(start,start+ADMIN_PAGE_SIZE).forEach(profile=>{
+  const card=document.createElement('details');card.className='admin-record';
+  const summary=document.createElement('summary');
+  const name=document.createElement('div');name.className='admin-record-name';name.textContent=profile.full_name||'Nome não informado';
+  const sub=document.createElement('div');sub.className='admin-record-sub';sub.textContent=adminRelationshipLabels[profile.relationship]||'Classificação não informada';
+  const nameWrap=document.createElement('div');nameWrap.style.minWidth='0';nameWrap.append(name,sub);summary.appendChild(nameWrap);card.appendChild(summary);
+  const content=document.createElement('div');content.className='admin-record-content';
+  const details=document.createElement('p');details.textContent=[profile.email,profile.phone,profile.address,profile.congregation_id?'ID da congregação: '+profile.congregation_id:null].filter(Boolean).join(' · ')||'Sem informações adicionais.';content.appendChild(details);
+  const labelEl=document.createElement('label');labelEl.textContent='Como esta pessoa se identifica em relação à igreja?';content.appendChild(labelEl);
   const actions=document.createElement('div');actions.className='admin-actions';
-  const select=document.createElement('select');
-  Object.entries(adminRelationshipLabels).forEach(([value,label])=>{const option=document.createElement('option');option.value=value;option.textContent=label;select.appendChild(option);});
-  select.value=profile.relationship||'interessado';
+  const select=document.createElement('select');select.setAttribute('aria-label','Classificação de '+(profile.full_name||'usuário'));
+  Object.entries(adminRelationshipLabels).forEach(([value,text])=>{const option=document.createElement('option');option.value=value;option.textContent=text;select.appendChild(option);});
+  select.value=profile.relationship||'visitante';
   const save=document.createElement('button');save.type='button';save.className='primary';save.textContent='Salvar classificação';
   save.addEventListener('click',async()=>{
    save.disabled=true;save.textContent='Salvando...';
@@ -1009,14 +1044,19 @@ function renderAdminProfiles(){
    try{
     const {data:updatedProfile,error:updateError}=await supabaseClient.from('profiles').update({relationship,updated_at:new Date().toISOString()}).eq('user_id',profile.user_id).select('relationship').single();
     if(updateError)throw updateError;
-    profile.relationship=updatedProfile.relationship;
-    updateAdminCategoryCounts(adminProfilesCache);renderAdminProfiles();setAdminStatus('Classificação atualizada com sucesso.');
+    profile.relationship=updatedProfile.relationship;updateAdminCategoryCounts(adminProfilesCache);renderAdminProfiles();setAdminStatus('Classificação atualizada com sucesso.');
    }catch(error){setAdminStatus('Não foi possível salvar a classificação: '+(error.message||'tente novamente.'));}
    finally{save.disabled=false;save.textContent='Salvar classificação';}
   });
-  actions.append(select,save);card.appendChild(actions);list.appendChild(card);
+  actions.append(select,save);content.appendChild(actions);card.appendChild(content);list.appendChild(card);
  });
  if(!rows.length){const empty=document.createElement('p');empty.className='notice';empty.textContent=adminProfilesCache.length?'Nenhum cadastro corresponde a esta classificação ou pesquisa.':'Nenhum perfil encontrado na tabela profiles.';list.appendChild(empty);}
+ renderAdminPagination('adminProfilesPagination',adminProfilesPage,pages,rows.length,ADMIN_PAGE_SIZE,(page)=>{adminProfilesPage=page;renderAdminProfiles();});
+}
+function renderAdminPagination(id,page,pages,total,pageSize,onPage){
+ let nav=document.getElementById(id);if(!nav)return;nav.replaceChildren();
+ const info=document.createElement('span');info.className='admin-list-meta';info.textContent=total?`${(page-1)*pageSize+1}–${Math.min(page*pageSize,total)} de ${total}`:'0 registros';nav.appendChild(info);
+ if(pages>1){const prev=document.createElement('button');prev.type='button';prev.className='ghost';prev.textContent='Anterior';prev.disabled=page<=1;prev.addEventListener('click',()=>onPage(page-1));const next=document.createElement('button');next.type='button';next.className='ghost';next.textContent='Próxima';next.disabled=page>=pages;next.addEventListener('click',()=>onPage(page+1));nav.append(prev,document.createTextNode(`Página ${page} de ${pages}`),next);}
 }
 function exportAdminProfiles(rows,filename,sheetName){
  const msg=document.getElementById('adminExportMessage');
@@ -1055,11 +1095,11 @@ async function loadAdminProfiles(){
 }
 document.getElementById('adminCategoryFilters')?.addEventListener('click',event=>{
  const button=event.target.closest('[data-relationship]');if(!button)return;
- adminRelationshipFilter=button.dataset.relationship;
+ adminRelationshipFilter=button.dataset.relationship;adminProfilesPage=1;
  document.querySelectorAll('#adminCategoryFilters .admin-category').forEach(el=>el.classList.toggle('active',el===button));
  renderAdminProfiles();
 });
-document.getElementById('adminSearch')?.addEventListener('input',renderAdminProfiles);
+document.getElementById('adminSearch')?.addEventListener('input',()=>{adminProfilesPage=1;renderAdminProfiles();});
 document.getElementById('exportFiltered')?.addEventListener('click',()=>{
  const suffix=adminRelationshipFilter==='todos'?'todos':adminRelationshipFilter;
  exportAdminProfiles(filteredAdminProfiles(),'cadastros-'+suffix+'-'+new Date().toISOString().slice(0,10)+'.xlsx',suffix);
@@ -1106,45 +1146,63 @@ async function loadLeaderStudies(){
   });
  }catch(error){studyStatus('leaderStudiesStatus','Não foi possível verificar seu acesso: '+(error.message||''),true);}
 }
+let churchRoleRequestsCache=[];
+let churchRolePage=1;
+const CHURCH_ROLE_PAGE_SIZE=25;
+function renderChurchRoleRequests(){
+ const list=document.getElementById('churchRoleRequestsList');if(!list)return;list.replaceChildren();
+ const status=document.getElementById('churchRoleRequestsStatus');
+ const query=(document.getElementById('churchRoleSearch')?.value||'').trim().toLocaleLowerCase('pt-BR');
+ const filter=document.getElementById('churchRoleStatusFilter')?.value||'todos';
+ const roleFilter=document.getElementById('churchRoleFunctionFilter')?.value||'todos';
+ const rows=churchRoleRequestsCache.filter(req=>{
+  const name=(req.full_name||'').toLocaleLowerCase('pt-BR');
+  const current=req.status==='aprovado'?(req.approved_role||'membro'):(req.requested_role||'membro');
+  return (!query||name.includes(query))&&(filter==='todos'||req.status===filter)&&(roleFilter==='todos'||current===roleFilter);
+ });
+ const pages=Math.max(1,Math.ceil(rows.length/CHURCH_ROLE_PAGE_SIZE));churchRolePage=Math.min(churchRolePage,pages);
+ const offset=(churchRolePage-1)*CHURCH_ROLE_PAGE_SIZE;
+ rows.slice(offset,offset+CHURCH_ROLE_PAGE_SIZE).forEach(req=>{
+  const current=req.status==='aprovado'?(req.approved_role||'membro'):(req.requested_role||'membro');
+  const card=document.createElement('details');card.className='admin-record';
+  const summary=document.createElement('summary');const wrap=document.createElement('div');wrap.style.minWidth='0';
+  const name=document.createElement('div');name.className='admin-record-name';name.textContent=req.full_name||'Nome não informado';
+  const sub=document.createElement('div');sub.className='admin-record-sub';sub.textContent=(churchRoleLabels[current]||'Membro')+' · '+(req.status==='pendente'?'Pendente':req.status==='aprovado'?'Aprovada':'Recusada');
+  wrap.append(name,sub);summary.appendChild(wrap);card.appendChild(summary);
+  const content=document.createElement('div');content.className='admin-record-content';
+  const requested=document.createElement('p');requested.textContent='Função solicitada: '+(churchRoleLabels[req.requested_role]||'Membro');content.appendChild(requested);
+  const label=document.createElement('label');label.textContent='Função ministerial';content.appendChild(label);
+  const edit=document.createElement('div');edit.className='admin-actions';
+  const select=document.createElement('select');select.setAttribute('aria-label','Alterar função de '+(req.full_name||'usuário'));
+  [['membro','Membro'],['lider_celula','Líder de célula'],['pastor','Pastor(a)'],['apostolo','Apóstolo(a)']].forEach(([value,text])=>{const option=document.createElement('option');option.value=value;option.textContent=text;if(value===current)option.selected=true;select.appendChild(option);});
+  const save=document.createElement('button');save.type='button';save.className='primary';save.textContent='Salvar função';
+  save.addEventListener('click',async()=>{save.disabled=true;try{const chosen=select.value;const payload={requested_role:chosen,approved_role:chosen==='membro'?null:chosen,status:'aprovado',reviewed_by:authenticatedUser.id,reviewed_at:new Date().toISOString()};const {error}=await supabaseClient.from('church_role_requests').update(payload).eq('user_id',req.user_id);if(error)throw error;await loadChurchRoleRequests();}catch(e){if(status)status.textContent='Não foi possível alterar a função: '+e.message;save.disabled=false;}});
+  edit.append(select,save);content.appendChild(edit);
+  if(req.status==='pendente'){
+   const actions=document.createElement('div');actions.className='admin-actions';
+   const approve=document.createElement('button');approve.type='button';approve.className='primary';approve.textContent='Aprovar função solicitada';
+   approve.addEventListener('click',async()=>{approve.disabled=true;try{const chosen=req.requested_role;const {error}=await supabaseClient.from('church_role_requests').update({approved_role:chosen==='membro'?null:chosen,status:'aprovado',reviewed_by:authenticatedUser.id,reviewed_at:new Date().toISOString()}).eq('user_id',req.user_id);if(error)throw error;await loadChurchRoleRequests();}catch(e){if(status)status.textContent='Não foi possível aprovar: '+e.message;approve.disabled=false;}});
+   const reject=document.createElement('button');reject.type='button';reject.className='ghost';reject.textContent='Recusar';
+   reject.addEventListener('click',async()=>{reject.disabled=true;try{const {error}=await supabaseClient.from('church_role_requests').update({approved_role:null,status:'recusado',reviewed_by:authenticatedUser.id,reviewed_at:new Date().toISOString()}).eq('user_id',req.user_id);if(error)throw error;await loadChurchRoleRequests();}catch(e){if(status)status.textContent='Não foi possível recusar: '+e.message;reject.disabled=false;}});
+   actions.append(approve,reject);content.appendChild(actions);
+  }
+  card.appendChild(content);list.appendChild(card);
+ });
+ if(!rows.length){const empty=document.createElement('p');empty.className='notice';empty.textContent='Nenhuma pessoa encontrada com esses filtros.';list.appendChild(empty);}
+ renderAdminPagination('churchRolePagination',churchRolePage,pages,rows.length,CHURCH_ROLE_PAGE_SIZE,(page)=>{churchRolePage=page;renderChurchRoleRequests();});
+ if(status)status.textContent=`Exibindo ${rows.length} pessoa(s)${query?' para a busca informada':''}.`;
+}
 async function loadChurchRoleRequests(){
  const list=document.getElementById('churchRoleRequestsList');if(!list||!currentAdminRole)return;list.replaceChildren();
  const status=document.getElementById('churchRoleRequestsStatus');if(status)status.textContent='Consultando funções e solicitações...';
  try{
-  const {data,error}=await supabaseClient.from('church_role_requests').select('user_id,full_name,requested_role,approved_role,status,created_at').order('created_at',{ascending:false});
-  if(error)throw error;
-  if(!data?.length){if(status)status.textContent='Nenhum cadastro de função encontrado.';return;}
-  if(status)status.textContent=data.length+' cadastro(s)/solicitação(ões).';
-  for(const req of data){
-   const card=document.createElement('article');card.className='admin-person';
-   const h=document.createElement('h4');h.textContent=req.full_name||'Nome não informado';card.appendChild(h);
-   const current=req.status==='aprovado'?(req.approved_role||'membro'):(req.requested_role||'membro');
-   const p=document.createElement('p');p.textContent='Função solicitada: '+(churchRoleLabels[req.requested_role]||'Membro')+' · Função atual: '+(churchRoleLabels[current]||'Membro')+' · Situação: '+req.status;card.appendChild(p);
-   const edit=document.createElement('div');edit.className='admin-actions';
-   const select=document.createElement('select');select.setAttribute('aria-label','Alterar função de '+(req.full_name||'usuário'));
-   [['membro','Membro'],['lider_celula','Líder de célula'],['pastor','Pastor(a)'],['apostolo','Apóstolo(a)']].forEach(([value,label])=>{const option=document.createElement('option');option.value=value;option.textContent=label;if(value===current)option.selected=true;select.appendChild(option);});
-   const save=document.createElement('button');save.type='button';save.className='primary';save.textContent='Salvar função';
-   save.addEventListener('click',async()=>{
-    save.disabled=true;
-    try{
-     const chosen=select.value;
-     const payload={requested_role:chosen,approved_role:chosen==='membro'?null:chosen,status:'aprovado',reviewed_by:authenticatedUser.id,reviewed_at:new Date().toISOString()};
-     const {error}=await supabaseClient.from('church_role_requests').update(payload).eq('user_id',req.user_id);
-     if(error)throw error;
-     await loadChurchRoleRequests();
-    }catch(e){if(status)status.textContent='Não foi possível alterar a função: '+e.message;save.disabled=false;}
-   });
-   edit.append(select,save);card.appendChild(edit);
-   if(req.status==='pendente'){
-    const actions=document.createElement('div');actions.className='admin-actions';
-    const approve=document.createElement('button');approve.type='button';approve.className='primary';approve.textContent='Aprovar função solicitada';
-    approve.addEventListener('click',async()=>{approve.disabled=true;try{const chosen=req.requested_role;const {error}=await supabaseClient.from('church_role_requests').update({approved_role:chosen==='membro'?null:chosen,status:'aprovado',reviewed_by:authenticatedUser.id,reviewed_at:new Date().toISOString()}).eq('user_id',req.user_id);if(error)throw error;await loadChurchRoleRequests();}catch(e){if(status)status.textContent='Não foi possível aprovar: '+e.message;approve.disabled=false;}});
-    const reject=document.createElement('button');reject.type='button';reject.className='ghost';reject.textContent='Recusar';reject.addEventListener('click',async()=>{reject.disabled=true;try{const {error}=await supabaseClient.from('church_role_requests').update({approved_role:null,status:'recusado',reviewed_by:authenticatedUser.id,reviewed_at:new Date().toISOString()}).eq('user_id',req.user_id);if(error)throw error;await loadChurchRoleRequests();}catch(e){if(status)status.textContent='Não foi possível recusar: '+e.message;reject.disabled=false;}});
-    actions.append(approve,reject);card.appendChild(actions);
-   }
-   list.appendChild(card);
-  }
+  const {data,error}=await supabaseClient.from('church_role_requests').select('user_id,full_name,requested_role,approved_role,status,created_at').order('full_name',{ascending:true});
+  if(error)throw error;churchRoleRequestsCache=data||[];churchRolePage=1;renderChurchRoleRequests();
  }catch(e){if(status){status.hidden=false;status.textContent='Não foi possível carregar funções: '+e.message;}}
 }
+document.getElementById('churchRoleSearch')?.addEventListener('input',()=>{churchRolePage=1;renderChurchRoleRequests();});
+document.getElementById('churchRoleStatusFilter')?.addEventListener('change',()=>{churchRolePage=1;renderChurchRoleRequests();});
+document.getElementById('churchRoleFunctionFilter')?.addEventListener('change',()=>{churchRolePage=1;renderChurchRoleRequests();});
 document.getElementById('refreshChurchRoleRequests')?.addEventListener('click',loadChurchRoleRequests);
 async function loadLeaderStudiesAdmin(){
  const list=document.getElementById('leaderStudiesAdminList');if(!list)return;if(!currentAdminRole){list.replaceChildren();studyStatus('leaderStudiesAdminStatus','Acesso restrito à administração.',true);return;}
