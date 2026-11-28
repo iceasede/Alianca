@@ -1,0 +1,11 @@
+VERSÃO 69 — LOGO MAIOR E EXPERIÊNCIA DE APLICATIVO
+
+- Logo oficial das duas pombas e alianças ampliada no cabeçalho.
+- A navegação da Agenda permanece concentrada no ícone/atalho Agenda.
+- Calendário anual e Comunicação e Acolhimento permanecem dentro da área Agenda; Comunicação e Acolhimento fica logo após o calendário.
+- Versículo do ano permanece somente em Palavra e Devocional.
+- Manifesto PWA atualizado com ícones 192x192 e 512x512, nome curto, modo standalone e orientação retrato.
+- Ícone Apple Touch incluído para adicionar à Tela de Início no iPhone.
+- Cache do Service Worker atualizado para a versão 69.
+
+Para publicar no GitHub Pages, substitua os arquivos da versão anterior pelos arquivos desta pasta, mantendo os demais arquivos de configuração e SQL.

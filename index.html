@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101a31">
+<meta name="theme-color" content="#0d172d">
 <meta name="description" content="Aplicativo oficial da Igreja Comunidade Evangélica da Aliança">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Igreja Comunidade Evangélica da Aliança</title>
@@ -247,41 +247,53 @@ header.app-header-hidden{display:none!important}
 .birthday-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 4px;border-bottom:1px solid var(--line,rgba(0,0,0,.08))}
 .birthday-row:last-child{border-bottom:0}
 .birthday-date{flex-shrink:0;font-weight:700;color:var(--wine,#681D28);background:rgba(196,154,69,.14);padding:8px 11px;border-radius:10px}
-/* Identidade visual v67 — tema noturno elegante, sem alterar fluxos ou dados */
-:root{--navy:#101a31;--navy2:#192846;--gold:#d8b66e;--cream:#0b1427;--ink:#f5f1e7;--muted:#b9c1d0;--white:#17243c;--line:rgba(215,182,110,.22);--wine:#d8b66e;color-scheme:dark}
-html{background:#0b1427}body{background:radial-gradient(ellipse at 50% -15%,#263858 0%,#101a31 42%,#091225 100%);color:var(--ink);min-height:100vh}
-header{background:linear-gradient(180deg,#101b33 0%,#0c162b 100%);color:#fff;border:0;border-bottom:1px solid rgba(216,182,110,.28);border-radius:0 0 26px 26px;box-shadow:0 12px 32px rgba(0,0,0,.28);padding:22px 18px 25px}
-header .mark{width:112px!important;height:88px!important;border:1px dashed rgba(216,182,110,.7);border-radius:50%;padding:13px;background:rgba(255,255,255,.035)}
-header .mark img{filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
-header .brand strong{color:#fff!important;text-shadow:none!important;font-family:Inter,system-ui,sans-serif;font-weight:800;letter-spacing:.045em!important;font-size:clamp(12px,3.1vw,18px)!important;white-space:normal!important}
-header .brand small,header .brand .anniversary{color:var(--gold)!important;font-family:Inter,system-ui,sans-serif;font-weight:700;letter-spacing:2px}
-header h1{color:#fff;font-family:Inter,system-ui,sans-serif;font-weight:750;font-size:clamp(25px,6vw,34px);letter-spacing:-.035em;margin:22px auto 9px}
-header p{color:#c5ccda;line-height:1.55}
-main{max-width:960px;padding:20px 15px 112px}
-.section-head{margin:22px 3px 13px}h2{color:#fff;font-family:Inter,system-ui,sans-serif;font-size:21px;font-weight:750;letter-spacing:-.02em}.eyebrow{color:var(--gold);font-weight:800;letter-spacing:2px}
-/* Home em grade de ícones circulares, inspirado na referência */
-#home>.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:19px 10px;margin:8px 0 25px}
-#home .tile{min-height:0;padding:9px 4px 11px;border:0;background:transparent;box-shadow:none;border-radius:18px;text-align:center;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px}
-#home .tile .ico{width:76px;height:76px;margin:0 auto 3px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#263654,#172540);border:1px solid rgba(216,182,110,.16);box-shadow:0 7px 18px rgba(0,0,0,.24);font-size:30px;color:#fff}
-#home .tile b{font-size:11px;line-height:1.25;letter-spacing:.035em;text-transform:uppercase;color:#f8f4e9;max-width:110px}
-#home .tile small{display:none}
-#home .tile:active .ico{transform:scale(.96);background:#304365}
-.tile,.panel{background:linear-gradient(145deg,rgba(27,42,68,.98),rgba(17,29,49,.98));border:1px solid var(--line);border-radius:19px;color:var(--ink);box-shadow:0 8px 22px rgba(0,0,0,.18)}
-.panel{padding:17px;margin-top:13px}.panel h3{color:#fff;font-size:15px}.panel p{color:#c0c8d6}
-.panel strong,.event strong{color:#fff}.event{border-color:rgba(255,255,255,.09)}.date{background:#293955;color:#f5dfaa;border:1px solid rgba(216,182,110,.2)}.event small{color:#b9c1d0}
-button.primary{background:linear-gradient(135deg,#d8b66e,#a98542);color:#101a31;border:0;box-shadow:0 5px 14px rgba(0,0,0,.2)}button.ghost{background:#1a2943;color:#f5dfaa;border:1px solid rgba(216,182,110,.3)}
-.notice{background:#202f49;border:1px solid rgba(216,182,110,.24);color:#e8dfc9;border-radius:14px}
-input,textarea,select{background:#101c32;color:#fff;border:1px solid rgba(216,182,110,.3);border-radius:12px;color-scheme:dark}input::placeholder,textarea::placeholder{color:#8995a9}label{color:#f1d99f}
-nav{background:rgba(10,19,36,.97);backdrop-filter:blur(16px);border-top:1px solid rgba(216,182,110,.25);box-shadow:0 -8px 24px rgba(0,0,0,.24)}nav button,nav .nav-instagram{color:#aeb8ca}nav button.active,nav .nav-instagram:active,nav .nav-cultos:focus{color:var(--gold)}nav button span,nav .nav-instagram span{font-size:20px}
-.calendar-month{color:#fff}.calendar .day{background:#1a2943;color:#f4f1e8;border-color:rgba(255,255,255,.1)}.calendar .weekday{color:#c2cad7}.calendar .day.has-event{background:#3b3850;border-color:var(--gold);color:#ffe8b1}.calendar .day.selected{background:#d8b66e;color:#101a31;border-color:#d8b66e}.calendar-detail{background:#202f49;border-color:rgba(216,182,110,.25);color:#e9e2d2}.calendar-detail strong{color:#f5d991}
-.birthday-row{border-color:rgba(255,255,255,.1)}.birthday-date{background:#293955;color:#f5d991}.birthday-today{background:#28364c;border-color:var(--gold)}
-.admin-module{background:#172640;border-color:rgba(216,182,110,.22)}.admin-module-summary:hover{background:#20324f}.admin-module-copy strong{color:#fff}.admin-module-copy small{color:#b9c1d0}.admin-module-action{color:#f1d99f}.admin-module-icon{background:#293955;color:#f5d991}.admin-module-content{border-color:rgba(216,182,110,.15)}
-.media-folder,.media-photo{background:#172640;border-color:var(--line)}.media-folder-heading strong{color:#fff}.media-folder-heading small,.media-folder-count{color:#b9c1d0}.media-folder-content{border-color:rgba(255,255,255,.1)}
-footer{color:#8995a9}.account-menu{background:#172640;color:#fff;border:1px solid var(--line)}.account-menu button{color:#fff}
-@media(max-width:430px){#home>.grid{gap:16px 6px}#home .tile .ico{width:68px;height:68px;font-size:27px}#home .tile b{font-size:10px}}
-@media(min-width:650px){#home>.grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:22px 16px}#home .tile .ico{width:84px;height:84px}}
+
+/* Versao 68 — experiencia de aplicativo e organizacao da agenda */
+:root{--navy:#111b33;--navy2:#1b2a4a;--gold:#d7b15c;--cream:#101a31;--ink:#f5f0e4;--muted:#c0c6d2;--white:#17233d;--line:rgba(215,177,92,.24)}
+html{min-height:100%;background:var(--cream);overscroll-behavior-y:contain}
+body{min-height:100vh;background:linear-gradient(180deg,#0d172d 0%,#14213b 100%);color:var(--ink);padding-bottom:env(safe-area-inset-bottom)}
+header{background:linear-gradient(180deg,#0b1428,#14213b);color:var(--ink);border-bottom:1px solid rgba(215,177,92,.28);border-radius:0 0 24px 24px;box-shadow:0 8px 28px rgba(0,0,0,.2);padding:22px 18px 20px}
+header .mark{width:clamp(168px,46vw,224px);height:clamp(118px,32vw,158px);margin:0 auto;overflow:visible}
+header .mark img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 3px 8px rgba(215,177,92,.16))}
+header .brand{gap:8px}
+header .brand strong{color:#fff7e8;text-shadow:none;font-size:clamp(12px,3.5vw,18px);white-space:normal;line-height:1.25;letter-spacing:.04em}
+header .brand small,header .brand .anniversary{color:var(--gold)}
+header h1{color:#f7e8c5;margin-top:18px}
+header p{color:#c5ccda}
+main{padding-top:14px;padding-left:14px;padding-right:14px}
+h2,.panel h3,.home-center .year-verse{color:#f6e9ce}
+.eyebrow{color:var(--gold)}
+.tile,.panel{background:linear-gradient(145deg,#1a2947,#14213a);border:1px solid rgba(215,177,92,.22);border-radius:20px;color:#f6f0e5;box-shadow:0 7px 22px rgba(0,0,0,.16)}
+.tile{min-height:116px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.tile .ico{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.09);color:#f7e8c5;font-size:25px;margin:0 auto 5px}
+.tile b{color:#fff7e8}
+.tile small,.panel p,.event small,footer{color:#c0c6d2}
+button.ghost{background:#1a2947;color:#f7e8c5;border-color:rgba(215,177,92,.28)}
+button.primary{background:linear-gradient(135deg,#b88d3f,#d7b15c);color:#111b33}
+.notice{background:rgba(215,177,92,.10);border-color:rgba(215,177,92,.24);color:#f0dfb9}
+.event{border-bottom-color:rgba(215,177,92,.18)}
+.date{background:rgba(215,177,92,.16);color:#f7e8c5}
+.calendar-month{color:#f7e8c5}
+.calendar .day{background:#1b2a49!important;color:#f4ead6!important;border-color:rgba(215,177,92,.2)!important}
+.calendar .day.has-event{background:#d7b15c!important;color:#15213a!important;border-color:#d7b15c!important}
+.calendar .day.selected{background:#f3dfad!important;color:#15213a!important}
+.calendar-detail{background:#1a2947;border-color:rgba(215,177,92,.25);color:#f2eadb}
+.calendar-detail strong{color:#f7e8c5}
+input,textarea,select{background:#101a31;color:#fff;border-color:rgba(215,177,92,.3)}
+label{color:#f7e8c5}
+nav{background:rgba(10,18,35,.97);border-top:1px solid rgba(215,177,92,.25);backdrop-filter:blur(16px);padding-bottom:calc(8px + env(safe-area-inset-bottom))}
+nav button,nav .nav-instagram{color:#c0c6d2}
+nav button.active,nav .nav-instagram:active{color:#e4bd69}
+.account-trigger{background:#1a2947;color:#f7e8c5;border-color:rgba(215,177,92,.28)}
+.view{padding-bottom:12px}
+@media(min-width:700px){header .mark{width:240px;height:168px}}
+@media(max-width:430px){header{padding-top:18px}.brand strong{font-size:12px}main{padding-left:12px;padding-right:12px}.grid{gap:10px}}
 
 </style>
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Igreja Aliança">
+<meta name="mobile-web-app-capable" content="yes">
 </head>
 <body>
 <header>
@@ -307,6 +319,7 @@ footer{color:#8995a9}.account-menu{background:#172640;color:#fff;border:1px soli
     <div id="authWelcome" class="notice" hidden role="status" aria-live="polite" style="margin-bottom:14px"></div>
     <div class="grid">
       <button class="tile" data-go="sobre"><span class="ico">✧</span><b>Sobre nós</b><small>Nossa história e propósito</small></button>
+      <button class="tile" data-go="agenda"><span class="ico">▦</span><b>Agenda</b><small>Calendário e comunicação da igreja</small></button>
       <button class="tile" data-go="presbiterio"><span class="ico">♙</span><b>Conheça nosso presbitério</b><small>Liderança espiritual</small></button>
       <button class="tile" data-go="filiais"><span class="ico">⌖</span><b>Nossas filiais</b><small>Jardim Botânico e Vendinha/GO</small></button>
       <button class="tile" data-go="ministerios" data-auth-only hidden><span class="ico">♧</span><b>Ministérios</b><small>Servir e participar</small></button>
@@ -321,15 +334,7 @@ footer{color:#8995a9}.account-menu{background:#172640;color:#fff;border:1px soli
       <button class="tile" data-go="aniversariantes" data-auth-only hidden><span class="ico">✧</span><b>Aniversariantes</b><small>Celebrando vidas da nossa família</small></button>
       <button class="tile" data-go="galeria" data-auth-only hidden><span class="ico">▧</span><b>Mídia</b><small>Galeria exclusiva para membros</small></button>
     </div>
-    <div class="section-head"><div><div class="eyebrow">Fique por dentro</div><h2>Próximos encontros</h2></div><button class="ghost" data-go="agenda">Ver agenda</button></div>
-    <div class="panel">
-      <div class="eyebrow">Calendário dos próximos encontros</div>
-      <div class="calendar-nav"><button type="button" class="ghost month-arrow" id="homePrevMonth" aria-label="Mês anterior">‹</button><div id="homeCalendarMonth" class="calendar-month">Dezembro de 2026</div><button type="button" class="ghost month-arrow" id="homeNextMonth" aria-label="Próximo mês">›</button></div>
-      <div id="homeCalendar" class="calendar"></div>
-      <div id="homeEventDetail" class="calendar-detail" aria-live="polite">Toque em uma data destacada para ver os detalhes do encontro.</div>
-    </div>
-    <div class="panel"><div class="eyebrow">Comunicação e acolhimento</div><h3>Lembretes da família da Igreja Comunidade Evangélica da Aliança</h3><p>O sistema será preparado para enviar lembretes personalizados de cultos, células, eventos e aniversários a todos os cadastrados que autorizarem as notificações. As mensagens poderão incluir: “Você é importante para nós. Estamos te aguardando!”</p><div class="notice" style="margin-top:10px">As notificações automáticas dependem da integração com um serviço de envio e do consentimento de cada usuário.</div></div>
-    <div class="panel home-center"><div class="eyebrow">Versículo do ano</div><h3 class="year-verse">“O meu Deus, segundo as suas riquezas, suprirá todas as vossas necessidades em glória, por Cristo Jesus.”</h3><p><strong>Filipenses 4:19</strong></p></div>
+    <div class="panel home-center"><div class="eyebrow">Fique por dentro</div><h3>Consulte a programação da igreja</h3><p>Encontre cultos, células, encontros e comunicados em um só lugar.</p><button class="primary" type="button" data-go="agenda" style="margin-top:14px">Abrir agenda</button></div>
 
   </section>
 
@@ -348,6 +353,12 @@ footer{color:#8995a9}.account-menu{background:#172640;color:#fff;border:1px soli
       <div class="calendar-nav"><button type="button" class="ghost month-arrow" id="agendaPrevMonth" aria-label="Mês anterior">‹</button><div id="agendaCalendarMonth" class="calendar-month">Dezembro de 2026</div><button type="button" class="ghost month-arrow" id="agendaNextMonth" aria-label="Próximo mês">›</button></div>
       <div id="agendaCalendar" class="calendar"></div>
       <div id="agendaEventDetail" class="calendar-detail" aria-live="polite">Toque em uma data destacada para ver o evento, horário e local.</div>
+    </div>
+    <div class="panel" id="agendaCommunication">
+      <div class="eyebrow">Comunicação e acolhimento</div>
+      <h3>Lembretes da família da Igreja Comunidade Evangélica da Aliança</h3>
+      <p>Consulte aqui os comunicados e orientações da igreja, além das informações de cultos, células e eventos. As mensagens personalizadas serão enviadas somente às pessoas que autorizarem o contato.</p>
+      <div class="notice" style="margin-top:10px">As notificações automáticas dependem da integração com um serviço de envio e do consentimento de cada usuário.</div>
     </div>
     <div class="section-head"><div><div class="eyebrow">Encontre uma célula</div><h2>Células de quarta-feira</h2></div></div>
     <div class="notice">Os endereços dos encontros e os nomes dos líderes serão incluídos aqui assim que forem enviados, para que os membros encontrem a célula mais próxima.</div>
@@ -847,7 +858,7 @@ footer{color:#8995a9}.account-menu{background:#172640;color:#fff;border:1px soli
   <div id="mediaLightbox" class="media-lightbox" role="dialog" aria-modal="true" aria-label="Visualização da fotografia">
     <div class="media-lightbox-inner"><button type="button" class="media-lightbox-close" id="mediaLightboxClose">Fechar ✕</button><img id="mediaLightboxImage" alt="Fotografia da Igreja Comunidade Evangélica da Aliança"><div id="mediaLightboxCaption" class="media-lightbox-caption"></div></div>
   </div>
-  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 67</footer>
+  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 69</footer>
 </main>
 <nav>
   <button class="active" data-go="home"><span>⌂</span>Início</button>
