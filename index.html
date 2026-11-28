@@ -350,7 +350,7 @@ nav button.active,nav .nav-instagram:active{color:#e4bd69}
     </div>
     <div class="section-head"><div><div class="eyebrow">Calendário anual</div><h2>Todos os encontros</h2></div></div>
     <div class="panel">
-      <div class="calendar-nav"><button type="button" class="ghost month-arrow" id="agendaPrevMonth" aria-label="Mês anterior">‹</button><div id="agendaCalendarMonth" class="calendar-month">Dezembro de 2026</div><button type="button" class="ghost month-arrow" id="agendaNextMonth" aria-label="Próximo mês">›</button></div>
+      <div class="calendar-nav"><button type="button" class="ghost month-arrow" id="agendaPrevMonth" aria-label="Mês anterior" title="Mês anterior">‹</button><div id="agendaCalendarMonth" class="calendar-month">Dezembro de 2026</div><button type="button" class="ghost month-arrow" id="agendaNextMonth" aria-label="Próximo mês" title="Próximo mês">›</button></div>
       <div id="agendaCalendar" class="calendar"></div>
       <div id="agendaEventDetail" class="calendar-detail" aria-live="polite">Toque em uma data destacada para ver o evento, horário e local.</div>
     </div>
@@ -392,12 +392,12 @@ nav button.active,nav .nav-instagram:active{color:#e4bd69}
     <div class="panel birthday-panel">
       <div class="eyebrow">Agenda anual</div>
       <div class="birthday-month-nav">
-        <button class="ghost" id="birthdayPrevMonth" type="button" aria-label="Mês anterior">‹</button>
+        <button class="ghost" id="birthdayPrevMonth" type="button" aria-label="Mês anterior" title="Mês anterior">‹</button>
         <div class="birthday-month-heading">
           <h3 id="birthdaysMonthTitle">Aniversariantes do mês</h3>
           <span id="birthdaysMonthCount" class="muted small"></span>
         </div>
-        <button class="ghost" id="birthdayNextMonth" type="button" aria-label="Próximo mês">›</button>
+        <button class="ghost" id="birthdayNextMonth" type="button" aria-label="Próximo mês" title="Próximo mês">›</button>
       </div>
       <div id="birthdaysMonth" class="birthday-list" aria-live="polite"><div class="notice">Carregando aniversariantes...</div></div>
     </div>
@@ -1018,7 +1018,7 @@ function renderCalendar(calendarId,detailId,year,month){
  const el=document.getElementById(calendarId), detail=document.getElementById(detailId); if(!el||!detail)return;
  el.innerHTML='';
  el.removeAttribute('style');
- el.classList.remove('calendar');
+ el.classList.add('calendar');
  el.style.cssText='display:block!important;width:100%!important;max-width:100%!important;overflow:visible!important;';
  const first=new Date(year,month-1,1), total=new Date(year,month,0).getDate();
  const monthLabel=document.getElementById(calendarId+'Month'); if(monthLabel) monthLabel.textContent=first.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
@@ -1029,10 +1029,10 @@ function renderCalendar(calendarId,detailId,year,month){
  for(let i=0;i<7;i++){const col=document.createElement('col');col.style.cssText='width:14.2857%!important;';colgroup.appendChild(col)}
  table.appendChild(colgroup);
  const thead=document.createElement('thead'), headRow=document.createElement('tr');
- ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'].forEach(label=>{const th=document.createElement('th');th.textContent=label;th.setAttribute('scope','col');th.style.cssText='display:table-cell!important;width:14.2857%!important;text-align:center!important;vertical-align:middle!important;padding:5px 0!important;border:0!important;background:transparent!important;color:#718096!important;font:700 clamp(9px,2.7vw,12px)/1.2 system-ui,sans-serif!important;white-space:nowrap!important;';headRow.appendChild(th)});
+ ['DOM','SEG','TER','QUA','QUI','SEX','SÁB'].forEach(label=>{const th=document.createElement('th');th.textContent=label;th.setAttribute('scope','col');th.style.cssText='display:table-cell!important;width:14.2857%!important;text-align:center!important;vertical-align:middle!important;padding:5px 0!important;border:0!important;background:transparent!important;color:#d7b15c!important;font:700 clamp(9px,2.7vw,12px)/1.2 system-ui,sans-serif!important;white-space:nowrap!important;';headRow.appendChild(th)});
  thead.appendChild(headRow);table.appendChild(thead);
  const tbody=document.createElement('tbody');let day=1;const offset=first.getDay();
- while(day<=total){const tr=document.createElement('tr');tr.style.cssText='display:table-row!important;';for(let col=0;col<7;col++){const td=document.createElement('td');td.style.cssText='display:table-cell!important;width:14.2857%!important;padding:1px!important;text-align:center!important;vertical-align:middle!important;border:0!important;background:transparent!important;';if((day===1&&col<offset)||day>total){td.innerHTML='&nbsp;'}else{const n=day,key=year+'-'+String(month).padStart(2,'0')+'-'+String(n).padStart(2,'0'),event=churchEvents[key],btn=document.createElement('button');btn.type='button';btn.textContent=n;btn.className='day'+(event?' has-event':'');btn.style.cssText='appearance:none!important;-webkit-appearance:none!important;display:block!important;box-sizing:border-box!important;width:100%!important;max-width:42px!important;height:auto!important;aspect-ratio:1/1!important;margin:0 auto!important;padding:0!important;border-radius:50%!important;border:1px solid '+(event?'#c49a45':'transparent')+'!important;background:'+(event?'#f0dfc9':'#f0f1f3')+'!important;color:'+(event?'#681d28':'#253246')+'!important;font:600 clamp(11px,3.2vw,14px)/1 system-ui,sans-serif!important;';if(event){btn.setAttribute('aria-label',n+' - '+event.title);btn.addEventListener('click',()=>{el.querySelectorAll('button.day').forEach(b=>{b.style.background=b.classList.contains('has-event')?'#f0dfc9':'#f0f1f3';b.style.color=b.classList.contains('has-event')?'#681d28':'#253246'});btn.style.background='#681d28';btn.style.color='#fff';detail.innerHTML='<strong>'+event.title+'</strong><br>'+String(n).padStart(2,'0')+'/'+String(month).padStart(2,'0')+'/'+year+' · '+event.time+'<br>'+event.place;});}td.appendChild(btn);day++;}tr.appendChild(td)}tbody.appendChild(tr)}
+ while(day<=total){const tr=document.createElement('tr');tr.style.cssText='display:table-row!important;';for(let col=0;col<7;col++){const td=document.createElement('td');td.style.cssText='display:table-cell!important;width:14.2857%!important;padding:1px!important;text-align:center!important;vertical-align:middle!important;border:0!important;background:transparent!important;';if((day===1&&col<offset)||day>total){td.innerHTML='&nbsp;'}else{const n=day,key=year+'-'+String(month).padStart(2,'0')+'-'+String(n).padStart(2,'0'),event=churchEvents[key],btn=document.createElement('button');btn.type='button';btn.textContent=n;btn.className='day'+(event?' has-event':'');btn.style.cssText='appearance:none!important;-webkit-appearance:none!important;display:block!important;box-sizing:border-box!important;width:100%!important;max-width:42px!important;height:auto!important;aspect-ratio:1/1!important;margin:0 auto!important;padding:0!important;border-radius:50%!important;border:1px solid '+(event?'#c49a45':'transparent')+'!important;background:'+(event?'#d7b15c':'#1b2a49')+'!important;color:'+(event?'#15213a':'#f4ead6')+'!important;font:600 clamp(11px,3.2vw,14px)/1 system-ui,sans-serif!important;';if(event){btn.setAttribute('aria-label',n+' - '+event.title);btn.addEventListener('click',()=>{el.querySelectorAll('button.day').forEach(b=>{b.style.background=b.classList.contains('has-event')?'#d7b15c':'#1b2a49';b.style.color=b.classList.contains('has-event')?'#15213a':'#f4ead6'});btn.style.background='#f3dfad';btn.style.color='#15213a';detail.innerHTML='<strong>'+event.title+'</strong><br>'+String(n).padStart(2,'0')+'/'+String(month).padStart(2,'0')+'/'+year+' · '+event.time+'<br>'+event.place;});}td.appendChild(btn);day++;}tr.appendChild(td)}tbody.appendChild(tr)}
  table.appendChild(tbody);el.appendChild(table);
 }
 let homeMonth=new Date(2026,11,1), agendaMonth=new Date(2026,11,1);
@@ -1049,10 +1049,13 @@ function shiftMonth(prefix,delta){
  else{agendaMonth=new Date(agendaMonth.getFullYear(),agendaMonth.getMonth()+delta,1);paintMonth('agenda',agendaMonth);}
 }
 ['home','agenda'].forEach(prefix=>{
- document.getElementById(prefix+'PrevMonth').addEventListener('click',()=>shiftMonth(prefix,-1));
- document.getElementById(prefix+'NextMonth').addEventListener('click',()=>shiftMonth(prefix,1));
+ const prev=document.getElementById(prefix+'PrevMonth');
+ const next=document.getElementById(prefix+'NextMonth');
+ if(prev) prev.addEventListener('click',()=>shiftMonth(prefix,-1));
+ if(next) next.addEventListener('click',()=>shiftMonth(prefix,1));
 });
-paintMonth('home',homeMonth);paintMonth('agenda',agendaMonth);
+if(document.getElementById('homeCalendar')) paintMonth('home',homeMonth);
+if(document.getElementById('agendaCalendar')) paintMonth('agenda',agendaMonth);
 
 document.getElementById('prayerForm').addEventListener('submit',e=>{e.preventDefault();document.getElementById('prayerMsg').textContent='Formulário demonstrativo: o pedido ainda não foi enviado. A conexão segura será feita na próxima etapa.';});
 const registrationForm=document.getElementById('publicRegistrationForm');

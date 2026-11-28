@@ -1,0 +1,5 @@
+VERSÃO 70 — CORREÇÃO DO CALENDÁRIO
+- Corrigida a inicialização do calendário após a agenda ter sido removida da página inicial.
+- Os botões de navegação de mês agora são registrados somente quando existem na tela.
+- Calendário mensal com dias visíveis no tema azul-marinho e dourado.
+- Mantida a identidade visual e os demais recursos da versão 69.
