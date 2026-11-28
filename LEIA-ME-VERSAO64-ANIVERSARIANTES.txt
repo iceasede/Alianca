@@ -1,0 +1,18 @@
+VERSÃO 64 — ANIVERSARIANTES
+
+O que mudou:
+- A área de Aniversariantes agora carrega dados reais da tabela profiles.
+- Mostra aniversariantes de hoje, do mês atual e os próximos.
+- Exibe somente nome e dia/mês de nascimento.
+- A consulta é restrita a usuários autenticados por uma função SQL.
+
+INSTALAÇÃO:
+1. Publique os arquivos desta pasta no GitHub Pages, substituindo os arquivos atuais.
+2. No Supabase > SQL Editor > New Query, execute CONFIGURAR-ANIVERSARIANTES.sql.
+3. Atualize o aplicativo e entre na área de membros.
+4. Abra Aniversariantes.
+
+IMPORTANTE:
+- A lista depende de as pessoas terem data de nascimento preenchida no perfil.
+- Esta atualização não envia mensagens automáticas nem notificações push.
+- A função SQL não expõe ano de nascimento, e-mail, telefone ou endereço.

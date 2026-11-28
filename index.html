@@ -321,14 +321,29 @@ header.app-header-hidden{display:none!important}
   </section>
 
   <section id="aniversariantes" class="view" data-requires-auth>
-    <div class="section-head"><div><div class="eyebrow">Nossa família</div><h2>Aniversariantes</h2></div></div>
+    <div class="section-head"><div><div class="eyebrow">Nossa família</div><h2>Aniversariantes</h2></div><button class="ghost" id="refreshBirthdays" type="button">Atualizar</button></div>
     <div class="panel">
       <div class="ico" style="font-size:25px;color:var(--gold);margin-bottom:8px">✧</div>
       <h3>Celebramos a sua vida!</h3>
-      <p>Este é o espaço para homenagear os aniversariantes da Igreja Comunidade Evangélica da Aliança e agradecer a Deus por mais um ano de vida.</p>
+      <p>Confira os aniversariantes da Igreja Comunidade Evangélica da Aliança e celebre conosco cada novo ano de vida.</p>
     </div>
-    <div class="section-head"><div><div class="eyebrow">Mês atual</div><h2>Aniversariantes do mês</h2></div></div>
-    <div class="notice">A área será exclusiva para membros. Os aniversários serão identificados pela data de nascimento cadastrada e haverá mensagem individual automática no dia, mediante autorização de notificações. A lista e o envio automático dependem da implantação do login e do serviço de notificações.</div>
+    <div class="panel birthday-panel">
+      <div class="eyebrow">Hoje</div>
+      <h3>Aniversariantes de hoje</h3>
+      <div id="birthdaysToday" class="birthday-list" aria-live="polite"><div class="notice">Carregando aniversariantes...</div></div>
+    </div>
+    <div class="panel birthday-panel">
+      <div class="eyebrow">Mês atual</div>
+      <h3 id="birthdaysMonthTitle">Aniversariantes do mês</h3>
+      <div id="birthdaysMonth" class="birthday-list" aria-live="polite"><div class="notice">Carregando aniversariantes...</div></div>
+    </div>
+    <div class="panel birthday-panel">
+      <div class="eyebrow">Próximos</div>
+      <h3>Próximos aniversários</h3>
+      <div id="birthdaysUpcoming" class="birthday-list" aria-live="polite"><div class="notice">Carregando aniversariantes...</div></div>
+    </div>
+    <div id="birthdaysMessage" class="notice" role="status" aria-live="polite" hidden></div>
+    <p class="muted small">A lista exibe somente nome e dia/mês de nascimento. Os dados completos permanecem protegidos.</p>
   </section>
 
   <section id="sobre" class="view">
@@ -784,7 +799,7 @@ header.app-header-hidden{display:none!important}
   <div id="mediaLightbox" class="media-lightbox" role="dialog" aria-modal="true" aria-label="Visualização da fotografia">
     <div class="media-lightbox-inner"><button type="button" class="media-lightbox-close" id="mediaLightboxClose">Fechar ✕</button><img id="mediaLightboxImage" alt="Fotografia da Igreja Comunidade Evangélica da Aliança"><div id="mediaLightboxCaption" class="media-lightbox-caption"></div></div>
   </div>
-  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 51</footer>
+  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 64</footer>
 </main>
 <nav>
   <button class="active" data-go="home"><span>⌂</span>Início</button>
@@ -825,6 +840,56 @@ async function refreshVisitorCaptureAccess(){
  try{const role=await getApprovedChurchRole();approvedChurchRole=role;tile.hidden=!(currentAdminRole || ['apostolo','pastor','diacono'].includes(role));}
  catch(_){tile.hidden=!currentAdminRole;}
 }
+
+// Aniversariantes: consulta segura que retorna apenas nome e dia/mês.
+let churchBirthdaysCache=[];
+const monthNamesPt=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+function birthdayDateKey(day,month){return month*100+day;}
+function renderBirthdayRows(targetId,rows,emptyText){
+ const target=document.getElementById(targetId);if(!target)return;
+ target.replaceChildren();
+ if(!rows.length){const empty=document.createElement('div');empty.className='notice';empty.textContent=emptyText;target.appendChild(empty);return;}
+ rows.forEach(person=>{
+  const row=document.createElement('div');row.className='birthday-row'+(person.isToday?' birthday-today':'');
+  const copy=document.createElement('div');const name=document.createElement('strong');name.textContent=person.full_name||'Nome não informado';
+  const note=document.createElement('small');note.textContent=person.isToday?'Hoje é dia de celebrar!':'Que Deus abençoe este novo ciclo!';
+  copy.append(name,note);
+  const date=document.createElement('span');date.className='birthday-date';date.textContent=String(person.birth_day).padStart(2,'0')+'/'+String(person.birth_month).padStart(2,'0');
+  row.append(copy,date);target.appendChild(row);
+ });
+}
+async function loadChurchBirthdays(){
+ const message=document.getElementById('birthdaysMessage');
+ if(!authenticatedUser){if(message){message.hidden=false;message.textContent='Entre na sua conta para consultar os aniversariantes.';}return;}
+ ['birthdaysToday','birthdaysMonth','birthdaysUpcoming'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='<div class="notice">Carregando aniversariantes...</div>';});
+ if(message)message.hidden=true;
+ if(!supabaseClient){if(message){message.hidden=false;message.textContent='Não foi possível conectar ao serviço de dados.';}return;}
+ try{
+  const {data,error}=await supabaseClient.rpc('get_church_birthdays');
+  if(error)throw error;
+  const today=new Date(),day=today.getDate(),month=today.getMonth()+1;
+  churchBirthdaysCache=(data||[]).map(p=>({full_name:p.full_name,birth_day:Number(p.birth_day),birth_month:Number(p.birth_month)}))
+   .filter(p=>p.full_name&&p.birth_day>=1&&p.birth_day<=31&&p.birth_month>=1&&p.birth_month<=12)
+   .map(p=>({...p,isToday:p.birth_day===day&&p.birth_month===month,sortKey:birthdayDateKey(p.birth_day,p.birth_month)}));
+  churchBirthdaysCache.sort((a,b)=>a.sortKey-b.sortKey||a.full_name.localeCompare(b.full_name,'pt-BR'));
+  const current=churchBirthdaysCache.filter(p=>p.birth_month===month);
+  const todayRows=current.filter(p=>p.birth_day===day);
+  const upcoming=churchBirthdaysCache.filter(p=>p.sortKey>birthdayDateKey(day,month)).slice(0,8)
+   .concat(churchBirthdaysCache.filter(p=>p.sortKey<=birthdayDateKey(day,month)).slice(0,Math.max(0,8-churchBirthdaysCache.filter(p=>p.sortKey>birthdayDateKey(day,month)).length)));
+  const title=document.getElementById('birthdaysMonthTitle');if(title)title.textContent='Aniversariantes de '+monthNamesPt[month-1];
+  renderBirthdayRows('birthdaysToday',todayRows,'Hoje não temos aniversariantes cadastrados. Que todos recebam nosso carinho!');
+  renderBirthdayRows('birthdaysMonth',current,'Ainda não há aniversariantes deste mês com data de nascimento cadastrada.');
+  renderBirthdayRows('birthdaysUpcoming',upcoming,'Não há próximos aniversários cadastrados.');
+  if(message&&churchBirthdaysCache.length===0){message.hidden=false;message.textContent='Nenhuma data de nascimento foi encontrada. Confira se os perfis possuem a data preenchida.';}
+ }catch(error){
+  renderBirthdayRows('birthdaysToday',[],'Não foi possível carregar os aniversariantes.');
+  renderBirthdayRows('birthdaysMonth',[],'Não foi possível carregar os aniversariantes.');
+  renderBirthdayRows('birthdaysUpcoming',[],'Não foi possível carregar os aniversariantes.');
+  if(message){message.hidden=false;message.textContent='Não foi possível consultar os aniversariantes. Execute o SQL de configuração da área de aniversariantes no Supabase. Detalhe: '+(error.message||'erro desconhecido');}
+ }
+}
+document.getElementById('refreshBirthdays')?.addEventListener('click',loadChurchBirthdays);
+
 function go(id){
  if(id==='cadastro' && authenticatedUser && !currentAdminRole && !['apostolo','pastor','diacono'].includes(approvedChurchRole)){
    const msg=document.getElementById('visitorCaptureMessage');if(msg){msg.hidden=false;msg.textContent='O cadastro de visitantes é exclusivo para apóstolos, pastores e diáconos autorizados.';}
@@ -843,6 +908,7 @@ function go(id){
  views.forEach(v=>v.classList.toggle('active',v.id===id));
  nav.forEach(b=>b.classList.toggle('active',b.dataset.go===id));
  window.scrollTo({top:0,behavior:'smooth'});
+ if(id==='aniversariantes')loadChurchBirthdays();
  if(id==='galeria')loadMediaGallery();
  if(id==='estudos')loadLeaderStudies();
 }
@@ -1583,7 +1649,14 @@ document.getElementById('exportCellRequestsPdf')?.addEventListener('click',()=>{
  if(!popup){msg.textContent='O navegador bloqueou a nova janela. Permita pop-ups para preparar o PDF.';return;}
  const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
  const headers=Object.keys(rows[0]);
- popup.document.write('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Solicitações de células</title><style>body{font:14px Arial,sans-serif;color:#222;padding:24px}h1{font-size:20px;color:#681d28}p{color:#555}.meta{margin-bottom:18px}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #bbb;padding:7px;text-align:left;vertical-align:top}th{background:#f4ebdd;color:#681d28}@media print{body{padding:0}button{display:none}thead{display:table-header-group}tr{break-inside:avoid}}</style></head><body><h1>Igreja Comunidade Evangélica da Aliança</h1><h2>Solicitações de interesse em células</h2><p class="meta">Gerado em '+esc(new Date().toLocaleString('pt-BR'))+' · '+rows.length+' solicitação(ões)</p><table><thead><tr>'+headers.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+headers.map(h=>'<td>'+esc(r[h])+'</td>').join('')+'</tr>').join('')+'</tbody></table><p>Use a opção Imprimir do navegador e escolha Salvar como PDF.</p><button onclick="window.print()">Imprimir / Salvar como PDF</button></body></html>');
+ popup.document.write('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Solicitações de células</title><style>body{font:14px Arial,sans-serif;color:#222;padding:24px}h1{font-size:20px;color:#681d28}p{color:#555}.meta{margin-bottom:18px}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #bbb;padding:7px;text-align:left;vertical-align:top}th{background:#f4ebdd;color:#681d28}@media print{body{padding:0}button{display:none}thead{display:table-header-group}tr{break-inside:avoid}}
+.birthday-list{display:grid;gap:8px;margin-top:10px}
+.birthday-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.birthday-row strong{display:block;color:var(--navy);font-size:14px}
+.birthday-row small{display:block;color:var(--muted);margin-top:3px}
+.birthday-date{flex:0 0 auto;font-weight:700;color:var(--wine);background:#f7f1e7;border-radius:9px;padding:7px 10px;font-variant-numeric:tabular-nums}
+.birthday-today{border-color:var(--gold);background:#fffaf0}
+</style></head><body><h1>Igreja Comunidade Evangélica da Aliança</h1><h2>Solicitações de interesse em células</h2><p class="meta">Gerado em '+esc(new Date().toLocaleString('pt-BR'))+' · '+rows.length+' solicitação(ões)</p><table><thead><tr>'+headers.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+headers.map(h=>'<td>'+esc(r[h])+'</td>').join('')+'</tr>').join('')+'</tbody></table><p>Use a opção Imprimir do navegador e escolha Salvar como PDF.</p><button onclick="window.print()">Imprimir / Salvar como PDF</button></body></html>');
  popup.document.close();msg.textContent='Relatório preparado. Na nova aba, escolha Imprimir e depois Salvar como PDF.';
 });
 // Solicitações de contato para células: gravação segura no Supabase (sem leitura pública).
