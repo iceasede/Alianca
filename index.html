@@ -289,6 +289,20 @@ nav button.active,nav .nav-instagram:active{color:#e4bd69}
 @media(min-width:700px){header .mark{width:240px;height:168px}}
 @media(max-width:430px){header{padding-top:18px}.brand strong{font-size:12px}main{padding-left:12px;padding-right:12px}.grid{gap:10px}}
 
+
+/* Departamentos organizados em campos expansíveis — versão 73 */
+.ministry-group{padding:0!important;overflow:hidden;margin-top:14px}
+.ministry-group>summary{list-style:none;display:flex;align-items:center;gap:13px;padding:17px 18px;cursor:pointer;color:var(--navy);font-size:15px}
+.ministry-group>summary::-webkit-details-marker{display:none}
+.ministry-group>summary:after{content:'＋';margin-left:auto;color:var(--gold);font-size:22px;font-weight:400}
+.ministry-group[open]>summary:after{content:'−'}
+.ministry-group>summary>span:nth-child(2){display:grid;gap:4px}
+.ministry-group>summary strong{font-size:15px;color:var(--navy)}
+.ministry-group>summary small{font-size:11px;color:var(--muted);font-weight:400;line-height:1.4}
+.ministry-summary-icon{width:40px;height:40px;flex:0 0 40px;border-radius:12px;display:grid;place-items:center;background:#f4eadd;color:var(--navy);font-size:21px}
+.ministry-group-content{padding:0 16px 16px;border-top:1px solid var(--line)}
+.ministry-group-content>.section-head:first-child{margin-top:16px}
+
 </style>
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -466,12 +480,13 @@ nav button.active,nav .nav-instagram:active{color:#e4bd69}
       <div class="tile"><span class="ico">♧</span><b>Espaço Kids</b><small>Área própria do Departamento Infantil</small></div>
       <div class="tile"><span class="ico">♡</span><b>Mulheres</b><small>Comunhão e crescimento</small></div>
       <div class="tile"><span class="ico">♙</span><b>Homens</b><small>Comunhão, fé e crescimento</small></div>
-      <div class="tile"><span class="ico">✧</span><b>Liderança</b><small>Formação, cuidado e serviço</small></div>
-      <div class="tile"><span class="ico">✚</span><b>Diaconato</b><small>Serviço e cuidado com a igreja</small></div>
       <div class="tile"><span class="ico">✧</span><b>Mídia da Igreja</b><small>Galeria própria, restrita a membros</small></div>
       <div class="tile"><span class="ico">⌂</span><b>Famílias</b><small>Relacionamentos e comunhão</small></div>
       <div class="tile"><span class="ico">＋</span><b>Outros departamentos</b><small>Em atualização</small></div>
     </div>
+    <details class="panel ministry-group" id="diaconatoGroup">
+      <summary><span class="ministry-summary-icon">✚</span><span><strong>Diaconato</strong><small>Recepção, acolhimento, cadastro de visitantes e escala de serviço</small></span></summary>
+      <div class="ministry-group-content">
     <div class="section-head"><div><div class="eyebrow">Organização e serviço</div><h2>Escala do diaconato</h2></div></div>
     <div class="panel">
       <h3>Escala de serviço</h3>
@@ -495,6 +510,11 @@ nav button.active,nav .nav-instagram:active{color:#e4bd69}
       </div>
       <div class="notice">Importante: este cadastro registra os dados e a autorização de contato. O envio automático de mensagens exige integração com um serviço de WhatsApp ou e-mail.</div>
     </div></div>
+      </div>
+    </details>
+    <details class="panel ministry-group" id="cellLeaderGroup">
+      <summary><span class="ministry-summary-icon">⌂</span><span><strong>Líder de Célula</strong><small>Estudos para células, orientações e materiais de apoio</small></span></summary>
+      <div class="ministry-group-content">
     <div class="section-head"><div><div class="eyebrow">Formação</div><h2>Estudos para células</h2></div></div>
     <div id="studies" class="panel">
       <div class="section-head"><div><div class="eyebrow">Formação e crescimento</div><h3>Estudos para células</h3></div></div>
@@ -504,7 +524,8 @@ nav button.active,nav .nav-instagram:active{color:#e4bd69}
     </div>
     <div class="section-head"><div><div class="eyebrow">Liderança</div><h2>Líderes de células</h2></div></div>
     <div class="panel" id="cellLeadersPanel"><h3>Área dos líderes de células</h3><p>Espaço destinado às orientações, comunicados e materiais de apoio para os líderes de células. Os conteúdos serão disponibilizados conforme as permissões definidas pela liderança da igreja.</p></div>
-    </div>
+      </div>
+    </details>
   </section>
 
 
@@ -869,7 +890,7 @@ nav button.active,nav .nav-instagram:active{color:#e4bd69}
   <div id="mediaLightbox" class="media-lightbox" role="dialog" aria-modal="true" aria-label="Visualização da fotografia">
     <div class="media-lightbox-inner"><button type="button" class="media-lightbox-close" id="mediaLightboxClose">Fechar ✕</button><img id="mediaLightboxImage" alt="Fotografia da Igreja Comunidade Evangélica da Aliança"><div id="mediaLightboxCaption" class="media-lightbox-caption"></div></div>
   </div>
-  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 72</footer>
+  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 73</footer>
 </main>
 <nav class="app-bottom-nav" aria-label="Navegação principal">
   <button data-go="galeria"><span>▧</span>Mídia</button>
@@ -915,9 +936,17 @@ async function refreshApprovedStudyEntry(){
 }
 async function refreshVisitorCaptureAccess(){
  const tile=document.querySelector('[data-go="cadastro"][data-auth-only]');
- if(!tile)return;
- try{const role=await getApprovedChurchRole();approvedChurchRole=role;tile.hidden=!(currentAdminRole || ['apostolo','pastor','diacono'].includes(role));}
- catch(_){tile.hidden=!currentAdminRole;}
+ const content=document.getElementById('visitorRegistrationContent');
+ try{
+  const role=await getApprovedChurchRole();approvedChurchRole=role;
+  const allowed=!!currentAdminRole || ['apostolo','pastor','diacono'].includes(role);
+  if(tile)tile.hidden=!allowed;
+  if(content)content.hidden=!allowed;
+ }catch(_){
+  const allowed=!!currentAdminRole;
+  if(tile)tile.hidden=!allowed;
+  if(content)content.hidden=!allowed;
+ }
 }
 
 // Aniversariantes: agenda mensal navegável.
@@ -1003,6 +1032,7 @@ function go(id){
  views.forEach(v=>v.classList.toggle('active',v.id===id));
  nav.forEach(b=>b.classList.toggle('active',b.dataset.go===id));
  window.scrollTo({top:0,behavior:'smooth'});
+ if(id==='ministerios')loadLeaderStudies();
  if(id==='aniversariantes')loadChurchBirthdays();
  if(id==='galeria')loadMediaGallery();
  if(id==='estudos')loadLeaderStudies();

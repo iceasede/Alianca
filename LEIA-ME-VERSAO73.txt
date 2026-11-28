@@ -1,0 +1,6 @@
+VERSÃO 73 — ORGANIZAÇÃO DE MINISTÉRIOS E DEPARTAMENTOS
+
+- Criado o campo expansível Líder de Célula, contendo Estudos para Células e a área de orientações aos líderes.
+- Reunidos dentro de Diaconato: escala do diaconato, recepção e cadastro de visitantes.
+- Mantidas as validações e permissões já existentes para cadastro de visitantes e estudos.
+- A abertura de Ministérios atualiza os estudos, respeitando a autorização da função cadastrada.
