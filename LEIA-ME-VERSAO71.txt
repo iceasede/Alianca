@@ -1,0 +1,6 @@
+VERSÃO 71 — CONTRIBUA E NAVEGAÇÃO INFERIOR
+- Criada a área Contribua, com conteúdo para dízimos e ofertas.
+- Mantida a segurança: nenhum Pix ou dado bancário foi inventado; o espaço aguarda os dados oficiais da igreja.
+- Rodapé reorganizado em cinco opções: Mídia, Agenda, Início centralizado, Contribua e Instagram.
+- Mídia continua protegida para membros autenticados.
+- Cache do aplicativo atualizado para a versão 71.

@@ -1,4 +1,4 @@
-const CACHE='alianca-app-agenda-v69';
+const CACHE='alianca-app-agenda-v71';
 const FILES=['./','./index.html','./manifest.webmanifest','./logo-alianca.png','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
