@@ -319,20 +319,14 @@ nav button.active,nav .nav-instagram:active{color:#e4bd69}
     <div id="authWelcome" class="notice" hidden role="status" aria-live="polite" style="margin-bottom:14px"></div>
     <div class="grid">
       <button class="tile" data-go="sobre"><span class="ico">✧</span><b>Sobre nós</b><small>Nossa história e propósito</small></button>
-      <button class="tile" data-go="agenda"><span class="ico">▦</span><b>Agenda</b><small>Calendário e comunicação da igreja</small></button>
       <button class="tile" data-go="presbiterio"><span class="ico">♙</span><b>Conheça nosso presbitério</b><small>Liderança espiritual</small></button>
-      <button class="tile" data-go="filiais"><span class="ico">⌖</span><b>Nossas filiais</b><small>Jardim Botânico e Vendinha/GO</small></button>
-      <button class="tile" data-go="ministerios" data-auth-only hidden><span class="ico">♧</span><b>Ministérios</b><small>Servir e participar</small></button>
-      <button class="tile" data-go="kids" data-auth-only hidden><span class="ico">♡</span><b>Espaço Kids</b><small>Atividades e novidades das crianças</small></button>
-      <button class="tile" data-go="celulas"><span class="ico">⌂</span><b>Nossas células</b><small>Encontre uma célula e fale com o líder</small></button>
-      <button class="tile" data-go="estudos" id="leaderStudiesHomeTile" hidden><span class="ico">▤</span><b>Estudos para líderes</b><small>Materiais disponíveis para baixar</small></button>
+      <button class="tile" data-go="filiais"><span class="ico">⌖</span><b>Nossas filiais</b><small>Sede, Jardim Botânico e Vendinha/GO</small></button>
+      <button class="tile" data-go="celulas"><span class="ico">⌂</span><b>Nossas células</b><small>Encontre uma célula perto de você</small></button>
       <button class="tile" data-go="oracao"><span class="ico">♡</span><b>Pedidos de oração</b><small>Conte com nossa oração</small></button>
       <button class="tile" data-go="devocional"><span class="ico">✧</span><b>Palavra e devocional</b><small>Um momento com Deus</small></button>
-      <button class="tile" data-go="cadastro" data-guest-only><span class="ico">✚</span><b>Faça seu cadastro</b><small>Conecte-se à nossa família</small></button>
-      <button class="tile" data-go="cadastro" data-auth-only hidden><span class="ico">♡</span><b>Cadastrar visitante</b><small>Recepção e acolhimento</small></button>
-      <button class="tile" data-go="membros"><span class="ico">♙</span><b>Área de membros</b><small>Acesso reservado</small></button>
+      <button class="tile" data-go="kids" data-auth-only hidden><span class="ico">♡</span><b>Espaço Kids</b><small>Atividades e novidades das crianças</small></button>
       <button class="tile" data-go="aniversariantes" data-auth-only hidden><span class="ico">✧</span><b>Aniversariantes</b><small>Celebrando vidas da nossa família</small></button>
-      <button class="tile" data-go="galeria" data-auth-only hidden><span class="ico">▧</span><b>Mídia</b><small>Galeria exclusiva para membros</small></button>
+      <button class="tile" data-go="ministerios" data-auth-only hidden><span class="ico">♧</span><b>Ministérios</b><small>Diaconato, estudos e liderança</small></button>
     </div>
     <div class="panel home-center"><div class="eyebrow">Fique por dentro</div><h3>Consulte a programação da igreja</h3><p>Encontre cultos, células, encontros e comunicados em um só lugar.</p><button class="primary" type="button" data-go="agenda" style="margin-top:14px">Abrir agenda</button></div>
 
@@ -414,6 +408,8 @@ nav button.active,nav .nav-instagram:active{color:#e4bd69}
       <p style="margin-top:10px">Nossa história começou em maio de 1995. Em 2026, celebramos 31 anos de caminhada e serviço ao Senhor.</p>
     </div>
     <div class="panel"><h3>Nossa sede</h3><p>Quadra 06, Área Especial 01, Setor Veredas, Brazlândia/DF.</p></div>
+    <div class="panel"><h3>Compartilhe nosso aplicativo</h3><p>Convide amigos e familiares para conhecer a Igreja Comunidade Evangélica da Aliança e acompanhar nossa programação.</p><button type="button" class="primary" id="shareAppButton" style="margin-top:12px">Compartilhar aplicativo</button><div id="shareAppMessage" class="notice" hidden role="status" aria-live="polite" style="margin-top:10px"></div></div>
+
     <div class="notice" style="margin-top:12px">Este espaço poderá receber a declaração oficial de visão, missão, valores e história da igreja quando esses textos forem fornecidos pela liderança.</div>
   </section>
 
@@ -482,6 +478,33 @@ nav button.active,nav .nav-instagram:active{color:#e4bd69}
       <p>Consulte aqui a escala dos diáconos e diaconisas responsáveis pelo serviço em cada culto e programação da igreja.</p>
       <div class="notice" style="margin-top:12px">A escala será preenchida após o envio dos nomes, datas e horários confirmados pela liderança do diaconato.</div>
     </div>
+    <div class="section-head"><div><div class="eyebrow">Diaconato</div><h2>Recepção e cadastro de visitantes</h2></div></div>
+    <div class="panel"><h3>Cadastro de visitantes</h3><p>Área de uso da equipe autorizada do diaconato para acolher e registrar visitantes.</p>    <div id="visitorRegistrationContent" hidden>
+      <div class="panel"><div class="eyebrow">Recepção e acolhimento</div><h3>Cadastro de visitante</h3><p>Use este formulário durante a recepção para registrar quem está nos visitando. O visitante não precisa criar uma conta no aplicativo.</p>
+        <form id="visitorCaptureForm" class="account-grid">
+          <div><label for="visitorFullName">Nome completo</label><input id="visitorFullName" required maxlength="140" autocomplete="name" placeholder="Nome do visitante"></div>
+          <div><label for="visitorPhone">WhatsApp / telefone</label><input id="visitorPhone" required type="tel" maxlength="30" autocomplete="tel" placeholder="(00) 00000-0000"></div>
+          <div><label for="visitorEmail">E-mail (opcional)</label><input id="visitorEmail" type="email" maxlength="180" autocomplete="email" placeholder="nome@exemplo.com"></div>
+          <div><label for="visitorCongregation">Congregação visitada</label><select id="visitorCongregation" required><option value="">Selecione</option><option>Sede — Brazlândia/DF</option><option>Jardim Botânico/DF</option><option>Vendinha — Padre Bernardo/GO</option></select></div>
+          <div><label for="visitorVisitDate">Data da visita</label><input id="visitorVisitDate" type="date" required></div>
+          <div><label for="visitorVisitType">É a primeira visita?</label><select id="visitorVisitType" required><option value="">Selecione</option><option value="primeira">Sim, primeira visita</option><option value="retorno">Já visitou antes</option></select></div>
+          <label class="consent-label" style="grid-column:1/-1"><input id="visitorContactConsent" type="checkbox" required> O visitante autorizou receber contato da Igreja por WhatsApp ou e-mail, com avisos de cultos, convites para células e informações sobre atividades. A autorização foi confirmada diretamente com ele.</label>
+          <div id="visitorCaptureMessage" class="notice" hidden role="status" aria-live="polite" style="grid-column:1/-1"></div>
+          <button type="submit" class="primary" id="visitorCaptureSubmit" style="grid-column:1/-1">Salvar visitante</button>
+        </form>
+      </div>
+      <div class="notice">Importante: este cadastro registra os dados e a autorização de contato. O envio automático de mensagens exige integração com um serviço de WhatsApp ou e-mail.</div>
+    </div></div>
+    <div class="section-head"><div><div class="eyebrow">Formação</div><h2>Estudos para células</h2></div></div>
+    <div id="studies" class="panel">
+      <div class="section-head"><div><div class="eyebrow">Formação e crescimento</div><h3>Estudos para células</h3></div></div>
+      <div class="notice">Consulte e baixe os estudos publicados pela administração da Igreja Comunidade Evangélica da Aliança.</div>
+      <div id="leaderStudiesStatus" class="notice" role="status" aria-live="polite">Carregando estudos...</div>
+      <div id="leaderStudiesList" class="stack"></div>
+    </div>
+    <div class="section-head"><div><div class="eyebrow">Liderança</div><h2>Líderes de células</h2></div></div>
+    <div class="panel" id="cellLeadersPanel"><h3>Área dos líderes de células</h3><p>Espaço destinado às orientações, comunicados e materiais de apoio para os líderes de células. Os conteúdos serão disponibilizados conforme as permissões definidas pela liderança da igreja.</p></div>
+    </div>
   </section>
 
 
@@ -536,13 +559,6 @@ nav button.active,nav .nav-instagram:active{color:#e4bd69}
       </form>
       <p class="muted" style="margin-top:10px">Seus dados serão usados somente para tratar este pedido. Os telefones pessoais dos líderes não serão exibidos.</p>
     </div>
-  </section>
-
-  <section id="estudos" class="view">
-    <div class="section-head"><div><div class="eyebrow">Formação e crescimento</div><h2>Estudos para Líderes</h2></div></div>
-    <div class="notice">Consulte e baixe os estudos publicados pela administração da Igreja Comunidade Evangélica da Aliança.</div>
-    <div id="leaderStudiesStatus" class="notice" role="status" aria-live="polite">Carregando estudos...</div>
-    <div id="leaderStudiesList" class="stack"></div>
   </section>
 
   <section id="oracao" class="view">
@@ -608,22 +624,7 @@ nav button.active,nav .nav-instagram:active{color:#e4bd69}
     <div class="panel permissions-panel"><div class="eyebrow">Organização e segurança</div><h3>Atualização dos seus dados</h3><p>Depois que o acesso individual estiver ativo, cada pessoa poderá corrigir e atualizar seus próprios dados pessoais, contatos, endereço, congregação e informações de participação.</p><p>A classificação de vínculo com a igreja — visitante, novo convertido ou membro — ficará disponível somente para alteração pela equipe administrativa autorizada.</p><div class="notice">A conta será criada com acesso individual. A classificação de vínculo e as permissões administrativas continuarão sob controle da liderança autorizada.</div></div>
     <p class="notice">Após o cadastro, confira seu e-mail para confirmar a conta, caso receba a mensagem de confirmação. O acesso à área de membros será liberado após a confirmação.</p>
     </div>
-    <div id="visitorRegistrationContent" hidden>
-      <div class="panel"><div class="eyebrow">Recepção e acolhimento</div><h3>Cadastro de visitante</h3><p>Use este formulário durante a recepção para registrar quem está nos visitando. O visitante não precisa criar uma conta no aplicativo.</p>
-        <form id="visitorCaptureForm" class="account-grid">
-          <div><label for="visitorFullName">Nome completo</label><input id="visitorFullName" required maxlength="140" autocomplete="name" placeholder="Nome do visitante"></div>
-          <div><label for="visitorPhone">WhatsApp / telefone</label><input id="visitorPhone" required type="tel" maxlength="30" autocomplete="tel" placeholder="(00) 00000-0000"></div>
-          <div><label for="visitorEmail">E-mail (opcional)</label><input id="visitorEmail" type="email" maxlength="180" autocomplete="email" placeholder="nome@exemplo.com"></div>
-          <div><label for="visitorCongregation">Congregação visitada</label><select id="visitorCongregation" required><option value="">Selecione</option><option>Sede — Brazlândia/DF</option><option>Jardim Botânico/DF</option><option>Vendinha — Padre Bernardo/GO</option></select></div>
-          <div><label for="visitorVisitDate">Data da visita</label><input id="visitorVisitDate" type="date" required></div>
-          <div><label for="visitorVisitType">É a primeira visita?</label><select id="visitorVisitType" required><option value="">Selecione</option><option value="primeira">Sim, primeira visita</option><option value="retorno">Já visitou antes</option></select></div>
-          <label class="consent-label" style="grid-column:1/-1"><input id="visitorContactConsent" type="checkbox" required> O visitante autorizou receber contato da Igreja por WhatsApp ou e-mail, com avisos de cultos, convites para células e informações sobre atividades. A autorização foi confirmada diretamente com ele.</label>
-          <div id="visitorCaptureMessage" class="notice" hidden role="status" aria-live="polite" style="grid-column:1/-1"></div>
-          <button type="submit" class="primary" id="visitorCaptureSubmit" style="grid-column:1/-1">Salvar visitante</button>
-        </form>
-      </div>
-      <div class="notice">Importante: este cadastro registra os dados e a autorização de contato. O envio automático de mensagens exige integração com um serviço de WhatsApp ou e-mail.</div>
-    </div>
+
   </section>
 
   <section id="membros" class="view">
@@ -868,7 +869,7 @@ nav button.active,nav .nav-instagram:active{color:#e4bd69}
   <div id="mediaLightbox" class="media-lightbox" role="dialog" aria-modal="true" aria-label="Visualização da fotografia">
     <div class="media-lightbox-inner"><button type="button" class="media-lightbox-close" id="mediaLightboxClose">Fechar ✕</button><img id="mediaLightboxImage" alt="Fotografia da Igreja Comunidade Evangélica da Aliança"><div id="mediaLightboxCaption" class="media-lightbox-caption"></div></div>
   </div>
-  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 71</footer>
+  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 72</footer>
 </main>
 <nav class="app-bottom-nav" aria-label="Navegação principal">
   <button data-go="galeria"><span>▧</span>Mídia</button>
@@ -884,6 +885,16 @@ const SUPABASE_URL="https://joztddhvrgawcoldmaqe.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_XjjIJ8noOKsVmGA5Z_ssEw_AzmYuMpa";
 const supabaseClient=window.supabase?.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const views=[...document.querySelectorAll('.view')], nav=[...document.querySelectorAll('nav button')];
+const shareAppButton=document.getElementById('shareAppButton');
+if(shareAppButton){shareAppButton.addEventListener('click',async()=>{
+ const payload={title:'Igreja Comunidade Evangélica da Aliança',text:'Conheça o aplicativo da Igreja Comunidade Evangélica da Aliança.',url:location.href.split('#')[0]};
+ const msg=document.getElementById('shareAppMessage');
+ try{if(navigator.share){await navigator.share(payload);}
+ else if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(payload.url);msg.hidden=false;msg.textContent='Link do aplicativo copiado. Agora é só compartilhar com seus contatos.';}
+ else{msg.hidden=false;msg.textContent='Copie o endereço do aplicativo na barra do navegador para compartilhar.';}
+ }catch(err){if(err?.name!=='AbortError'){msg.hidden=false;msg.textContent='Não foi possível abrir o compartilhamento. Tente copiar o endereço do aplicativo.';}}
+ });}
+
 const protectedViews=new Set(['ministerios','kids','aniversariantes','galeria','minha-conta']);
 let authenticatedUser=null;
 let authReady=false;
@@ -894,13 +905,13 @@ function updateRestrictedAreas(){
  const selfReg=document.getElementById('selfRegistrationContent');if(selfReg)selfReg.hidden=!!authenticatedUser;
  const visitorReg=document.getElementById('visitorRegistrationContent');if(visitorReg)visitorReg.hidden=!authenticatedUser;
  const regTitle=document.getElementById('registrationPageTitle');if(regTitle)regTitle.textContent=authenticatedUser?'Cadastrar visitante':'Faça seu cadastro';
- const studyTile=document.getElementById('leaderStudiesHomeTile');if(studyTile)studyTile.hidden=true;
+ const studyPanel=document.getElementById('studies');if(studyPanel)studyPanel.hidden=true;
  if(authenticatedUser){refreshApprovedStudyEntry();refreshVisitorCaptureAccess();}
 }
 async function refreshApprovedStudyEntry(){
- const studyTile=document.getElementById('leaderStudiesHomeTile');if(!studyTile)return;
- try{const role=await getApprovedChurchRole();approvedChurchRole=role;studyTile.hidden=!['lider_celula','pastor','apostolo'].includes(role);}
- catch(_){studyTile.hidden=true;}
+ const studyPanel=document.getElementById('studies');if(!studyPanel)return;
+ try{const role=await getApprovedChurchRole();approvedChurchRole=role;studyPanel.hidden=!['lider_celula','pastor','apostolo'].includes(role);}
+ catch(_){studyPanel.hidden=true;}
 }
 async function refreshVisitorCaptureAccess(){
  const tile=document.querySelector('[data-go="cadastro"][data-auth-only]');

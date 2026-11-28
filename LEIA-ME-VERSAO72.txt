@@ -1,0 +1,10 @@
+VERSÃO 72 — ORGANIZAÇÃO DA NAVEGAÇÃO E MINISTÉRIOS
+
+- Página inicial reorganizada e sem atalhos duplicados de agenda, mídia e cadastro.
+- Mantido o bloco “Fique por dentro” no final da página inicial como acesso à Agenda.
+- Cadastro de visitantes movido para a área Diaconato dentro de Ministérios, preservando o formulário e seu fluxo de envio.
+- Estudos para células movidos para dentro de Ministérios e exibidos apenas aos perfis autorizados.
+- Criada a seção “Líderes de células” dentro de Liderança.
+- Adicionada opção de compartilhar o aplicativo em Sobre nós, usando compartilhamento nativo ou cópia do link.
+- Rodapé permanece na ordem Mídia, Agenda, Início, Contribua e Instagram.
+- Mantidos o calendário e as integrações existentes.
