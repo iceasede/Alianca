@@ -799,7 +799,7 @@ header.app-header-hidden{display:none!important}
   <div id="mediaLightbox" class="media-lightbox" role="dialog" aria-modal="true" aria-label="Visualização da fotografia">
     <div class="media-lightbox-inner"><button type="button" class="media-lightbox-close" id="mediaLightboxClose">Fechar ✕</button><img id="mediaLightboxImage" alt="Fotografia da Igreja Comunidade Evangélica da Aliança"><div id="mediaLightboxCaption" class="media-lightbox-caption"></div></div>
   </div>
-  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 64</footer>
+  <footer>IGREJA COMUNIDADE EVANGÉLICA DA ALIANÇA · Aplicativo em desenvolvimento · versão 65</footer>
 </main>
 <nav>
   <button class="active" data-go="home"><span>⌂</span>Início</button>
@@ -1649,14 +1649,7 @@ document.getElementById('exportCellRequestsPdf')?.addEventListener('click',()=>{
  if(!popup){msg.textContent='O navegador bloqueou a nova janela. Permita pop-ups para preparar o PDF.';return;}
  const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
  const headers=Object.keys(rows[0]);
- popup.document.write('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Solicitações de células</title><style>body{font:14px Arial,sans-serif;color:#222;padding:24px}h1{font-size:20px;color:#681d28}p{color:#555}.meta{margin-bottom:18px}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #bbb;padding:7px;text-align:left;vertical-align:top}th{background:#f4ebdd;color:#681d28}@media print{body{padding:0}button{display:none}thead{display:table-header-group}tr{break-inside:avoid}}
-.birthday-list{display:grid;gap:8px;margin-top:10px}
-.birthday-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:#fff}
-.birthday-row strong{display:block;color:var(--navy);font-size:14px}
-.birthday-row small{display:block;color:var(--muted);margin-top:3px}
-.birthday-date{flex:0 0 auto;font-weight:700;color:var(--wine);background:#f7f1e7;border-radius:9px;padding:7px 10px;font-variant-numeric:tabular-nums}
-.birthday-today{border-color:var(--gold);background:#fffaf0}
-</style></head><body><h1>Igreja Comunidade Evangélica da Aliança</h1><h2>Solicitações de interesse em células</h2><p class="meta">Gerado em '+esc(new Date().toLocaleString('pt-BR'))+' · '+rows.length+' solicitação(ões)</p><table><thead><tr>'+headers.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+headers.map(h=>'<td>'+esc(r[h])+'</td>').join('')+'</tr>').join('')+'</tbody></table><p>Use a opção Imprimir do navegador e escolha Salvar como PDF.</p><button onclick="window.print()">Imprimir / Salvar como PDF</button></body></html>');
+ popup.document.write('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Solicitações de células</title><style>body{font:14px Arial,sans-serif;color:#222;padding:24px}h1{font-size:20px;color:#681d28}p{color:#555}.meta{margin-bottom:18px}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #bbb;padding:7px;text-align:left;vertical-align:top}th{background:#f4ebdd;color:#681d28}@media print{body{padding:0}button{display:none}thead{display:table-header-group}tr{break-inside:avoid}}\n.birthday-list{display:grid;gap:8px;margin-top:10px}\n.birthday-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:#fff}\n.birthday-row strong{display:block;color:var(--navy);font-size:14px}\n.birthday-row small{display:block;color:var(--muted);margin-top:3px}\n.birthday-date{flex:0 0 auto;font-weight:700;color:var(--wine);background:#f7f1e7;border-radius:9px;padding:7px 10px;font-variant-numeric:tabular-nums}\n.birthday-today{border-color:var(--gold);background:#fffaf0}\n</style></head><body><h1>Igreja Comunidade Evangélica da Aliança</h1><h2>Solicitações de interesse em células</h2><p class="meta">Gerado em '+esc(new Date().toLocaleString('pt-BR'))+' · '+rows.length+' solicitação(ões)</p><table><thead><tr>'+headers.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+headers.map(h=>'<td>'+esc(r[h])+'</td>').join('')+'</tr>').join('')+'</tbody></table><p>Use a opção Imprimir do navegador e escolha Salvar como PDF.</p><button onclick="window.print()">Imprimir / Salvar como PDF</button></body></html>');
  popup.document.close();msg.textContent='Relatório preparado. Na nova aba, escolha Imprimir e depois Salvar como PDF.';
 });
 // Solicitações de contato para células: gravação segura no Supabase (sem leitura pública).
