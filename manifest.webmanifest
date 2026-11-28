@@ -3,8 +3,8 @@
   "short_name": "Igreja Aliança",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f7f1e7",
-  "theme_color": "#681d28",
-  "description": "Aplicativo da Igreja Comunidade Evangélica da Aliança — versão 29 em desenvolvimento",
+  "background_color": "#0b1427",
+  "theme_color": "#101a31",
+  "description": "Aplicativo da Igreja Comunidade Evangélica da Aliança — versão 67 em desenvolvimento",
   "icons": []
 }
